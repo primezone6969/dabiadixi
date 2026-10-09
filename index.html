@@ -427,15 +427,20 @@
         }
 
         async function fetchFinancialData() {
-            const { data: prodData } = await supabaseClient.from('products').select('*');
-            allProducts = prodData || [];
-            const { data: purData } = await supabaseClient.from('purchases').select('*');
-            allPurchases = purData || [];
-            const { data: expData } = await supabaseClient.from('expenses').select('*');
-            allExpenses = expData || [];
-            const { data: saleData } = await supabaseClient.from('sales').select('*').order('created_at', { ascending: false });
-            allSales = saleData || [];
-        }
+    const { data: prodData } = await supabaseClient.from('products').select('*');
+    allProducts = prodData || [];
+    
+    const { data: purData, error: purErr } = await supabaseClient.from('purchases').select('*');
+    console.log("Fetched Purchases:", purData, purErr);
+    allPurchases = purData || [];
+
+    const { data: expData, error: expErr } = await supabaseClient.from('expenses').select('*');
+    console.log("Fetched Expenses:", expData, expErr);
+    allExpenses = expData || [];
+
+    const { data: saleData } = await supabaseClient.from('sales').select('*').order('created_at', { ascending: false });
+    allSales = saleData || [];
+}
 
         function renderDashboardContent() {
             const area = document.getElementById('dashboard-main-area');
