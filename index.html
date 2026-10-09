@@ -427,26 +427,28 @@
         }
 
         async function fetchFinancialData() {
-    const { data: prodData } = await supabaseClient.from('products').select('*');
-    allProducts = prodData || [];
-    
-    const { data: purData, error: purErr } = await supabaseClient.from('purchases').select('*');
-    console.log("Fetched Purchases:", purData, purErr);
-    allPurchases = purData || [];
+            const { data: prodData } = await supabaseClient.from('products').select('*');
+            allProducts = prodData || [];
+            
+            const { data: purData, error: purErr } = await supabaseClient.from('purchases').select('*');
+            if (purErr) console.error("Purchases error:", purErr);
+            allPurchases = purData || [];
 
-    const { data: expData, error: expErr } = await supabaseClient.from('expenses').select('*');
-    console.log("Fetched Expenses:", expData, expErr);
-    allExpenses = expData || [];
+            const { data: expData, error: expErr } = await supabaseClient.from('expenses').select('*');
+            if (expErr) console.error("Expenses error:", expErr);
+            allExpenses = expData || [];
 
-    const { data: saleData } = await supabaseClient.from('sales').select('*').order('created_at', { ascending: false });
-    allSales = saleData || [];
-}
+            const { data: saleData } = await supabaseClient.from('sales').select('*').order('created_at', { ascending: false });
+            allSales = saleData || [];
+        }
 
-        function renderDashboardContent() {
+        async function renderDashboardContent() {
             const area = document.getElementById('dashboard-main-area');
             if (!area) return;
 
             if (currentDashboardTab === 'overview') {
+                await fetchFinancialData();
+
                 const totalSalesRevenue = allSales.reduce((acc, s) => acc + Number(s.total_revenue), 0);
                 const totalPurchasesCost = allPurchases.reduce((acc, pur) => acc + (Number(pur.cost) * pur.quantity), 0);
                 const totalExtraExpenses = allExpenses.reduce((acc, exp) => acc + Number(exp.amount), 0);
