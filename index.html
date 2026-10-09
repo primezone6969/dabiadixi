@@ -263,11 +263,10 @@
                 return;
             }
 
-            const siteBaseUrl = window.location.href.split('#')[0];
+            const siteBaseUrl = window.location.origin + window.location.pathname;
 
             grid.innerHTML = availableProducts.map(p => {
                 const productLink = `${siteBaseUrl}#item-${p.id}`;
-                // Explicitly format with https:// and line breaks so WhatsApp parses it as a clickable link
                 const messageText = `Hi Dabia Dixi, I'm interested in ordering:\n*${p.name}* (Size: ${p.size}, Price: $${Number(p.price).toFixed(2)})\n\nView item here:\n${productLink}`;
                 const encodedMsg = encodeURIComponent(messageText);
                 const whatsappUrl = `https://wa.me/67078571996?text=${encodedMsg}`;
