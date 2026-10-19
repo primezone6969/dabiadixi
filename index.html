@@ -281,6 +281,10 @@
                 const encodedMsg = encodeURIComponent(messageText);
                 const whatsappUrl = `https://wa.me/67078571996?text=${encodedMsg}`;
 
+                const stockBadge = Number(p.stock_quantity) <= 2 
+                    ? `<span class="text-[10px] text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">Only ${p.stock_quantity} left!</span>`
+                    : `<span class="text-[10px] text-stone-600 font-medium bg-stone-100 px-1.5 py-0.5 rounded">Stock: ${p.stock_quantity}</span>`;
+
                 return `
                     <div id="item-${p.id}" class="bg-white rounded-xl overflow-hidden shadow-sm border border-stone-200 flex flex-col group hover:shadow-md transition">
                         <div class="h-48 sm:h-64 bg-stone-100 relative overflow-hidden flex items-center justify-center cursor-pointer" ${p.image_url ? `onclick="openImageModal('${p.image_url}')"` : ''}>
@@ -295,6 +299,10 @@
                             <div class="flex justify-between items-center mb-3">
                                 <span class="text-sm md:text-lg font-extrabold text-[#3A4F41]">$${Number(p.price).toFixed(2)}</span>
                                 <span class="text-[10px] md:text-xs font-medium px-1.5 py-0.5 bg-stone-100 rounded text-stone-600">Size: ${p.size}</span>
+                            </div>
+                            <div class="mb-3 flex items-center justify-between">
+                                <span class="text-[10px] text-stone-400 uppercase">Availability</span>
+                                ${stockBadge}
                             </div>
                             <a href="${whatsappUrl}" target="_blank" class="mt-auto w-full bg-[#3A4F41] text-white text-center py-2 rounded-lg text-xs font-medium hover:bg-[#2C3E35] transition flex items-center justify-center gap-1.5">
                                 💬 Inquire via WhatsApp
