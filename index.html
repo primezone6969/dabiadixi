@@ -6,10 +6,16 @@
     <title>Dabia Dixi - Preloved & New Fashion</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Import Calligraphy Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
         body { background-color: #F9F6F0; color: #2C3E35; font-family: system-ui, -apple-system, sans-serif; }
         .bg-brand-sage { background-color: #3A4F41; }
         .text-brand-sage { color: #3A4F41; }
+        .calligraphy-font {
+            font-family: 'Great Vibes', cursive;
+            font-weight: 400;
+        }
         @keyframes glowPulse {
             0% { box-shadow: 0 0 0 0 rgba(58, 79, 65, 0.7); border-color: #3A4F41; }
             50% { box-shadow: 0 0 20px 5px rgba(58, 79, 65, 0.5); border-color: #3A4F41; }
@@ -25,13 +31,13 @@
 
     <!-- Top Announcement Bar -->
     <div class="bg-[#3A4F41] text-white text-xs py-2 px-4 text-center font-medium tracking-wide">
-        ✨ Welcome to Dabia Dixi | Preloved Fashion & New Arrivals | WhatsApp: +670 77145280
+        ✨ Welcome to Dabia Dixi | Preloved Fashion & New Arrivals | 📱 WhatsApp: +670 77145280
     </div>
 
     <!-- Header Navigation -->
     <header class="bg-[#F9F6F0] border-b border-stone-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 id="brand-logo" class="text-xl md:text-2xl font-serif font-bold tracking-wider text-[#3A4F41] cursor-pointer select-none">Dabia Dixi</h1>
+            <h1 id="brand-logo" class="text-3xl md:text-4xl calligraphy-font text-[#3A4F41] cursor-pointer select-none tracking-wide">Dabia Dixi</h1>
             <div id="nav-auth" class="flex items-center space-x-3">
                 <!-- Dynamic Nav Buttons -->
             </div>
@@ -48,7 +54,7 @@
     <!-- Login Modal -->
     <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative border border-stone-100">
-            <h3 class="text-lg font-serif font-bold mb-4 text-[#3A4F41]">Staff & Owner Portal Login</h3>
+            <h3 class="text-lg font-serif font-bold mb-4 text-[#3A4F41]">🔐 Staff & Owner Portal Login</h3>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Email Address</label>
@@ -78,25 +84,25 @@
     <footer class="bg-stone-900 text-stone-300 pt-12 pb-8 border-t border-stone-800 mt-auto">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-                <h3 class="text-xl font-serif font-bold text-white mb-3">Dabia Dixi</h3>
+                <h3 class="text-2xl calligraphy-font text-white mb-3">Dabia Dixi</h3>
                 <p class="text-xs text-stone-400 leading-relaxed mb-4">Curated preloved fashion and exclusive brand new arrivals designed to make you feel extraordinary every single day.</p>
-                <p class="text-xs text-stone-300 font-medium">📱 WhatsApp: +670 77145280</p>
+                <p class="text-xs text-stone-300 font-medium">📱 WhatsApp Order Line: +670 78571996</p>
             </div>
             <div>
                 <h4 class="text-sm font-semibold uppercase tracking-wider text-white mb-3">Quick Navigation</h4>
                 <ul class="space-y-2 text-xs">
-                    <li><button onclick="switchView('storefront')" class="hover:text-white transition">Browse Collection</button></li>
-                    <li><button onclick="filterProductsByCondition('brand_new')" class="hover:text-white transition">Brand New Arrivals</button></li>
-                    <li><button onclick="filterProductsByCondition('preloved')" class="hover:text-white transition">Preloved Fashion</button></li>
+                    <li><button onclick="switchView('storefront')" class="hover:text-white transition">🛍️ Browse Collection</button></li>
+                    <li><button onclick="filterProductsByCondition('brand_new')" class="hover:text-white transition">✨ Brand New Arrivals</button></li>
+                    <li><button onclick="filterProductsByCondition('preloved')" class="hover:text-white transition">♻️ Preloved Fashion</button></li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-sm font-semibold uppercase tracking-wider text-white mb-3">Connect With Us</h4>
                 <p class="text-xs text-stone-400 mb-3">Follow our social channels for daily drops and updates.</p>
                 <div class="flex space-x-3 text-xs">
-                    <span class="px-3 py-1.5 bg-stone-800 rounded-lg text-stone-300">Instagram</span>
-                    <span class="px-3 py-1.5 bg-stone-800 rounded-lg text-stone-300">TikTok</span>
-                    <span class="px-3 py-1.5 bg-stone-800 rounded-lg text-stone-300">WhatsApp</span>
+                    <span class="px-3 py-1.5 bg-stone-800 rounded-lg text-stone-300">📷 Instagram</span>
+                    <span class="px-3 py-1.5 bg-stone-800 rounded-lg text-stone-300">🎵 TikTok</span>
+                    <span class="px-3 py-1.5 bg-stone-800 rounded-lg text-stone-300">💬 WhatsApp</span>
                 </div>
             </div>
         </div>
@@ -117,7 +123,7 @@
         let allPurchases = [];
         let allExpenses = [];
         let allSales = [];
-        let currentCollectionFilter = 'Women';
+        let currentCollectionFilter = 'All'; // Default to All collections
         let currentCategoryFilter = 'all';
         let currentConditionFilter = 'all';
         let currentDashboardTab = 'overview';
@@ -167,7 +173,7 @@
             const navAuth = document.getElementById('nav-auth');
             if (currentUser) {
                 navAuth.innerHTML = `
-                    <span class="text-xs bg-[#3A4F41] text-white px-2.5 py-1 rounded-full uppercase tracking-wider">${userRole}</span>${userRole !== 'customer' ? `<button onclick="switchView('dashboard')" class="text-sm bg-[#3A4F41] text-white px-3.5 py-1.5 rounded-lg font-medium hover:bg-[#2C3E35] transition">Dashboard</button>` : ''}
+                    <span class="text-xs bg-[#3A4F41] text-white px-2.5 py-1 rounded-full uppercase tracking-wider">👤 ${userRole}</span>${userRole !== 'customer' ? `<button onclick="switchView('dashboard')" class="text-sm bg-[#3A4F41] text-white px-3.5 py-1.5 rounded-lg font-medium hover:bg-[#2C3E35] transition flex items-center gap-1.5">📊 Dashboard</button>` : ''}
                     <button onclick="handleLogout()" class="text-sm text-red-500 hover:text-red-700 font-medium">Logout</button>
                 `;
             } else {
@@ -197,38 +203,39 @@
             content.innerHTML = `
                 <div class="bg-[#3A4F41] text-white rounded-2xl p-6 md:p-12 mb-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6">
                     <div class="max-w-xl">
-                        <span class="text-xs uppercase tracking-widest text-stone-300 font-semibold">New Season Collection</span>
-                        <h2 class="text-2xl md:text-4xl font-serif font-bold mt-2 mb-3">Elevate Your Everyday Style</h2>
+                        <span class="text-xs uppercase tracking-widest text-stone-300 font-semibold">✨ New Season Collection</span>
+                        <h2 class="text-3xl md:text-5xl calligraphy-font mt-2 mb-3">Elevate Your Everyday Style</h2>
                         <p class="text-stone-200 text-xs md:text-sm leading-relaxed">Discover timeless fashion designed to make you feel extraordinary. Sustainable preloved pieces and pristine new arrivals.</p>
                     </div>
                     <div class="bg-white/10 backdrop-blur-md p-5 rounded-xl border border-white/20 text-center min-w-[180px]">
-                        <p class="text-xs uppercase tracking-wider text-stone-200 mb-1">Direct Orders</p>
-                        <p class="text-base md:text-lg font-bold">+670 77145280</p>
+                        <p class="text-xs uppercase tracking-wider text-stone-200 mb-1">💬 Direct Orders</p>
+                        <p class="text-base md:text-lg font-bold">+670 78571996</p>
                         <span class="text-[10px] text-stone-300">WhatsApp Available</span>
                     </div>
                 </div>
 
-                <!-- Collection Switcher Bar -->
+                <!-- Collection Switcher Bar (Including "All") -->
                 <div class="mb-6 flex flex-wrap justify-center gap-3">
-                    <button onclick="setCollectionFilter('Women')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Women' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Women">Women</button>
-                    <button onclick="setCollectionFilter('Men')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Men' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Men">Men</button>
-                    <button onclick="setCollectionFilter('Unisex')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Unisex' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Unisex">Unisex</button>
+                    <button onclick="setCollectionFilter('All')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'All' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-All">🌟 All Collections</button>
+                    <button onclick="setCollectionFilter('Women')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Women' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Women">👩 Women</button>
+                    <button onclick="setCollectionFilter('Men')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Men' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Men">👨 Men</button>
+                    <button onclick="setCollectionFilter('Unisex')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Unisex' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Unisex">✨ Unisex</button>
                 </div>
 
                 <!-- Category Browse Filter Bar -->
                 <div class="mb-6 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-                    <button onclick="filterByCategory('all')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-[#3A4F41] text-white" id="cat-all">All Categories</button>
-                    <button onclick="filterByCategory('Dresses')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Dresses">Dresses</button>
-                    <button onclick="filterByCategory('Tops')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Tops">Tops</button>
-                    <button onclick="filterByCategory('Bottoms')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Bottoms">Bottoms</button>
-                    <button onclick="filterByCategory('Outerwear')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Outerwear">Outerwear</button>
-                    <button onclick="filterByCategory('Accessories')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Accessories">Accessories</button>
-                    <button onclick="filterByCategory('Bags & Shoes')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Bags & Shoes">Bags & Shoes</button>
+                    <button onclick="filterByCategory('all')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-[#3A4F41] text-white" id="cat-all">📁 All Categories</button>
+                    <button onclick="filterByCategory('Dresses')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Dresses">👗 Dresses</button>
+                    <button onclick="filterByCategory('Tops')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Tops">👚 Tops</button>
+                    <button onclick="filterByCategory('Bottoms')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Bottoms">👖 Bottoms</button>
+                    <button onclick="filterByCategory('Outerwear')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Outerwear">🧥 Outerwear</button>
+                    <button onclick="filterByCategory('Accessories')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Accessories">💍 Accessories</button>
+                    <button onclick="filterByCategory('Bags & Shoes')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Bags & Shoes">👜 Bags & Shoes</button>
                 </div>
 
                 <!-- Condition Filter Tabs -->
                 <div class="mb-6 flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-stone-200">
-                    <h3 class="font-serif font-bold text-base md:text-lg text-[#3A4F41]" id="collection-title">Women Collection</h3>
+                    <h3 class="font-serif font-bold text-base md:text-lg text-[#3A4F41]" id="collection-title">All Collections</h3>
                     <div class="flex gap-2">
                         <button onclick="filterProductsByCondition('all')" class="px-3 py-1.5 text-xs bg-stone-100 text-stone-700 rounded-lg font-medium transition cond-btn active" id="cond-all">All</button>
                         <button onclick="filterProductsByCondition('brand_new')" class="px-3 py-1.5 text-xs bg-stone-100 text-stone-700 rounded-lg font-medium transition cond-btn" id="cond-new">Brand New</button>
@@ -276,7 +283,7 @@
                         <div class="h-48 sm:h-64 bg-stone-100 relative overflow-hidden flex items-center justify-center cursor-pointer" ${p.image_url ? `onclick="openImageModal('${p.image_url}')"` : ''}>
                             ${p.image_url ? `<img src="${p.image_url}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" title="Click to view full image">` : `<span class="text-stone-400 text-xs">No Image</span>`}
                             <span class="absolute top-2 left-2 md:top-3 md:left-3 px-2 py-1 text-[9px] md:text-[10px] font-semibold uppercase rounded tracking-wider shadow-sm ${p.condition === 'brand_new' ? 'bg-[#3A4F41] text-white' : 'bg-amber-100 text-amber-900'}">
-                                ${p.condition === 'brand_new' ? 'Brand New' : 'Preloved'}
+                                ${p.condition === 'brand_new' ? '✨ Brand New' : '♻️ Preloved'}
                             </span>
                         </div>
                         <div class="p-3 md:p-4 flex flex-col flex-grow">
@@ -321,7 +328,7 @@
                 activeCol.classList.add('bg-[#3A4F41]', 'text-white', 'shadow');
             }
             const titleEl = document.getElementById('collection-title');
-            if (titleEl) titleEl.textContent = `${collection} Collection`;
+            if (titleEl) titleEl.textContent = collection === 'All' ? 'All Collections' : `${collection} Collection`;
             applyFilters();
         }
 
@@ -355,7 +362,9 @@
 
         function applyFilters() {
             let filtered = allProducts;
-            filtered = filtered.filter(p => (p.collection || 'Women') === currentCollectionFilter);
+            if (currentCollectionFilter !== 'All') {
+                filtered = filtered.filter(p => (p.collection || 'Women') === currentCollectionFilter);
+            }
 
             if (currentCategoryFilter !== 'all') {
                 filtered = filtered.filter(p => p.category === currentCategoryFilter);
@@ -378,7 +387,7 @@
                     <!-- Side Menu Panel -->
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 h-fit space-y-2">
                         <div class="p-3 mb-2 border-b border-stone-100">
-                            <h3 class="font-serif font-bold text-base text-[#3A4F41]">Owner Dashboard</h3>
+                            <h3 class="text-xl calligraphy-font text-[#3A4F41]">Owner Dashboard</h3>
                             <p class="text-[11px] text-stone-400">Dabia Dixi Management</p>
                         </div>
                         <button onclick="setDashboardTab('overview')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'overview' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-overview">
@@ -430,12 +439,10 @@
             const { data: prodData } = await supabaseClient.from('products').select('*');
             allProducts = prodData || [];
             
-            const { data: purData, error: purErr } = await supabaseClient.from('purchases').select('*');
-            if (purErr) console.error("Purchases error:", purErr);
+            const { data: purData } = await supabaseClient.from('purchases').select('*');
             allPurchases = purData || [];
 
-            const { data: expData, error: expErr } = await supabaseClient.from('expenses').select('*');
-            if (expErr) console.error("Expenses error:", expErr);
+            const { data: expData } = await supabaseClient.from('expenses').select('*');
             allExpenses = expData || [];
 
             const { data: saleData } = await supabaseClient.from('sales').select('*').order('created_at', { ascending: false });
@@ -458,7 +465,7 @@
                 area.innerHTML = `
                     <div class="space-y-6">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                            <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Financial Command Center</h3>
+                            <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Financial Command Center</h3>
                             <p class="text-xs text-stone-500 mb-6">Real-time revenue, spending, and profit overview.</p>
                             
                             <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -488,12 +495,12 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <!-- Recent Sales Card -->
                             <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                                <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Recent Sales (POS)</h4>
+                                <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">🛍️ Recent Sales (POS)</h4>
                                 <div class="space-y-2 max-h-60 overflow-y-auto">
                                     ${allSales.length === 0 ? '<p class="text-xs text-stone-400">No sales recorded yet.</p>' : allSales.map(s => `
                                         <div class="flex justify-between items-center p-2 bg-stone-50 rounded-lg text-xs">
                                             <div>
-                                                <p class="font-medium text-stone-800">${s.product_name} (x${s.quantity_sold})</p>                                             </div>                                             <span class="font-bold text-emerald-700">+$${Number(s.total_revenue).toFixed(2)}</span>
+                                                <p class="font-medium text-stone-800">${s.product_name} (x${s.quantity_sold})</p> </div> <span class="font-bold text-emerald-700">+$${Number(s.total_revenue).toFixed(2)}</span>
                                         </div>
                                     `).join('')}
                                 </div>
@@ -501,11 +508,11 @@
 
                             <!-- Recent Purchases Card -->
                             <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                                <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Recent Restocks</h4>
+                                <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">📦 Recent Restocks</h4>
                                 <div class="space-y-2 max-h-60 overflow-y-auto">
                                     ${allPurchases.length === 0 ? '<p class="text-xs text-stone-400">No restocks logged yet.</p>' : allPurchases.map(p => `
                                         <div class="flex justify-between items-center p-2 bg-stone-50 rounded-lg text-xs">
-                                            <span class="font-medium text-stone-800">${p.item_name} (x${p.quantity})</span>                                             <span class="font-bold text-amber-800">-$${(p.cost * p.quantity).toFixed(2)}</span>
+                                            <span class="font-medium text-stone-800">${p.item_name} (x${p.quantity})</span> <span class="font-bold text-amber-800">-$${(p.cost * p.quantity).toFixed(2)}</span>
                                         </div>
                                     `).join('')}
                                 </div>
@@ -513,13 +520,13 @@
 
                             <!-- Recent Expenses Card -->
                             <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                                <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Recent Expenses</h4>
+                                <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">💸 Recent Expenses</h4>
                                 <div class="space-y-2 max-h-60 overflow-y-auto">
                                     ${allExpenses.length === 0 ? '<p class="text-xs text-stone-400">No expenses logged yet.</p>' : allExpenses.map(e => `
                                         <div class="flex justify-between items-center p-2 bg-stone-50 rounded-lg text-xs">
                                             <div>
                                                 <p class="font-medium text-stone-800">${e.title}</p>
-                                                <span class="text-[10px] text-stone-400 uppercase">${e.category}</span>                                             </div>                                             <span class="font-bold text-red-700">-$${Number(e.amount).toFixed(2)}</span>
+                                                <span class="text-[10px] text-stone-400 uppercase">${e.category}</span> </div> <span class="font-bold text-red-700">-$${Number(e.amount).toFixed(2)}</span>
                                         </div>
                                     `).join('')}
                                 </div>
@@ -531,7 +538,7 @@
                 const inStockItems = allProducts.filter(p => Number(p.stock_quantity) > 0);
                 area.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Record a Sale (Visual POS)</h3>
+                        <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Record a Sale (Visual POS)</h3>
                         <p class="text-xs text-stone-500 mb-6">Click "Sell Item" on any product card below to quickly record a sale and deduct inventory.</p>
                         
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -542,7 +549,7 @@
                                             ${p.image_url ? `<img src="${p.image_url}" class="w-full h-full object-cover">` : '<span class="text-[10px] text-stone-400">No Image</span>'}
                                             <span class="absolute top-2 left-2 px-1.5 py-0.5 text-[9px] font-semibold uppercase rounded bg-[#3A4F41] text-white">${p.collection || 'Women'}</span>
                                         </div>
-                                        <h4 class="font-serif font-bold text-stone-900 text-xs truncate">${p.name}</h4>                                         <p class="text-xs font-bold text-[#3A4F41] mt-0.5">$${Number(p.price).toFixed(2)} <span class="text-[10px] font-normal text-stone-500">(Stock: ${p.stock_quantity})</span></p>
+                                        <h4 class="font-serif font-bold text-stone-900 text-xs truncate">${p.name}</h4> <p class="text-xs font-bold text-[#3A4F41] mt-0.5">$${Number(p.price).toFixed(2)} <span class="text-[10px] font-normal text-stone-500">(Stock: ${p.stock_quantity})</span></p>
                                     </div>
                                     <button onclick="openPOSModal('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${p.price},${p.stock_quantity})" class="mt-3 w-full bg-[#3A4F41] text-white py-1.5 rounded-lg text-xs font-medium hover:bg-[#2C3E35] transition">Sell Item</button>
                                 </div>
@@ -576,7 +583,7 @@
             } else if (currentDashboardTab === 'products') {
                 area.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-4">Add New Boutique Item</h3>
+                        <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-4">Add New Boutique Item</h3>
                         <form onsubmit="handleCreateProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Product Name</label>
@@ -647,7 +654,7 @@
             } else if (currentDashboardTab === 'purchases') {
                 area.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Buy Items (Restock Costs)</h3>
+                        <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Buy Items (Restock Costs)</h3>
                         <p class="text-xs text-stone-500 mb-6">Log wholesale purchases or restock expenses to track your spending.</p>
                         <form onsubmit="handleCreatePurchase(event)" class="space-y-4">
                             <div>
@@ -673,7 +680,7 @@
             } else if (currentDashboardTab === 'expenses') {
                 area.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Extra Boutique Expenses</h3>
+                        <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Extra Boutique Expenses</h3>
                         <p class="text-xs text-stone-500 mb-6">Log packaging supplies, shipping fees, ads, utilities, and other costs.</p>
                         <form onsubmit="handleCreateExpense(event)" class="space-y-4">
                             <div>
