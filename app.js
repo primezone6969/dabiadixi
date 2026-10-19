@@ -815,21 +815,37 @@ async function renderDashboardContent() {
                         </select>
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Available Sizes (Hold Ctrl/Cmd to select multiple)</label>
-                        <select id="prod-sizes" multiple required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none bg-white h-28">
-                            <option value="XS">XS</option>
-                            <option value="S">S</option>
-                            <option value="M" selected>M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                            <option value="XXL">XXL</option>
-                            <option value="Free Size">Free Size</option>
-                            <option value="One Size">One Size</option>
-                        </select>
+                        <label class="block text-xs font-semibold uppercase text-stone-500 mb-2">Inventory Stock Per Size</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-stone-50 p-3 rounded-xl border border-stone-200">
+                            <div>
+                                <span class="text-[11px] font-bold text-stone-700 block mb-1">XS</span>
+                                <input type="number" id="stock-xs" value="0" min="0" class="w-full border border-stone-300 rounded p-1.5 text-xs bg-white">
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold text-stone-700 block mb-1">S</span>
+                                <input type="number" id="stock-s" value="0" min="0" class="w-full border border-stone-300 rounded p-1.5 text-xs bg-white">
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold text-stone-700 block mb-1">M</span>
+                                <input type="number" id="stock-m" value="0" min="0" class="w-full border border-stone-300 rounded p-1.5 text-xs bg-white">
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold text-stone-700 block mb-1">L</span>
+                                <input type="number" id="stock-l" value="0" min="0" class="w-full border border-stone-300 rounded p-1.5 text-xs bg-white">
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold text-stone-700 block mb-1">XL</span>
+                                <input type="number" id="stock-xl" value="0" min="0" class="w-full border border-stone-300 rounded p-1.5 text-xs bg-white">
+                            </div>
+                            <div>
+                                <span class="text-[11px] font-bold text-stone-700 block mb-1">Free Size</span>
+                                <input type="number" id="stock-freesize" value="0" min="0" class="w-full border border-stone-300 rounded p-1.5 text-xs bg-white">
+                            </div>
+                        </div>
+                        <span class="text-[10px] text-stone-400 mt-1 block">Enter stock numbers for the sizes available. Sizes with 0 stock will be hidden on the storefront.</span>
                     </div>
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Selling Price ($)</label><input type="number" step="0.01" id="prod-price" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Cost Price ($)</label><input type="number" step="0.01" id="prod-cost" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
-                    <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Initial Stock Quantity</label><input type="number" id="prod-stock" value="1" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
                     <div class="md:col-span-2">
                         <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Product Photos (Select Multiple)</label>
                         <input type="file" id="prod-images" accept="image/*" multiple class="w-full border border-stone-300 rounded-lg p-2 text-sm">
@@ -1015,12 +1031,22 @@ async function handleCreateProduct(e) {
     const collection = document.getElementById('prod-collection').value;
     const category = document.getElementById('prod-category').value;
     const condition = document.getElementById('prod-condition').value;
-    const selectedSizes = Array.from(document.getElementById('prod-sizes').selectedOptions).map(opt => opt.value);
-    const primarySize = selectedSizes.length > 0 ? selectedSizes[0] : 'Free Size';
     const price = parseFloat(document.getElementById('prod-price').value);
     const cost_price = parseFloat(document.getElementById('prod-cost').value);
-    const stock_quantity = parseInt(document.getElementById('prod-stock').value);
     const imageFiles = document.getElementById('prod-images').files;
+
+    const sizeStock = {
+        'XS': parseInt(document.getElementById('stock-xs').value) || 0,
+        'S': parseInt(document.getElementById('stock-s').value) || 0,
+        'M': parseInt(document.getElementById('stock-m').value) || 0,
+        'L': parseInt(document.getElementById('stock-l').value) || 0,
+        'XL': parseInt(document.getElementById('stock-xl').value) || 0,
+        'Free Size': parseInt(document.getElementById('stock-freesize').value) || 0
+    };
+
+    const activeSizes = Object.keys(sizeStock).filter(sz => sizeStock[sz] > 0);
+    const totalStock = Object.values(sizeStock).reduce((a, b) => a + b, 0);
+    const primarySize = activeSizes.length > 0 ? activeSizes[0] : 'Free Size';
 
     let imageUrls = [];
     for (let i = 0; i < imageFiles.length; i++) {
@@ -1034,12 +1060,17 @@ async function handleCreateProduct(e) {
     }
 
     await supabaseClient.from('products').insert([{
-        name, collection, category, condition, size: primarySize, sizes: selectedSizes, price, cost_price, stock_quantity, 
+        name, collection, category, condition, 
+        size: primarySize, 
+        sizes: activeSizes, 
+        size_stock: sizeStock,
+        stock_quantity: totalStock, 
+        price, cost_price, 
         image_url: imageUrls.length > 0 ? imageUrls[0] : '',
         image_urls: imageUrls
     }]);
 
-    alert('Product added successfully!');
+    alert('Product added successfully with size-specific inventory!');
     document.querySelector('form').reset();
     btn.textContent = 'Save Product to Inventory';
     btn.disabled = false;
