@@ -14,7 +14,8 @@
         body { background-color: #F9F6F0; color: #2C3E35; font-family: system-ui, -apple-system, sans-serif; }
         .bg-brand-sage { background-color: #3A4F41; }
         .text-brand-sage { color: #3A4F41; }
-        .calligraphy-font {
+        /* Calligraphy font restricted ONLY to brand text */
+        .calligraphy-brand {
             font-family: 'Great Vibes', cursive;
             font-weight: 400;
         }
@@ -33,13 +34,13 @@
 
     <!-- Top Announcement Bar -->
     <div class="bg-[#3A4F41] text-white text-xs py-2 px-4 text-center font-medium tracking-wide">
-        ✨ Welcome to Dabia Dixi | Preloved Fashion & New Arrivals | 📱 WhatsApp: +670 77145280
+        ✨ Welcome to Dabia Dixi | Preloved Fashion & New Arrivals | 📱 WhatsApp: +670 78571996
     </div>
 
     <!-- Header Navigation -->
     <header class="bg-[#F9F6F0] border-b border-stone-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 id="brand-logo" class="text-3xl md:text-4xl calligraphy-font text-[#3A4F41] cursor-pointer select-none tracking-wide">Dabia Dixi</h1>
+            <h1 id="brand-logo" class="text-3xl md:text-4xl calligraphy-brand text-[#3A4F41] cursor-pointer select-none tracking-wide">Dabia Dixi</h1>
             <div id="nav-auth" class="flex items-center space-x-3">
                 <!-- Dynamic Nav Buttons -->
             </div>
@@ -56,7 +57,7 @@
     <!-- Login Modal -->
     <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative border border-stone-100">
-            <h3 class="text-lg font-serif font-bold mb-4 text-[#3A4F41]">🔐 Staff & Owner Portal Login</h3>
+            <h3 class="text-lg font-bold mb-4 text-[#3A4F41]">🔐 Staff & Owner Portal Login</h3>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Email Address</label>
@@ -86,7 +87,7 @@
     <footer class="bg-stone-900 text-stone-300 pt-12 pb-8 border-t border-stone-800 mt-auto">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-                <h3 class="text-2xl calligraphy-font text-white mb-3">Dabia Dixi</h3>
+                <h3 class="text-2xl calligraphy-brand text-white mb-3">Dabia Dixi</h3>
                 <p class="text-xs text-stone-400 leading-relaxed mb-4">Curated preloved fashion and exclusive brand new arrivals designed to make you feel extraordinary every single day.</p>
                 <p class="text-xs text-stone-300 font-medium">📱 WhatsApp Order Line: +670 78571996</p>
             </div>
@@ -206,7 +207,7 @@
                 <div class="bg-[#3A4F41] text-white rounded-2xl p-6 md:p-12 mb-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6">
                     <div class="max-w-xl">
                         <span class="text-xs uppercase tracking-widest text-stone-300 font-semibold">✨ New Season Collection</span>
-                        <h2 class="text-3xl md:text-5xl calligraphy-font mt-2 mb-3">Elevate Your Everyday Style</h2>
+                        <h2 class="text-2xl md:text-4xl font-serif font-bold mt-2 mb-3">Elevate Your Everyday Style</h2>
                         <p class="text-stone-200 text-xs md:text-sm leading-relaxed">Discover timeless fashion designed to make you feel extraordinary. Sustainable preloved pieces and pristine new arrivals.</p>
                     </div>
                     <div class="bg-white/10 backdrop-blur-md p-5 rounded-xl border border-white/20 text-center min-w-[180px]">
@@ -389,7 +390,7 @@
                     <!-- Side Menu Panel -->
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 h-fit space-y-2">
                         <div class="p-3 mb-2 border-b border-stone-100">
-                            <h3 class="text-xl calligraphy-font text-[#3A4F41]">Owner Dashboard</h3>
+                            <h3 class="font-serif font-bold text-base text-[#3A4F41]">Owner Dashboard</h3>
                             <p class="text-[11px] text-stone-400">Dabia Dixi Management</p>
                         </div>
                         <button onclick="setDashboardTab('overview')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'overview' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-overview">
@@ -470,7 +471,7 @@
                 area.innerHTML = `
                     <div class="space-y-6">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                            <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Financial Command Center</h3>
+                            <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Financial Command Center</h3>
                             <p class="text-xs text-stone-500 mb-6">Real-time revenue, spending, and profit overview.</p>
                             
                             <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -542,7 +543,6 @@
             } else if (currentDashboardTab === 'reports') {
                 await fetchFinancialData();
 
-                // Group sales and expenses by date (YYYY-MM-DD)
                 const dailyMap = {};
                 allSales.forEach(s => {
                     const date = s.created_at ? s.created_at.split('T')[0] : 'Unknown';
@@ -565,7 +565,7 @@
                 area.innerHTML = `
                     <div class="space-y-6">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                            <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Financial Trend & Graphs</h3>
+                            <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Financial Trend & Graphs</h3>
                             <p class="text-xs text-stone-500 mb-6">Visual overview of daily income vs. spending.</p>
                             <div class="w-full h-72">
                                 <canvas id="financialChart"></canvas>
@@ -607,7 +607,6 @@
                     </div>
                 `;
 
-                // Render Chart.js Graph
                 setTimeout(() => {
                     const ctx = document.getElementById('financialChart');
                     if (ctx && sortedDates.length > 0) {
@@ -649,7 +648,7 @@
                 const inStockItems = allProducts.filter(p => Number(p.stock_quantity) > 0);
                 area.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Record a Sale (Visual POS)</h3>
+                        <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Record a Sale (Visual POS)</h3>
                         <p class="text-xs text-stone-500 mb-6">Click "Sell Item" on any product card below to quickly record a sale and deduct inventory.</p>
                         
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -694,7 +693,7 @@
             } else if (currentDashboardTab === 'products') {
                 area.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-4">Add New Boutique Item</h3>
+                        <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-4">Add New Boutique Item</h3>
                         <form onsubmit="handleCreateProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Product Name</label>
@@ -765,7 +764,7 @@
             } else if (currentDashboardTab === 'purchases') {
                 area.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Buy Items (Restock Costs)</h3>
+                        <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Buy Items (Restock Costs)</h3>
                         <p class="text-xs text-stone-500 mb-6">Log wholesale purchases or restock expenses to track your spending.</p>
                         <form onsubmit="handleCreatePurchase(event)" class="space-y-4">
                             <div>
@@ -791,7 +790,7 @@
             } else if (currentDashboardTab === 'expenses') {
                 area.innerHTML = `
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Extra Boutique Expenses</h3>
+                        <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Extra Boutique Expenses</h3>
                         <p class="text-xs text-stone-500 mb-6">Log packaging supplies, shipping fees, ads, utilities, and other costs.</p>
                         <form onsubmit="handleCreateExpense(event)" class="space-y-4">
                             <div>
