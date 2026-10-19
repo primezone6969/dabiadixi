@@ -6,6 +6,8 @@
     <title>Dabia Dixi - Preloved & New Fashion</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Include Chart.js for Financial Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Import Calligraphy Font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
@@ -123,7 +125,7 @@
         let allPurchases = [];
         let allExpenses = [];
         let allSales = [];
-        let currentCollectionFilter = 'All'; // Default to All collections
+        let currentCollectionFilter = 'All';
         let currentCategoryFilter = 'all';
         let currentConditionFilter = 'all';
         let currentDashboardTab = 'overview';
@@ -214,7 +216,7 @@
                     </div>
                 </div>
 
-                <!-- Collection Switcher Bar (Including "All") -->
+                <!-- Collection Switcher Bar -->
                 <div class="mb-6 flex flex-wrap justify-center gap-3">
                     <button onclick="setCollectionFilter('All')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'All' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-All">🌟 All Collections</button>
                     <button onclick="setCollectionFilter('Women')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Women' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Women">👩 Women</button>
@@ -393,6 +395,9 @@
                         <button onclick="setDashboardTab('overview')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'overview' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-overview">
                             📊 Financial Overview
                         </button>
+                        <button onclick="setDashboardTab('reports')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'reports' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-reports">
+                            📈 Daily & Expense Reports
+                        </button>
                         <button onclick="setDashboardTab('pos')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'pos' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-pos">
                             🛍️ Record Sale (Visual POS)
                         </button>
@@ -534,6 +539,112 @@
                         </div>
                     </div>
                 `;
+            } else if (currentDashboardTab === 'reports') {
+                await fetchFinancialData();
+
+                // Group sales and expenses by date (YYYY-MM-DD)
+                const dailyMap = {};
+                allSales.forEach(s => {
+                    const date = s.created_at ? s.created_at.split('T')[0] : 'Unknown';
+                    if (!dailyMap[date]) dailyMap[date] = { income: 0, spending: 0 };
+                    dailyMap[date].income += Number(s.total_revenue);
+                });
+                allPurchases.forEach(p => {
+                    const date = p.created_at ? p.created_at.split('T')[0] : 'Unknown';
+                    if (!dailyMap[date]) dailyMap[date] = { income: 0, spending: 0 };
+                    dailyMap[date].spending += Number(p.cost) * p.quantity;
+                });
+                allExpenses.forEach(e => {
+                    const date = e.created_at ? e.created_at.split('T')[0] : 'Unknown';
+                    if (!dailyMap[date]) dailyMap[date] = { income: 0, spending: 0 };
+                    dailyMap[date].spending += Number(e.amount);
+                });
+
+                const sortedDates = Object.keys(dailyMap).sort().reverse();
+
+                area.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                            <h3 class="text-xl calligraphy-font text-[#3A4F41] mb-2">Financial Trend & Graphs</h3>
+                            <p class="text-xs text-stone-500 mb-6">Visual overview of daily income vs. spending.</p>
+                            <div class="w-full h-72">
+                                <canvas id="financialChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Daily Summary Report -->
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                                <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">📅 Daily Financial Breakdown</h4>
+                                <div class="space-y-3 max-h-80 overflow-y-auto">
+                                    ${sortedDates.length === 0 ? '<p class="text-xs text-stone-400">No daily records found.</p>' : sortedDates.map(date => `
+                                        <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
+                                            <div>
+                                                <p class="font-bold text-stone-800">${date}</p>
+                                                <span class="text-[10px] text-emerald-700">Income: $${dailyMap[date].income.toFixed(2)}</span> \vert{} <span class="text-[10px] text-red-600">Spending: $${dailyMap[date].spending.toFixed(2)}</span>
+                                            </div>
+                                            <span class="font-bold ${dailyMap[date].income - dailyMap[date].spending >= 0 ? 'text-[#3A4F41]' : 'text-red-600'}"> Net: $${(dailyMap[date].income - dailyMap[date].spending).toFixed(2)}
+                                            </span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <!-- Expense Category Breakdown Report -->
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+                                <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">💸 Expenses by Category</h4>
+                                <div class="space-y-3 max-h-80 overflow-y-auto">
+                                    ${allExpenses.length === 0 ? '<p class="text-xs text-stone-400">No extra expenses logged.</p>' : allExpenses.map(e => `
+                                        <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
+                                            <div>
+                                                <p class="font-medium text-stone-800">${e.title}</p>
+                                                <span class="text-[10px] text-stone-400 uppercase font-semibold bg-stone-200 px-1.5 py-0.5 rounded">${e.category}</span> </div> <span class="font-bold text-red-700">-$${Number(e.amount).toFixed(2)}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Render Chart.js Graph
+                setTimeout(() => {
+                    const ctx = document.getElementById('financialChart');
+                    if (ctx && sortedDates.length > 0) {
+                        const chartDates = [...sortedDates].reverse();
+                        const incomeData = chartDates.map(d => dailyMap[d].income);
+                        const spendingData = chartDates.map(d => dailyMap[d].spending);
+
+                        new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: chartDates,
+                                datasets: [
+                                    {
+                                        label: 'Income ($)',
+                                        data: incomeData,
+                                        backgroundColor: '#10B981',
+                                        borderRadius: 6
+                                    },
+                                    {
+                                        label: 'Spending ($)',
+                                        data: spendingData,
+                                        backgroundColor: '#EF4444',
+                                        borderRadius: 6
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    y: { beginAtZero: true }
+                                }
+                            }
+                        });
+                    }
+                }, 150);
+
             } else if (currentDashboardTab === 'pos') {
                 const inStockItems = allProducts.filter(p => Number(p.stock_quantity) > 0);
                 area.innerHTML = `
