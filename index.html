@@ -581,7 +581,7 @@
                                         <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
                                             <div>
                                                 <p class="font-bold text-stone-800">${date}</p>
-                                                <span class="text-[10px] text-emerald-700">Income: $${dailyMap[date].income.toFixed(2)}</span> \vert{} <span class="text-[10px] text-red-600">Spending: $${dailyMap[date].spending.toFixed(2)}</span>
+                                                <span class="text-[10px] text-emerald-700">Income: $${dailyMap[date].income.toFixed(2)}</span> | <span class="text-[10px] text-red-600">Spending: $${dailyMap[date].spending.toFixed(2)}</span>
                                             </div>
                                             <span class="font-bold ${dailyMap[date].income - dailyMap[date].spending >= 0 ? 'text-[#3A4F41]' : 'text-red-600'}"> Net: $${(dailyMap[date].income - dailyMap[date].spending).toFixed(2)}
                                             </span>
