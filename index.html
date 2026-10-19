@@ -948,7 +948,7 @@
                                 </div>
                             </div>
 
-                            <!-- Expense Category Breakdown Report -->
+                            <!-- Expense Category Breakdown Report with Receipt Links -->
                             <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
                                 <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">💸 Expenses by Category</h4>
                                 <div class="space-y-3 max-h-80 overflow-y-auto">
@@ -956,7 +956,8 @@
                                         <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
                                             <div>
                                                 <p class="font-medium text-stone-800">${e.title}</p>
-                                                <span class="text-[10px] text-stone-400 uppercase font-semibold bg-stone-200 px-1.5 py-0.5 rounded">${e.category}</span> </div> <span class="font-bold text-red-700">-$${Number(e.amount).toFixed(2)}</span>
+                                                <span class="text-[10px] text-stone-400 uppercase font-semibold bg-stone-200 px-1.5 py-0.5 rounded">${e.category}</span> </div> <div class="flex items-center gap-2"> <span class="font-bold text-red-700">-$${Number(e.amount).toFixed(2)}</span>${e.receipt_url ? `<button onclick="openImageModal('${e.receipt_url}')" class="px-2 py-1 bg-stone-200 text-stone-700 rounded text-[10px] hover:bg-stone-300">📄 Receipt</button>` : ''}
+                                            </div>
                                         </div>
                                     `).join('')}
                                 </div>
@@ -1141,6 +1142,10 @@
                                     <input type="number" id="pur-qty" value="1" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none">
                                 </div>
                             </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Restock Receipt Photo (Optional)</label>
+                                <input type="file" id="pur-receipt" accept="image/*" class="w-full border border-stone-300 rounded-lg p-2 text-sm file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-[#3A4F41] file:text-white cursor-pointer">
+                            </div>
                             <div class="flex justify-end pt-2">
                                 <button type="submit" id="pur-btn" class="bg-[#3A4F41] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#2C3E35] transition">Log Restock Purchase</button>
                             </div>
@@ -1171,6 +1176,10 @@
                             <div>
                                 <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Amount ($)</label>
                                 <input type="number" step="0.01" id="exp-amount" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Expense Receipt Photo (Optional)</label>
+                                <input type="file" id="exp-receipt" accept="image/*" class="w-full border border-stone-300 rounded-lg p-2 text-sm file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-[#3A4F41] file:text-white cursor-pointer">
                             </div>
                             <div class="flex justify-end pt-2">
                                 <button type="submit" id="exp-btn" class="bg-[#3A4F41] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#2C3E35] transition">Log Expense</button>
@@ -1249,14 +1258,27 @@
         async function handleCreatePurchase(e) {
             e.preventDefault();
             const btn = document.getElementById('pur-btn');
-            btn.textContent = 'Saving...';
+            btn.textContent = 'Uploading & Saving...';
             btn.disabled = true;
 
             const item_name = document.getElementById('pur-name').value;
             const cost = parseFloat(document.getElementById('pur-cost').value);
             const quantity = parseInt(document.getElementById('pur-qty').value);
+            const receiptFile = document.getElementById('pur-receipt').files[0];
 
-            const { error } = await supabaseClient.from('purchases').insert([{ item_name, cost, quantity }]);
+            let receiptUrl = '';
+            if (receiptFile) {
+                const compressedImg = await compressImageFile(receiptFile, 800, 0.8);
+                const fileExt = receiptFile.name.split('.').pop();
+                const fileName = `pur_${Date.now()}.${fileExt}`;
+                const { error: uploadErr } = await supabaseClient.storage.from('product-images').upload(fileName, compressedImg);
+                if (!uploadErr) {
+                    const { data: pubUrl } = supabaseClient.storage.from('product-images').getPublicUrl(fileName);
+                    receiptUrl = pubUrl.publicUrl;
+                }
+            }
+
+            const { error } = await supabaseClient.from('purchases').insert([{ item_name, cost, quantity, receipt_url: receiptUrl }]);
             if (error) {
                 alert('Error: ' + error.message);
             } else {
@@ -1270,14 +1292,27 @@
         async function handleCreateExpense(e) {
             e.preventDefault();
             const btn = document.getElementById('exp-btn');
-            btn.textContent = 'Saving...';
+            btn.textContent = 'Uploading & Saving...';
             btn.disabled = true;
 
             const title = document.getElementById('exp-title').value;
             const category = document.getElementById('exp-category').value;
             const amount = parseFloat(document.getElementById('exp-amount').value);
+            const receiptFile = document.getElementById('exp-receipt').files[0];
 
-            const { error } = await supabaseClient.from('expenses').insert([{ title, category, amount }]);
+            let receiptUrl = '';
+            if (receiptFile) {
+                const compressedImg = await compressImageFile(receiptFile, 800, 0.8);
+                const fileExt = receiptFile.name.split('.').pop();
+                const fileName = `exp_${Date.now()}.${fileExt}`;
+                const { error: uploadErr } = await supabaseClient.storage.from('product-images').upload(fileName, compressedImg);
+                if (!uploadErr) {
+                    const { data: pubUrl } = supabaseClient.storage.from('product-images').getPublicUrl(fileName);
+                    receiptUrl = pubUrl.publicUrl;
+                }
+            }
+
+            const { error } = await supabaseClient.from('expenses').insert([{ title, category, amount, receipt_url: receiptUrl }]);
             if (error) {
                 alert('Error: ' + error.message);
             } else {
