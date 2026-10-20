@@ -6,26 +6,37 @@
     <title>Dabia Dixi - Preloved & New Fashion</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Include Chart.js for Financial Graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Import Calligraphy Font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #F9F6F0; color: #2C3E35; font-family: system-ui, -apple-system, sans-serif; }
-        .bg-brand-sage { background-color: #3A4F41; }
-        .text-brand-sage { color: #3A4F41; }
+        body { background-color: #FAF8F5; color: #051F20; font-family: 'Playfair Display', serif; -webkit-tap-highlight-color: transparent; }
+        .bg-brand-dark { background-color: #051F20; }
+        .bg-brand-forest { background-color: #0B2B26; }
+        .text-brand-dark { color: #051F20; }
         .calligraphy-brand {
             font-family: 'Great Vibes', cursive;
             font-weight: 400;
         }
+        .luxury-product-card {
+            background: #FFFFFF;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(5, 31, 32, 0.04);
+            transition: all 0.3s ease;
+        }
+        .luxury-product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(5, 31, 32, 0.08);
+        }
         @keyframes glowPulse {
-            0% { box-shadow: 0 0 0 0 rgba(58, 79, 65, 0.7); border-color: #3A4F41; }
-            50% { box-shadow: 0 0 20px 5px rgba(58, 79, 65, 0.5); border-color: #3A4F41; }
-            100% { box-shadow: 0 0 0 0 rgba(58, 79, 65, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(11, 43, 38, 0.7); border-color: #0B2B26; }
+            50% { box-shadow: 0 0 20px 5px rgba(11, 43, 38, 0.5); border-color: #0B2B26; }
+            100% { box-shadow: 0 0 0 0 rgba(11, 43, 38, 0); }
         }
         .highlight-glow {
             animation: glowPulse 2.5s ease-in-out infinite;
-            border: 2px solid #3A4F41 !important;
+            border: 2px solid #0B2B26 !important;
         }
         @media print {
             body * { visibility: hidden; }
@@ -34,33 +45,33 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-[#FAF8F5]">
 
     <!-- Top Announcement Bar -->
-    <div class="bg-[#3A4F41] text-white text-xs py-2 px-4 text-center font-medium tracking-wide">
-        ✨ Welcome to Dabia Dixi | Preloved Fashion & New Arrivals | 📱 WhatsApp: +670 78571996
+    <div class="bg-[#051F20] text-[#DAF1DE] text-[11px] py-2 px-4 text-center font-sans tracking-widest uppercase">
+        ✦ Free shipping on preloved fashion | WhatsApp: +670 78571996 ✦
     </div>
 
-    <!-- Header Navigation -->
-    <header class="bg-[#F9F6F0] border-b border-stone-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 id="brand-logo" class="text-3xl md:text-4xl calligraphy-brand text-[#3A4F41] cursor-pointer select-none tracking-wide">Dabia Dixi</h1>
-            <div class="flex items-center space-x-4">
-                <div id="customer-nav-tools" class="flex items-center space-x-2">
-                    <button onclick="openWishlistModal()" class="relative p-2 text-stone-700 hover:text-[#3A4F41] transition" title="Wishlist">
-                        ❤️ <span id="wishlist-badge" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+    <!-- Header Navigation (Restored so JavaScript functions correctly!) -->
+    <header class="absolute top-10 left-0 right-0 z-50 bg-transparent">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 id="brand-logo" class="text-3xl md:text-4xl calligraphy-brand text-white cursor-pointer select-none tracking-wide">Dabia Dixi</h1>
+            <div class="flex items-center space-x-6">
+                <div id="customer-nav-tools" class="flex items-center space-x-5 text-xs tracking-widest uppercase font-sans font-medium text-stone-200">
+                    <button onclick="openWishlistModal()" class="relative hover:text-white transition" title="Wishlist">
+                        Wishlist <span id="wishlist-badge" class="absolute -top-2 -right-3 bg-white text-[#051F20] text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
                     </button>
-                    <button onclick="openCartModal()" class="relative p-2 text-stone-700 hover:text-[#3A4F41] transition" title="Shopping Bag">
-                        🛍️ <span id="cart-badge" class="absolute -top-1 -right-1 bg-[#3A4F41] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                    <button onclick="openCartModal()" class="relative hover:text-white transition" title="Shopping Bag">
+                        Bag <span id="cart-badge" class="absolute -top-2 -right-3 bg-white text-[#051F20] text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
                     </button>
                 </div>
-                <div id="nav-auth" class="flex items-center space-x-3"></div>
+                <div id="nav-auth" class="flex items-center space-x-3 text-white"></div>
             </div>
         </div>
     </header>
 
     <!-- Main App Container -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+    <main class="flex-grow w-full">
         <div id="app-content"></div>
     </main>
 
@@ -68,7 +79,7 @@
     <div id="wishlist-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative border border-stone-100 max-h-[80vh] flex flex-col">
             <div class="flex justify-between items-center mb-4 pb-2 border-b border-stone-100">
-                <h3 class="text-lg font-serif font-bold text-[#3A4F41]">❤️ Your Saved Wishlist</h3>
+                <h3 class="text-lg font-serif font-bold text-[#051F20]">Your Saved Wishlist</h3>
                 <button onclick="closeWishlistModal()" class="text-stone-400 hover:text-stone-700 text-xl">&times;</button>
             </div>
             <div id="wishlist-items-container" class="overflow-y-auto space-y-3 flex-grow pr-1"></div>
@@ -78,22 +89,22 @@
         </div>
     </div>
 
-    <!-- Shopping Bag / Cart Modal -->
+    <!-- Shopping Bag Modal -->
     <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative border border-stone-100 max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center mb-4 pb-2 border-b border-stone-100">
-                <h3 class="text-lg font-serif font-bold text-[#3A4F41]">🛍️ Your Shopping Bag</h3>
+                <h3 class="text-lg font-serif font-bold text-[#051F20]">Your Shopping Bag</h3>
                 <button onclick="closeCartModal()" class="text-stone-400 hover:text-stone-700 text-xl">&times;</button>
             </div>
             <div id="cart-items-container" class="overflow-y-auto space-y-3 flex-grow pr-1"></div>
             <div class="pt-4 border-t border-stone-200 mt-2 space-y-3">
-                <div class="flex justify-between items-center font-bold text-base text-[#3A4F41]">
+                <div class="flex justify-between items-center font-bold text-base text-[#051F20]">
                     <span>Total Grand:</span>
                     <span id="cart-grand-total">$0.00</span>
                 </div>
                 <div class="flex justify-end space-x-2">
                     <button onclick="closeCartModal()" class="px-4 py-2 bg-stone-100 text-stone-700 rounded-lg text-xs font-medium">Continue Shopping</button>
-                    <button onclick="sendWhatsAppCartOrder()" class="px-5 py-2 bg-[#3A4F41] text-white rounded-lg text-xs font-medium hover:bg-[#2C3E35] flex items-center gap-1.5">📱 Send Bundled Order via WhatsApp</button>
+                    <button onclick="sendWhatsAppCartOrder()" class="px-5 py-2 bg-[#051F20] text-white rounded-lg text-xs font-medium hover:bg-[#0B2B26] transition flex items-center gap-1.5">Send Order via WhatsApp</button>
                 </div>
             </div>
         </div>
@@ -102,19 +113,19 @@
     <!-- Login Modal -->
     <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative border border-stone-100">
-            <h3 class="text-lg font-bold mb-4 text-[#3A4F41]">🔐 Staff & Owner Portal Login</h3>
+            <h3 class="text-lg font-bold mb-4 text-[#051F20]">Staff & Owner Portal Login</h3>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Email Address</label>
-                    <input type="email" id="login-email" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#3A4F41] outline-none">
+                    <input type="email" id="login-email" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#051F20] outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Password</label>
-                    <input type="password" id="login-password" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#3A4F41] outline-none">
+                    <input type="password" id="login-password" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#051F20] outline-none">
                 </div>
                 <div class="flex justify-end space-x-2 pt-2">
                     <button type="button" onclick="closeLoginModal()" class="px-4 py-2 text-sm text-stone-600 hover:bg-stone-100 rounded-lg">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm bg-[#3A4F41] text-white rounded-lg font-medium hover:bg-[#2C3E35]">Login</button>
+                    <button type="submit" class="px-4 py-2 text-sm bg-[#051F20] text-white rounded-lg font-medium hover:bg-[#0B2B26]">Login</button>
                 </div>
             </form>
         </div>
@@ -125,7 +136,7 @@
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative border border-stone-200">
             <div id="receipt-print-area" class="text-stone-800 font-mono text-xs space-y-3">
                 <div class="text-center pb-3 border-b border-dashed border-stone-300">
-                    <h2 class="text-3xl calligraphy-brand text-[#3A4F41] mb-1">Dabia Dixi</h2>
+                    <h2 class="text-3xl calligraphy-brand text-[#051F20] mb-1">Dabia Dixi</h2>
                     <p class="text-[10px] text-stone-500 uppercase tracking-widest">Preloved & New Fashion</p>
                     <p class="text-[10px] text-stone-500">WhatsApp: +670 78571996</p>
                 </div>
@@ -141,19 +152,19 @@
                     <div id="receipt-items-list" class="space-y-1"></div>
                 </div>
                 <div class="pt-1 space-y-1 text-xs">
-                    <div class="flex justify-between font-bold text-sm text-[#3A4F41] pt-2 border-t border-stone-200">
+                    <div class="flex justify-between font-bold text-sm text-[#051F20] pt-2 border-t border-stone-200">
                         <span>GRAND TOTAL:</span>
                         <span id="receipt-total">$0.00</span>
                     </div>
                 </div>
                 <div class="text-center pt-4 border-t border-dashed border-stone-300 text-[10px] text-stone-400">
-                    <p>✨ Thank you for shopping with Dabia Dixi! ✨</p>
+                    <p>Thank you for shopping with Dabia Dixi!</p>
                     <p>No refunds on preloved items.</p>
                 </div>
             </div>
             <div class="flex justify-end space-x-2 pt-6 mt-4 border-t border-stone-100">
                 <button type="button" onclick="closeReceiptModal()" class="px-4 py-2 text-xs text-stone-600 hover:bg-stone-100 rounded-lg">Close</button>
-                <button type="button" onclick="window.print()" class="px-5 py-2 text-xs bg-[#3A4F41] text-white rounded-lg font-medium hover:bg-[#2C3E35] flex items-center gap-1.5">🖨️ Print Receipt</button>
+                <button type="button" onclick="window.print()" class="px-5 py-2 text-xs bg-[#051F20] text-white rounded-lg font-medium hover:bg-[#0B2B26] flex items-center gap-1.5">Print Receipt</button>
             </div>
         </div>
     </div>
@@ -167,37 +178,36 @@
     </div>
 
     <!-- Professional Footer -->
-    <footer class="bg-stone-900 text-stone-300 pt-12 pb-8 border-t border-stone-800 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+    <footer class="bg-[#051F20] text-[#DAF1DE] pt-16 pb-12 border-t border-[#163832] mt-auto">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             <div>
-                <h3 class="text-2xl calligraphy-brand text-white mb-3">Dabia Dixi</h3>
-                <p class="text-xs text-stone-400 leading-relaxed mb-4">Curated preloved fashion and exclusive brand new arrivals designed to make you feel extraordinary every single day.</p>
-                <p class="text-xs text-stone-300 font-medium">📱 WhatsApp Order Line: +670 78571996</p>
+                <h3 class="text-3xl calligraphy-brand text-white mb-4">Dabia Dixi</h3>
+                <p class="text-xs text-[#8EB69B] leading-relaxed mb-4">Curated preloved fashion and exclusive brand new arrivals designed to make you feel extraordinary every single day.</p>
+                <p class="text-xs text-white font-medium tracking-wide">WhatsApp Order Line: +670 78571996</p>
             </div>
             <div>
-                <h4 class="text-sm font-semibold uppercase tracking-wider text-white mb-3">Quick Navigation</h4>
-                <ul class="space-y-2 text-xs">
-                    <li><button onclick="switchView('storefront')" class="hover:text-white transition">🛍️ Browse Collection</button></li>
-                    <li><button onclick="filterProductsByCondition('brand_new')" class="hover:text-white transition">✨ Brand New Arrivals</button></li>
-                    <li><button onclick="filterProductsByCondition('preloved')" class="hover:text-white transition">♻️ Preloved Fashion</button></li>
+                <h4 class="text-xs font-semibold uppercase tracking-widest text-white mb-4">Quick Navigation</h4>
+                <ul class="space-y-2.5 text-xs text-[#8EB69B]">
+                    <li><button onclick="switchView('storefront')" class="hover:text-white transition">Browse Collection</button></li>
+                    <li><button onclick="filterProductsByCondition('brand_new')" class="hover:text-white transition">Brand New Arrivals</button></li>
+                    <li><button onclick="filterProductsByCondition('preloved')" class="hover:text-white transition">Preloved Fashion</button></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-sm font-semibold uppercase tracking-wider text-white mb-3">Connect With Us</h4>
-                <p class="text-xs text-stone-400 mb-3">Follow our social channels for daily drops and updates.</p>
+                <h4 class="text-xs font-semibold uppercase tracking-widest text-white mb-4">Connect With Us</h4>
+                <p class="text-xs text-[#8EB69B] mb-4">Follow our social channels for daily drops and updates.</p>
                 <div class="flex space-x-3 text-xs">
-                    <span class="px-3 py-1.5 bg-stone-800 rounded-lg text-stone-300">📷 Instagram</span>
-                    <span class="px-3 py-1.5 bg-stone-800 rounded-lg text-stone-300">🎵 TikTok</span>
-                    <span class="px-3 py-1.5 bg-stone-800 rounded-lg text-stone-300">💬 WhatsApp</span>
+                    <span class="px-3 py-1.5 bg-[#0B2B26] rounded-lg text-[#DAF1DE] border border-[#163832]">Instagram</span>
+                    <span class="px-3 py-1.5 bg-[#0B2B26] rounded-lg text-[#DAF1DE] border border-[#163832]">TikTok</span>
+                    <span class="px-3 py-1.5 bg-[#0B2B26] rounded-lg text-[#DAF1DE] border border-[#163832]">WhatsApp</span>
                 </div>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-stone-800 text-center text-xs text-stone-500">
+        <div class="max-w-7xl mx-auto px-6 pt-6 border-t border-[#163832] text-center text-[11px] text-[#8EB69B]">
             &copy; 2026 Dabia Dixi Preloved Fashion. All rights reserved.
         </div>
     </footer>
 
-    <!-- Link to Separate JS Logic File -->
     <script src="app.js"></script>
 </body>
 </html>
