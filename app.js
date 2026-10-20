@@ -68,8 +68,8 @@ function updateNavigation() {
             customerTools.style.display = 'flex';
         }
         navAuth.innerHTML = `
-            <span class="text-xs bg-[#3A4F41] text-white px-2.5 py-1 rounded-full uppercase tracking-wider">👤 ${userRole}</span>${userRole !== 'customer' ? `<button onclick="switchView('dashboard')" class="text-sm bg-[#3A4F41] text-white px-3.5 py-1.5 rounded-lg font-medium hover:bg-[#2C3E35] transition flex items-center gap-1.5">📊 Dashboard</button>` : ''}
-            <button onclick="handleLogout()" class="text-sm text-red-500 hover:text-red-700 font-medium">Logout</button>
+            <span class="text-xs bg-[#051F20] text-white px-3 py-1 rounded-full uppercase tracking-wider font-sans">${userRole}</span>${userRole !== 'customer' ? `<button onclick="switchView('dashboard')" class="text-xs bg-[#051F20] text-white px-3.5 py-1.5 rounded-lg font-medium hover:bg-[#0B2B26] transition">Dashboard</button>` : ''}
+            <button onclick="handleLogout()" class="text-xs text-red-500 hover:text-red-700 font-medium">Logout</button>
         `;
     } else {
         customerTools.style.display = 'flex';
@@ -98,21 +98,21 @@ function switchCardImage(cardId, url, thumbElement) {
     if (mainImg) mainImg.src = url;
     const cardContainer = document.getElementById(`card-thumb-container-${cardId}`);
     if (cardContainer) {
-        cardContainer.querySelectorAll('img').forEach(t => t.classList.remove('ring-2', 'ring-[#3A4F41]'));
+        cardContainer.querySelectorAll('img').forEach(t => t.classList.remove('ring-1', 'ring-[#051F20]'));
     }
-    if (thumbElement) thumbElement.classList.add('ring-2', 'ring-[#3A4F41]');
+    if (thumbElement) thumbElement.classList.add('ring-1', 'ring-[#051F20]');
 }
 
 function selectCardSize(cardId, size, btnElement) {
     const container = document.getElementById(`card-size-container-${cardId}`);
     if (container) {
         container.querySelectorAll('button').forEach(b => {
-            b.classList.remove('bg-[#3A4F41]', 'text-white', 'border-[#3A4F41]');
+            b.classList.remove('bg-[#051F20]', 'text-white', 'border-[#051F20]');
             b.classList.add('bg-white', 'text-stone-700', 'border-stone-200');
         });
     }
     btnElement.classList.remove('bg-white', 'text-stone-700', 'border-stone-200');
-    btnElement.classList.add('bg-[#3A4F41]', 'text-white', 'border-[#3A4F41]');
+    btnElement.classList.add('bg-[#051F20]', 'text-white', 'border-[#051F20]');
     
     const addBtn = document.getElementById(`add-btn-${cardId}`);
     const inquireBtn = document.getElementById(`inquire-btn-${cardId}`);
@@ -237,7 +237,7 @@ function renderWishlistModalContent() {
     const savedProducts = allProducts.filter(p => wishlist.includes(p.id));
 
     if (savedProducts.length === 0) {
-        container.innerHTML = `<p class="text-xs text-stone-400 text-center py-8">Your wishlist is empty. Click the heart icon on any item to save it!</p>`;
+        container.innerHTML = `<p class="text-xs text-stone-400 text-center py-8">Your wishlist is empty. Click heart to save items!</p>`;
         return;
     }
 
@@ -247,11 +247,11 @@ function renderWishlistModalContent() {
                 <img src="${p.image_url || ''}" class="w-12 h-12 object-cover rounded-lg bg-stone-200">
                 <div>
                     <h4 class="font-serif font-bold text-stone-900">${p.name}</h4>
-                    <p class="text-[#3A4F41] font-bold mt-0.5">$${Number(p.price).toFixed(2)}</p>
+                    <p class="text-[#051F20] font-bold mt-0.5">$${Number(p.price).toFixed(2)}</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="addToCart('${p.id}'); closeWishlistModal(); openCartModal();" class="px-3 py-1.5 bg-[#3A4F41] text-white rounded-lg text-[10px] font-medium hover:bg-[#2C3E35]">Add to Bag</button>
+                <button onclick="addToCart('${p.id}'); closeWishlistModal(); openCartModal();" class="px-3 py-1.5 bg-[#051F20] text-white rounded-lg text-[10px] font-medium hover:bg-[#0B2B26]">Add to Bag</button>
                 <button onclick="toggleWishlist('${p.id}'); renderWishlistModalContent();" class="text-rose-500 hover:text-rose-700 px-2 py-1 text-sm">&times;</button>
             </div>
         </div>
@@ -287,7 +287,7 @@ function renderCartModalContent() {
                         <span class="px-2 font-bold text-xs">${item.qty}</span>
                         <button onclick="updateCartQty('${item.id}', '${item.size}', 1)" class="px-2 py-0.5 text-stone-600 hover:bg-stone-100">+</button>
                     </div>
-                    <span class="font-bold text-[#3A4F41] min-w-[50px] text-right">$${itemTotal.toFixed(2)}</span>
+                    <span class="font-bold text-[#051F20] min-w-[50px] text-right">$${itemTotal.toFixed(2)}</span>
                     <button onclick="removeFromCart('${item.id}', '${item.size}')" class="text-stone-400 hover:text-red-600 text-sm">&times;</button>
                 </div>
             </div>
@@ -334,46 +334,80 @@ function closeReceiptModal() {
 async function renderStorefront() {
     const content = document.getElementById('app-content');
     content.innerHTML = `
-        <div class="bg-[#3A4F41] text-white rounded-2xl p-6 md:p-12 mb-6 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="max-w-xl">
-                <span class="text-xs uppercase tracking-widest text-stone-300 font-semibold">✨ New Season Collection</span>
-                <h2 class="text-2xl md:text-4xl font-serif font-bold mt-2 mb-3">Elevate Your Everyday Style</h2>
-                <p class="text-stone-200 text-xs md:text-sm leading-relaxed">Discover timeless fashion designed to make you feel extraordinary. Sustainable preloved pieces and pristine new arrivals.</p>
+        <!-- Full-Width Editorial Hero Banner -->
+        <div class="relative w-full overflow-hidden mb-10 shadow-lg min-h-[580px] flex flex-col justify-end bg-[#051F20] text-white">
+            <div class="absolute inset-0 bg-black/30 z-10"></div>
+            <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover object-center brightness-90">
+
+            <!-- Hero Banner Content -->
+            <div class="relative z-20 px-8 md:px-16 pb-16 max-w-7xl mx-auto w-full space-y-4">
+                <span class="text-[10px] uppercase tracking-[0.3em] font-sans text-[#DAF1DE]">Capsule Wardrobe</span>
+                <h2 class="text-4xl md:text-6xl font-serif font-normal tracking-tight">Autumn Essentials</h2>
+                <p class="text-stone-200 text-xs md:text-sm font-light leading-relaxed max-w-md">Timeless pieces. Rich textures. Effortless everyday style curated just for you.</p>
+                <div class="pt-2">
+                    <button onclick="window.scrollTo({top: 500, behavior: 'smooth'})" class="px-8 py-3 bg-[#051F20] text-white rounded-full text-xs uppercase tracking-widest font-sans hover:bg-[#0B2B26] transition shadow-md border border-[#8EB69B]/30">Shop The Edit</button>
+                </div>
             </div>
-            <div class="bg-white/10 backdrop-blur-md p-5 rounded-xl border border-white/20 text-center min-w-[180px]">
-                <p class="text-xs uppercase tracking-wider text-stone-200 mb-1">💬 Direct Orders</p>
-                <p class="text-base md:text-lg font-bold">+670 78571996</p>
-                <span class="text-[10px] text-stone-300">WhatsApp Available</span>
+        </div>
+
+        <!-- Circular Category Photo Bubbles Bar -->
+        <div class="mb-12 px-6 max-w-7xl mx-auto">
+            <div class="flex items-center gap-6 overflow-x-auto pb-4 pt-2 scrollbar-none justify-start md:justify-center">
+                <div onclick="filterByCategory('all')" class="flex flex-col items-center gap-2 cursor-pointer group flex-shrink-0">
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-[#8EB69B] p-0.5 shadow-sm group-hover:border-[#051F20] transition">
+                        <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=300&auto=format&fit=crop" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition duration-300">
+                    </div>
+                    <span class="text-[11px] uppercase tracking-widest font-sans font-medium text-stone-700 group-hover:text-[#051F20]">All</span>
+                </div>
+                <div onclick="filterByCategory('Dresses')" class="flex flex-col items-center gap-2 cursor-pointer group flex-shrink-0">
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-stone-200 p-0.5 shadow-sm group-hover:border-[#051F20] transition">
+                        <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=300&auto=format&fit=crop" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition duration-300">
+                    </div>
+                    <span class="text-[11px] uppercase tracking-widest font-sans font-medium text-stone-700 group-hover:text-[#051F20]">Dresses</span>
+                </div>
+                <div onclick="filterByCategory('Tops')" class="flex flex-col items-center gap-2 cursor-pointer group flex-shrink-0">
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-stone-200 p-0.5 shadow-sm group-hover:border-[#051F20] transition">
+                        <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=300&auto=format&fit=crop" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition duration-300">
+                    </div>
+                    <span class="text-[11px] uppercase tracking-widest font-sans font-medium text-stone-700 group-hover:text-[#051F20]">Tops</span>
+                </div>
+                <div onclick="filterByCategory('Bottoms')" class="flex flex-col items-center gap-2 cursor-pointer group flex-shrink-0">
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-stone-200 p-0.5 shadow-sm group-hover:border-[#051F20] transition">
+                        <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=300&auto=format&fit=crop" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition duration-300">
+                    </div>
+                    <span class="text-[11px] uppercase tracking-widest font-sans font-medium text-stone-700 group-hover:text-[#051F20]">Bottoms</span>
+                </div>
+                <div onclick="filterByCategory('Outerwear')" class="flex flex-col items-center gap-2 cursor-pointer group flex-shrink-0">
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-stone-200 p-0.5 shadow-sm group-hover:border-[#051F20] transition">
+                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition duration-300">
+                    </div>
+                    <span class="text-[11px] uppercase tracking-widest font-sans font-medium text-stone-700 group-hover:text-[#051F20]">Outerwear</span>
+                </div>
+                <div onclick="filterByCategory('Bags & Shoes')" class="flex flex-col items-center gap-2 cursor-pointer group flex-shrink-0">
+                    <div class="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-stone-200 p-0.5 shadow-sm group-hover:border-[#051F20] transition">
+                        <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=300&auto=format&fit=crop" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition duration-300">
+                    </div>
+                    <span class="text-[11px] uppercase tracking-widest font-sans font-medium text-stone-700 group-hover:text-[#051F20]">Bags & Shoes</span>
+                </div>
             </div>
         </div>
 
-        <div class="mb-6 flex flex-wrap justify-center gap-3">
-            <button onclick="setCollectionFilter('All')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'All' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-All">🌟 All Collections</button>
-            <button onclick="setCollectionFilter('Women')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Women' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Women">👩 Women</button>
-            <button onclick="setCollectionFilter('Men')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Men' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Men">👨 Men</button>
-            <button onclick="setCollectionFilter('Unisex')" class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition collection-btn ${currentCollectionFilter === 'Unisex' ? 'bg-[#3A4F41] text-white shadow' : 'bg-white text-stone-700 border border-stone-200'}" id="col-Unisex">✨ Unisex</button>
-        </div>
-
-        <div class="mb-6 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-            <button onclick="filterByCategory('all')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-[#3A4F41] text-white" id="cat-all">📁 All Categories</button>
-            <button onclick="filterByCategory('Dresses')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Dresses">👗 Dresses</button>
-            <button onclick="filterByCategory('Tops')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Tops">👚 Tops</button>
-            <button onclick="filterByCategory('Bottoms')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Bottoms">👖 Bottoms</button>
-            <button onclick="filterByCategory('Outerwear')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Outerwear">🧥 Outerwear</button>
-            <button onclick="filterByCategory('Accessories')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Accessories">💍 Accessories</button>
-            <button onclick="filterByCategory('Bags & Shoes')" class="category-pill px-4 py-2 text-xs rounded-full font-medium transition whitespace-nowrap bg-white text-stone-700 border border-stone-200 hover:bg-stone-100" id="cat-Bags & Shoes">👜 Bags & Shoes</button>
-        </div>
-
-        <div class="mb-6 flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-stone-200">
-            <h3 class="font-serif font-bold text-base md:text-lg text-[#3A4F41]" id="collection-title">All Collections</h3>
+        <!-- Collection Switcher & Condition Bar -->
+        <div class="mb-8 mx-6 max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-2xl shadow-xs border border-stone-100 gap-4">
+            <div class="flex flex-wrap justify-center gap-2">
+                <button onclick="setCollectionFilter('All')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'All' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-All">All Collections</button>
+                <button onclick="setCollectionFilter('Women')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'Women' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-Women">Women</button>
+                <button onclick="setCollectionFilter('Men')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'Men' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-Men">Men</button>
+                <button onclick="setCollectionFilter('Unisex')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'Unisex' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-Unisex">Unisex</button>
+            </div>
             <div class="flex gap-2">
-                <button onclick="filterProductsByCondition('all')" class="px-3 py-1.5 text-xs bg-stone-100 text-stone-700 rounded-lg font-medium transition cond-btn active" id="cond-all">All</button>
-                <button onclick="filterProductsByCondition('brand_new')" class="px-3 py-1.5 text-xs bg-stone-100 text-stone-700 rounded-lg font-medium transition cond-btn" id="cond-new">Brand New</button>
-                <button onclick="filterProductsByCondition('preloved')" class="px-3 py-1.5 text-xs bg-stone-100 text-stone-700 rounded-lg font-medium transition cond-btn" id="cond-preloved">Preloved</button>
+                <button onclick="filterProductsByCondition('all')" class="px-3 py-1.5 text-xs bg-stone-100 text-stone-700 rounded-lg font-sans font-medium transition cond-btn active" id="cond-all">All</button>
+                <button onclick="filterProductsByCondition('brand_new')" class="px-3 py-1.5 text-xs bg-stone-100 text-stone-700 rounded-lg font-sans font-medium transition cond-btn" id="cond-new">Brand New</button>
+                <button onclick="filterProductsByCondition('preloved')" class="px-3 py-1.5 text-xs bg-stone-100 text-stone-700 rounded-lg font-sans font-medium transition cond-btn" id="cond-preloved">Preloved</button>
             </div>
         </div>
 
-        <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+        <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 px-6 max-w-7xl mx-auto mb-16">
             <div class="col-span-full text-center py-12 text-stone-400">Loading collection...</div>
         </div>
     `;
@@ -408,8 +442,8 @@ function displayProducts(products) {
         const whatsappUrl = `https://wa.me/67078571996?text=${encodeURIComponent(initialMessageText)}`;
 
         const stockBadge = Number(p.stock_quantity) <= 2 
-            ? `<span class="text-[10px] text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">Only ${p.stock_quantity} left!</span>`
-            : `<span class="text-[10px] text-stone-600 font-medium bg-stone-100 px-1.5 py-0.5 rounded">Stock: ${p.stock_quantity}</span>`;
+            ? `<span class="text-[10px] text-amber-800 font-sans font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Only ${p.stock_quantity} left!</span>`
+            : `<span class="text-[10px] text-stone-500 font-sans font-medium bg-stone-100 px-2 py-0.5 rounded">Stock: ${p.stock_quantity}</span>`;
 
         let images = [];
         if (p.image_urls && Array.isArray(p.image_urls) && p.image_urls.length > 0) {
@@ -431,46 +465,50 @@ function displayProducts(products) {
         const isWishlisted = wishlist.includes(p.id);
 
         return `
-            <div id="item-${p.id}" class="bg-white rounded-xl overflow-hidden shadow-sm border border-stone-200 flex flex-col group hover:shadow-md transition">
-                <div class="h-48 sm:h-64 bg-stone-100 relative overflow-hidden flex items-center justify-center cursor-pointer">
-                    ${primaryImg ? `<img id="main-img-${p.id}" src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onclick="openImageModal(this.src)" title="Click to view full image">` : `<span class="text-stone-400 text-xs">No Image</span>`}
-                    <span class="absolute top-2 left-2 md:top-3 md:left-3 px-2 py-1 text-[9px] md:text-[10px] font-semibold uppercase rounded tracking-wider shadow-sm ${p.condition === 'brand_new' ? 'bg-[#3A4F41] text-white' : 'bg-amber-100 text-amber-900'}">
-                        ${p.condition === 'brand_new' ? '✨ Brand New' : '♻️ Preloved'}
+            <div id="item-${p.id}" class="luxury-product-card flex flex-col group bg-white rounded-2xl overflow-hidden border border-stone-100 shadow-xs transition-all duration-300 hover:shadow-md">
+                <div class="h-64 sm:h-72 bg-stone-100 relative overflow-hidden flex items-center justify-center cursor-pointer">
+                    ${primaryImg ? `<img id="main-img-${p.id}" src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onclick="openImageModal(this.src)" title="Click to view full image">` : `<span class="text-stone-400 text-xs">No Image</span>`}
+                    <span class="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-sans font-medium uppercase tracking-widest rounded-full bg-white/90 backdrop-blur-md text-stone-800 shadow-xs">
+                        ${p.condition === 'brand_new' ? 'New' : 'Preloved'}
                     </span>
-                    <button onclick="toggleWishlist('${p.id}')" class="absolute top-2 right-2 md:top-3 md:right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-sm shadow transition hover:bg-white" title="Save to Wishlist">
-                        ${isWishlisted ? '❤️' : '🤍'}
+                    <button onclick="toggleWishlist('${p.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-xs shadow-xs transition hover:bg-white" title="Save to Wishlist">
+                        ${isWishlisted ? '♥' : '♡'}
                     </button>
                 </div>
+
                 ${images.length > 1 ? `
-                    <div id="card-thumb-container-${p.id}" class="flex gap-1 p-2 bg-stone-50 overflow-x-auto border-b border-stone-100">
+                    <div id="card-thumb-container-${p.id}" class="flex gap-1.5 p-2 bg-[#FAF8F5] overflow-x-auto border-b border-stone-100">
                         ${images.map((imgUrl, idx) => `
-                            <img src="${imgUrl}" class="w-9 h-9 object-cover rounded cursor-pointer hover:opacity-80 transition ${idx === 0 ? 'ring-2 ring-[#3A4F41]' : ''}" onclick="switchCardImage('${p.id}', '${imgUrl}', this)">
+                            <img src="${imgUrl}" class="w-8 h-8 object-cover rounded-md cursor-pointer hover:opacity-80 transition ${idx === 0 ? 'ring-1 ring-[#051F20]' : ''}" onclick="switchCardImage('${p.id}', '${imgUrl}', this)">
                         `).join('')}
                     </div>
                 ` : ''}
-                <div class="p-3 md:p-4 flex flex-col flex-grow">
-                    <span class="text-[9px] md:text-[10px] text-stone-400 uppercase tracking-widest mb-1 font-medium">${p.category}</span>
-                    <h4 class="font-serif font-bold text-stone-900 text-sm md:text-base mb-1 truncate">${p.name}</h4>
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-sm md:text-lg font-extrabold text-[#3A4F41]">$${Number(p.price).toFixed(2)}</span>
-                        ${stockBadge}
-                    </div>
 
-                    <div class="mb-3">
-                        <span class="text-[10px] text-stone-400 uppercase tracking-wide block mb-1">Select Size</span>
-                        <div id="card-size-container-${p.id}" class="flex flex-wrap gap-1.5">
-                            ${productSizes.map((sz, idx) => `
-                                <button onclick="selectCardSize('${p.id}', '${sz}', this)" class="px-2.5 py-1 text-[10px] rounded border font-medium transition ${idx === 0 ? 'bg-[#3A4F41] text-white border-[#3A4F41]' : 'bg-white text-stone-700 border-stone-200 hover:bg-stone-100'}">${sz}</button>
-                            `).join('')}
+                <div class="p-4 flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex justify-between items-start gap-2 mb-1">
+                            <h4 class="font-serif font-medium text-stone-900 text-sm tracking-tight truncate">${p.name}</h4>
+                            ${stockBadge}
+                        </div>
+                        <p class="text-xs font-sans font-semibold text-[#051F20] mb-3">$${Number(p.price).toFixed(2)}</p>
+
+                        <!-- Size Selector Pills -->
+                        <div class="mb-4">
+                            <div id="card-size-container-${p.id}" class="flex flex-wrap gap-1 font-sans">
+                                ${productSizes.map((sz, idx) => `
+                                    <button onclick="selectCardSize('${p.id}', '${sz}', this)" class="px-2 py-0.5 text-[10px] rounded border font-medium transition ${idx === 0 ? 'bg-[#051F20] text-white border-[#051F20]' : 'bg-white text-stone-600 border-stone-200 hover:border-stone-400'}">${sz}</button>
+                                `).join('')}
+                            </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 mt-auto">
-                        <a id="inquire-btn-${p.id}" href="${whatsappUrl}" target="_blank" data-selected-size="${defaultSize}" data-product-name="${p.name.replace(/'/g, "\\'")}" data-product-price="${p.price}" class="w-full bg-[#3A4F41] text-white text-center py-2 rounded-lg text-[11px] font-medium hover:bg-[#2C3E35] transition flex items-center justify-center">
-                            💬 Inquire
+                    <!-- Monochrome Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 pt-3 border-t border-stone-100 mt-auto font-sans">
+                        <a id="inquire-btn-${p.id}" href="${whatsappUrl}" target="_blank" data-selected-size="${defaultSize}" data-product-name="${p.name.replace(/'/g, "\\'")}" data-product-price="${p.price}" class="w-full bg-white text-stone-800 border border-stone-300 text-center py-2 rounded-xl text-[11px] font-medium hover:bg-stone-50 transition flex items-center justify-center gap-1">
+                            Inquire
                         </a>
-                        <button id="add-btn-${p.id}" data-selected-size="${defaultSize}" onclick="addToCart('${p.id}')" class="w-full bg-stone-100 text-stone-800 text-center py-2 rounded-lg text-[11px] font-medium hover:bg-stone-200 transition flex items-center justify-center gap-1">
-                            🛍️ Add
+                        <button id="add-btn-${p.id}" data-selected-size="${defaultSize}" onclick="addToCart('${p.id}')" class="w-full bg-[#051F20] text-white text-center py-2 rounded-xl text-[11px] font-medium hover:bg-[#0B2B26] transition flex items-center justify-center gap-1 shadow-xs">
+                            Add Bag
                         </button>
                     </div>
                 </div>
@@ -482,43 +520,32 @@ function displayProducts(products) {
 function setCollectionFilter(collection) {
     currentCollectionFilter = collection;
     document.querySelectorAll('.collection-btn').forEach(b => {
-        b.classList.remove('bg-[#3A4F41]', 'text-white', 'shadow');
-        b.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-200');
+        b.classList.remove('bg-[#051F20]', 'text-white', 'shadow-xs');
+        b.classList.add('bg-stone-50', 'text-stone-700', 'border', 'border-stone-200');
     });
     const activeCol = document.getElementById(`col-${collection}`);
     if (activeCol) {
-        activeCol.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-200');
-        activeCol.classList.add('bg-[#3A4F41]', 'text-white', 'shadow');
+        activeCol.classList.remove('bg-stone-50', 'text-stone-700', 'border', 'border-stone-200');
+        activeCol.classList.add('bg-[#051F20]', 'text-white', 'shadow-xs');
     }
-    const titleEl = document.getElementById('collection-title');
-    if (titleEl) titleEl.textContent = collection === 'All' ? 'All Collections' : `${collection} Collection`;
     applyFilters();
 }
 
 function filterByCategory(category) {
     currentCategoryFilter = category;
-    document.querySelectorAll('.category-pill').forEach(b => {
-        b.classList.remove('bg-[#3A4F41]', 'text-white');
-        b.classList.add('bg-white', 'text-stone-700', 'border', 'border-stone-200');
-    });
-    const activeBtn = document.getElementById(`cat-${category}`);
-    if (activeBtn) {
-        activeBtn.classList.remove('bg-white', 'text-stone-700', 'border', 'border-stone-200');
-        activeBtn.classList.add('bg-[#3A4F41]', 'text-white');
-    }
     applyFilters();
 }
 
 function filterProductsByCondition(condition) {
     currentConditionFilter = condition;
     document.querySelectorAll('.cond-btn').forEach(b => {
-        b.classList.remove('bg-[#3A4F41]', 'text-white');
+        b.classList.remove('bg-[#051F20]', 'text-white');
         b.classList.add('bg-stone-100', 'text-stone-700');
     });
     const activeBtn = condition === 'all' ? document.getElementById('cond-all') : condition === 'brand_new' ? document.getElementById('cond-new') : document.getElementById('cond-preloved');
     if (activeBtn) {
         activeBtn.classList.remove('bg-stone-100', 'text-stone-700');
-        activeBtn.classList.add('bg-[#3A4F41]', 'text-white');
+        activeBtn.classList.add('bg-[#051F20]', 'text-white');
     }
     applyFilters();
 }
@@ -543,20 +570,20 @@ async function renderDashboard() {
 
     const content = document.getElementById('app-content');
     content.innerHTML = `
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 font-sans">
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 h-fit space-y-2">
                 <div class="p-3 mb-2 border-b border-stone-100">
-                    <h3 class="font-serif font-bold text-base text-[#3A4F41]">Owner Dashboard</h3>
+                    <h3 class="font-serif font-bold text-base text-[#051F20]">Owner Dashboard</h3>
                     <p class="text-[11px] text-stone-400">Dabia Dixi Management</p>
                 </div>
-                <button onclick="setDashboardTab('overview')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'overview' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-overview">📊 Financial Overview</button>
-                <button onclick="setDashboardTab('reports')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'reports' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-reports">📈 Daily & Expense Reports</button>
-                <button onclick="setDashboardTab('pos')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'pos' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-pos">🛍️ Record Sale (Visual POS)</button>
-                <button onclick="setDashboardTab('products')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'products' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-products">👗 Inventory & Add Product</button>
-                <button onclick="setDashboardTab('purchases')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'purchases' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-purchases">📦 Buy Items (Restock)</button>
-                <button onclick="setDashboardTab('expenses')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'expenses' ? 'bg-[#3A4F41] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-expenses">💸 Extra Expenses</button>
+                <button onclick="setDashboardTab('overview')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'overview' ? 'bg-[#051F20] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-overview">Financial Overview</button>
+                <button onclick="setDashboardTab('reports')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'reports' ? 'bg-[#051F20] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-reports">Daily & Expense Reports</button>
+                <button onclick="setDashboardTab('pos')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'pos' ? 'bg-[#051F20] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-pos">Record Sale (Visual POS)</button>
+                <button onclick="setDashboardTab('products')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'products' ? 'bg-[#051F20] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-products">Inventory & Add Product</button>
+                <button onclick="setDashboardTab('purchases')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'purchases' ? 'bg-[#051F20] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-purchases">Buy Items (Restock)</button>
+                <button onclick="setDashboardTab('expenses')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium transition flex items-center gap-3 db-tab ${currentDashboardTab === 'expenses' ? 'bg-[#051F20] text-white' : 'text-stone-700 hover:bg-stone-100'}" id="tab-expenses">Extra Expenses</button>
                 <div class="pt-4 border-t border-stone-100">
-                    <button onclick="switchView('storefront')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium text-stone-500 hover:bg-stone-100 transition">🌐 View Storefront</button>
+                    <button onclick="switchView('storefront')" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-medium text-stone-500 hover:bg-stone-100 transition">View Storefront</button>
                 </div>
             </div>
             <div class="lg:col-span-3 space-y-6" id="dashboard-main-area"></div>
@@ -568,13 +595,13 @@ async function renderDashboard() {
 function setDashboardTab(tab) {
     currentDashboardTab = tab;
     document.querySelectorAll('.db-tab').forEach(b => {
-        b.classList.remove('bg-[#3A4F41]', 'text-white');
+        b.classList.remove('bg-[#051F20]', 'text-white');
         b.classList.add('text-stone-700', 'hover:bg-stone-100');
     });
     const active = document.getElementById(`tab-${tab}`);
     if (active) {
         active.classList.remove('text-stone-700', 'hover:bg-stone-100');
-        active.classList.add('bg-[#3A4F41]', 'text-white');
+        active.classList.add('bg-[#051F20]', 'text-white');
     }
     renderDashboardContent();
 }
@@ -604,11 +631,11 @@ async function renderDashboardContent() {
         const lowStockItems = allProducts.filter(p => Number(p.stock_quantity) <= 2);
 
         area.innerHTML = `
-            <div class="space-y-6">
+            <div class="space-y-6 font-sans">
                 ${lowStockItems.length > 0 ? `
-                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-center justify-between shadow-sm">
+                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-center justify-between shadow-xs">
                         <div class="flex items-center gap-3">
-                            <span class="text-2xl">⚠️</span>
+                            <span class="text-xl">⚠️</span>
                             <div>
                                 <h4 class="text-xs font-bold uppercase tracking-wider text-amber-900">Low Stock Alert</h4>
                                 <p class="text-xs text-amber-700">${lowStockItems.length} product(s) are running low on inventory (2 or fewer left).</p>
@@ -619,7 +646,7 @@ async function renderDashboardContent() {
                 ` : ''}
 
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                    <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Financial Command Center</h3>
+                    <h3 class="text-lg font-serif font-bold text-[#051F20] mb-2">Financial Command Center</h3>
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                         <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
                             <span class="text-xs text-stone-500 uppercase tracking-wider">Total Sales Income</span>
@@ -635,28 +662,28 @@ async function renderDashboardContent() {
                         </div>
                         <div class="bg-stone-50 p-4 rounded-xl border border-stone-200">
                             <span class="text-xs text-stone-500 uppercase tracking-wider">Net Profit</span>
-                            <p class="text-2xl font-serif font-bold ${netProfit >= 0 ? 'text-[#3A4F41]' : 'text-red-600'} mt-1">$${netProfit.toFixed(2)}</p>
+                            <p class="text-2xl font-serif font-bold ${netProfit >= 0 ? 'text-[#051F20]' : 'text-red-600'} mt-1">$${netProfit.toFixed(2)}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 md:col-span-2">
-                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">🛍️ Recent Sales & Receipts</h4>
+                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Recent Sales & Receipts</h4>
                         <div class="space-y-2 max-h-60 overflow-y-auto">
                             ${allSales.length === 0 ? '<p class="text-xs text-stone-400">No sales recorded yet.</p>' : allSales.map(s => `
                                 <div class="flex justify-between items-center p-2.5 bg-stone-50 rounded-lg text-xs border border-stone-100">
                                     <div>
                                         <p class="font-medium text-stone-800">${s.product_name} (x${s.quantity_sold})</p>
                                         <span class="text-[10px] text-stone-400">${s.created_at ? s.created_at.split('T')[0] : ''}</span> </div> <div class="flex items-center gap-3"> <span class="font-bold text-emerald-700">+$${Number(s.total_revenue).toFixed(2)}</span>
-                                        <button onclick="openReceiptModal('${s.product_name.replace(/'/g, "\\'")}', ${s.quantity_sold},${s.selling_price || (s.total_revenue/s.quantity_sold)}, ${s.total_revenue}, '${s.created_at}')" class="px-2.5 py-1 bg-[#3A4F41] text-white rounded text-[10px] font-medium hover:bg-[#2C3E35] transition">🖨️ Receipt</button>
+                                        <button onclick="openReceiptModal('${s.product_name.replace(/'/g, "\\'")}', ${s.quantity_sold},${s.selling_price || (s.total_revenue/s.quantity_sold)}, ${s.total_revenue}, '${s.created_at}')" class="px-2.5 py-1 bg-[#051F20] text-white rounded text-[10px] font-medium hover:bg-[#0B2B26] transition">Receipt</button>
                                     </div>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">⚠️ Low Stock Watchlist</h4>
+                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Low Stock Watchlist</h4>
                         <div class="space-y-2 max-h-60 overflow-y-auto">
                             ${lowStockItems.length === 0 ? '<p class="text-xs text-stone-400">All items have healthy stock levels!</p>' : lowStockItems.map(p => `
                                 <div class="flex justify-between items-center p-2 bg-amber-50/50 rounded-lg text-xs border border-amber-100">
@@ -690,14 +717,14 @@ async function renderDashboardContent() {
         const sortedDates = Object.keys(dailyMap).sort().reverse();
 
         area.innerHTML = `
-            <div class="space-y-6">
+            <div class="space-y-6 font-sans">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                    <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Financial Trend & Graphs</h3>
+                    <h3 class="text-lg font-serif font-bold text-[#051F20] mb-2">Financial Trend & Graphs</h3>
                     <div class="w-full h-72"><canvas id="financialChart"></canvas></div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">📅 Daily Financial Breakdown</h4>
+                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Daily Financial Breakdown</h4>
                         <div class="space-y-3 max-h-80 overflow-y-auto">
                             ${sortedDates.length === 0 ? '<p class="text-xs text-stone-400">No records found.</p>' : sortedDates.map(date => `
                                 <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
@@ -705,19 +732,19 @@ async function renderDashboardContent() {
                                         <p class="font-bold text-stone-800">${date}</p>
                                         <span class="text-[10px] text-emerald-700">Income: $${dailyMap[date].income.toFixed(2)}</span> \vert{} <span class="text-[10px] text-red-600">Spending: $${dailyMap[date].spending.toFixed(2)}</span>
                                     </div>
-                                    <span class="font-bold ${dailyMap[date].income - dailyMap[date].spending >= 0 ? 'text-[#3A4F41]' : 'text-red-600'}">Net: $${(dailyMap[date].income - dailyMap[date].spending).toFixed(2)}</span>
+                                    <span class="font-bold ${dailyMap[date].income - dailyMap[date].spending >= 0 ? 'text-[#051F20]' : 'text-red-600'}">Net: $${(dailyMap[date].income - dailyMap[date].spending).toFixed(2)}</span>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">💸 Expenses by Category</h4>
+                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Expenses by Category</h4>
                         <div class="space-y-3 max-h-80 overflow-y-auto">
                             ${allExpenses.length === 0 ? '<p class="text-xs text-stone-400">No expenses logged.</p>' : allExpenses.map(e => `
                                 <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
                                     <div>
                                         <p class="font-medium text-stone-800">${e.title}</p>
-                                        <span class="text-[10px] text-stone-400 uppercase font-semibold bg-stone-200 px-1.5 py-0.5 rounded">${e.category}</span> </div> <div class="flex items-center gap-2"> <span class="font-bold text-red-700">-$${Number(e.amount).toFixed(2)}</span>${e.receipt_url ? `<button onclick="openImageModal('${e.receipt_url}')" class="px-2 py-1 bg-stone-200 text-stone-700 rounded text-[10px] hover:bg-stone-300">📄 Receipt</button>` : ''}
+                                        <span class="text-[10px] text-stone-400 uppercase font-semibold bg-stone-200 px-1.5 py-0.5 rounded">${e.category}</span> </div> <div class="flex items-center gap-2"> <span class="font-bold text-red-700">-$${Number(e.amount).toFixed(2)}</span>${e.receipt_url ? `<button onclick="openImageModal('${e.receipt_url}')" class="px-2 py-1 bg-stone-200 text-stone-700 rounded text-[10px] hover:bg-stone-300">Receipt</button>` : ''}
                                     </div>
                                 </div>
                             `).join('')}
@@ -748,8 +775,8 @@ async function renderDashboardContent() {
     } else if (currentDashboardTab === 'pos') {
         const inStockItems = allProducts.filter(p => Number(p.stock_quantity) > 0);
         area.innerHTML = `
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Record a Sale (Visual POS)</h3>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 font-sans">
+                <h3 class="text-lg font-serif font-bold text-[#051F20] mb-2">Record a Sale (Visual POS)</h3>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                     ${inStockItems.length === 0 ? '<p class="col-span-full text-center text-xs text-stone-400 py-8">No items in stock.</p>' : inStockItems.map(p => `
                         <div class="bg-stone-50 rounded-xl p-3 border border-stone-200 flex flex-col justify-between">
@@ -757,16 +784,16 @@ async function renderDashboardContent() {
                                 <div class="h-32 bg-stone-200 rounded-lg overflow-hidden mb-2 relative flex items-center justify-center">
                                     ${p.image_url ? `<img src="${p.image_url}" class="w-full h-full object-cover">` : '<span class="text-[10px] text-stone-400">No Image</span>'}
                                 </div>
-                                <h4 class="font-serif font-bold text-stone-900 text-xs truncate">${p.name}</h4> <p class="text-xs font-bold text-[#3A4F41] mt-0.5">$${Number(p.price).toFixed(2)} (Stock:${p.stock_quantity})</p>
+                                <h4 class="font-serif font-bold text-stone-900 text-xs truncate">${p.name}</h4> <p class="text-xs font-bold text-[#051F20] mt-0.5">$${Number(p.price).toFixed(2)} (Stock:${p.stock_quantity})</p>
                             </div>
-                            <button onclick="openPOSModal('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${p.price},${p.stock_quantity})" class="mt-3 w-full bg-[#3A4F41] text-white py-1.5 rounded-lg text-xs font-medium hover:bg-[#2C3E35] transition">Sell Item</button>
+                            <button onclick="openPOSModal('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${p.price},${p.stock_quantity})" class="mt-3 w-full bg-[#051F20] text-white py-1.5 rounded-lg text-xs font-medium hover:bg-[#0B2B26] transition">Sell Item</button>
                         </div>
                     `).join('')}
                 </div>
             </div>
-            <div id="pos-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
+            <div id="pos-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4 font-sans">
                 <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl relative border border-stone-100">
-                    <h3 class="text-base font-serif font-bold mb-3 text-[#3A4F41]" id="pos-modal-title">Complete Sale</h3>
+                    <h3 class="text-base font-serif font-bold mb-3 text-[#051F20]" id="pos-modal-title">Complete Sale</h3>
                     <form onsubmit="handleVisualPOSSale(event)" class="space-y-3">
                         <input type="hidden" id="pos-modal-id">
                         <input type="hidden" id="pos-modal-max-stock">
@@ -775,7 +802,7 @@ async function renderDashboardContent() {
                         <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Quantity Sold</label><input type="number" id="pos-modal-qty" value="1" min="1" required class="w-full border border-stone-300 rounded-lg p-2 text-sm outline-none"></div>
                         <div class="flex justify-end space-x-2 pt-2">
                             <button type="button" onclick="closePOSModal()" class="px-3 py-1.5 text-xs text-stone-600 hover:bg-stone-100 rounded-lg">Cancel</button>
-                            <button type="submit" id="pos-modal-btn" class="px-4 py-1.5 text-xs bg-[#3A4F41] text-white rounded-lg font-medium hover:bg-[#2C3E35]">Confirm Sale</button>
+                            <button type="submit" id="pos-modal-btn" class="px-4 py-1.5 text-xs bg-[#051F20] text-white rounded-lg font-medium hover:bg-[#0B2B26]">Confirm Sale</button>
                         </div>
                     </form>
                 </div>
@@ -783,8 +810,8 @@ async function renderDashboardContent() {
         `;
     } else if (currentDashboardTab === 'products') {
         area.innerHTML = `
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-4">Add New Boutique Item</h3>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 font-sans">
+                <h3 class="text-lg font-serif font-bold text-[#051F20] mb-4">Add New Boutique Item</h3>
                 <form onsubmit="handleCreateProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Product Name</label><input type="text" id="prod-name" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
                     <div>
@@ -842,7 +869,6 @@ async function renderDashboardContent() {
                                 <input type="number" id="stock-freesize" value="0" min="0" class="w-full border border-stone-300 rounded p-1.5 text-xs bg-white">
                             </div>
                         </div>
-                        <span class="text-[10px] text-stone-400 mt-1 block">Enter stock numbers for the sizes available. Sizes with 0 stock will be hidden on the storefront.</span>
                     </div>
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Selling Price ($)</label><input type="number" step="0.01" id="prod-price" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Cost Price ($)</label><input type="number" step="0.01" id="prod-cost" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
@@ -851,15 +877,15 @@ async function renderDashboardContent() {
                         <input type="file" id="prod-images" accept="image/*" multiple class="w-full border border-stone-300 rounded-lg p-2 text-sm">
                     </div>
                     <div class="md:col-span-2 flex justify-end pt-2">
-                        <button type="submit" id="submit-btn" class="bg-[#3A4F41] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#2C3E35] transition">Save Product to Inventory</button>
+                        <button type="submit" id="submit-btn" class="bg-[#051F20] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0B2B26] transition">Save Product to Inventory</button>
                     </div>
                 </form>
             </div>
         `;
     } else if (currentDashboardTab === 'purchases') {
         area.innerHTML = `
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Buy Items (Restock Costs)</h3>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 font-sans">
+                <h3 class="text-lg font-serif font-bold text-[#051F20] mb-2">Buy Items (Restock Costs)</h3>
                 <form onsubmit="handleCreatePurchase(event)" class="space-y-4">
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Item / Batch Name</label><input type="text" id="pur-name" required placeholder="e.g., Summer Dresses Wholesale" class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
                     <div class="grid grid-cols-2 gap-4">
@@ -867,14 +893,14 @@ async function renderDashboardContent() {
                         <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Quantity</label><input type="number" id="pur-qty" value="1" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
                     </div>
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Restock Receipt Photo (Optional)</label><input type="file" id="pur-receipt" accept="image/*" class="w-full border border-stone-300 rounded-lg p-2 text-sm"></div>
-                    <div class="flex justify-end pt-2"><button type="submit" id="pur-btn" class="bg-[#3A4F41] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#2C3E35]">Log Restock Purchase</button></div>
+                    <div class="flex justify-end pt-2"><button type="submit" id="pur-btn" class="bg-[#051F20] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0B2B26]">Log Restock Purchase</button></div>
                 </form>
             </div>
         `;
     } else if (currentDashboardTab === 'expenses') {
         area.innerHTML = `
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                <h3 class="text-lg font-serif font-bold text-[#3A4F41] mb-2">Extra Boutique Expenses</h3>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200 font-sans">
+                <h3 class="text-lg font-serif font-bold text-[#051F20] mb-2">Extra Boutique Expenses</h3>
                 <form onsubmit="handleCreateExpense(event)" class="space-y-4">
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Expense Title</label><input type="text" id="exp-title" required placeholder="e.g., Bubble mailers" class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
                     <div>
@@ -890,7 +916,7 @@ async function renderDashboardContent() {
                     </div>
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Amount ($)</label><input type="number" step="0.01" id="exp-amount" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></div>
                     <div><label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Expense Receipt Photo (Optional)</label><input type="file" id="exp-receipt" accept="image/*" class="w-full border border-stone-300 rounded-lg p-2 text-sm"></div>
-                    <div class="flex justify-end pt-2"><button type="submit" id="exp-btn" class="bg-[#3A4F41] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#2C3E35]">Log Expense</button></div>
+                    <div class="flex justify-end pt-2"><button type="submit" id="exp-btn" class="bg-[#051F20] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0B2B26]">Log Expense</button></div>
                 </form>
             </div>
         `;
@@ -1070,7 +1096,7 @@ async function handleCreateProduct(e) {
         image_urls: imageUrls
     }]);
 
-    alert('Product added successfully with size-specific inventory!');
+    alert('Product added successfully!');
     document.querySelector('form').reset();
     btn.textContent = 'Save Product to Inventory';
     btn.disabled = false;
