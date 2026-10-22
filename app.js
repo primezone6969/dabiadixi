@@ -58,28 +58,101 @@ function setupSecretLogoClick() {
     });
 }
 
+// Variable to track triple-click/tap for owner login
+let brandLogoClickCount = 0;
+let brandLogoClickTimer = null;
+
+function handleBrandLogoClick() {
+    brandLogoClickCount++;
+    if (brandLogoClickCount === 3) {
+        brandLogoClickCount = 0;
+        clearTimeout(brandLogoClickTimer);
+        openLoginModal();
+        return;
+    }
+    clearTimeout(brandLogoClickTimer);
+    brandLogoClickTimer = setTimeout(() => {
+        brandLogoClickCount = 0;
+        switchView('storefront');
+    }, 400);
+}
+
 function updateNavigation() {
     const navAuth = document.getElementById('nav-auth');
     const customerTools = document.getElementById('customer-nav-tools');
-    if (currentUser) {
-        if (userRole !== 'customer') {
-            customerTools.style.display = 'none';
+    const headerEl = document.getElementById('main-header');
+    const brandLogo = document.getElementById('brand-logo');
+
+    const isDashboard = window.currentView === 'dashboard';
+
+    // Dynamically style header based on current view
+    if (headerEl) {
+        if (isDashboard) {
+            headerEl.className = "bg-[#051F20] border-b border-[#163832] sticky top-0 z-50 py-4 shadow-md";
         } else {
-            customerTools.style.display = 'flex';
+            headerEl.className = "absolute top-10 left-0 right-0 z-50 bg-transparent py-5";
         }
+    }
+
+    // Attach click handler for triple-tap login to brand logo
+    if (brandLogo) {
+        brandLogo.className = "text-4xl md:text-5xl calligraphy-brand text-white cursor-pointer select-none tracking-wide transition";
+        brandLogo.onclick = handleBrandLogoClick;
+    }
+
+    // Determine visibility based on whether user is logged in as owner/staff
+    const isOwnerOrStaff = currentUser && userRole !== 'customer';
+
+    if (isOwnerOrStaff) {
+        // Hide Wishlist & Bag buttons completely when in owner mode
+        if (customerTools) customerTools.style.display = 'none';
+
+        // Owner logged in: Luminous sage green glow effect on brand logo
+        if (brandLogo) {
+            brandLogo.classList.add('drop-shadow-[0_0_18px_rgba(142,182,155,0.9)]', 'text-[#DAF1DE]');
+            brandLogo.style.textShadow = '0 0 10px #8EB69B, 0 0 20px #8EB69B';
+            brandLogo.title = "Owner Mode Active";
+        }
+
+        // Dashboard and Logout icon buttons
         navAuth.innerHTML = `
-            <span class="text-xs bg-[#051F20] text-white px-3 py-1 rounded-full uppercase tracking-wider font-sans">${userRole}</span>${userRole !== 'customer' ? `<button onclick="switchView('dashboard')" class="text-xs bg-[#051F20] text-white px-3.5 py-1.5 rounded-lg font-medium hover:bg-[#0B2B26] transition">Dashboard</button>` : ''}
-            <button onclick="handleLogout()" class="text-xs text-red-500 hover:text-red-700 font-medium">Logout</button>
+            <button onclick="switchView('dashboard')" class="p-3 text-white hover:text-[#8EB69B] transition rounded-xl hover:bg-white/10 flex items-center justify-center" title="Dashboard">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"></path></svg>
+            </button>
+            <button onclick="handleLogout()" class="p-3 text-white hover:text-rose-300 transition rounded-xl hover:bg-white/10 flex items-center justify-center" title="Logout">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"></path></svg>
+            </button>
         `;
     } else {
-        customerTools.style.display = 'flex';
+        // Show Wishlist & Bag buttons for customers
+        if (customerTools) {
+            customerTools.style.display = 'flex';
+            customerTools.innerHTML = `
+                <button onclick="openWishlistModal()" class="relative p-2.5 text-white hover:text-[#8EB69B] transition rounded-xl hover:bg-white/10 flex items-center justify-center" title="Wishlist">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"></path></svg>
+                    <span id="wishlist-badge" class="absolute top-1 right-1 bg-[#8EB69B] text-[#051F20] text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+                <button onclick="openCartModal()" class="relative p-2.5 text-white hover:text-[#8EB69B] transition rounded-xl hover:bg-white/10 flex items-center justify-center" title="Shopping Bag">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path></svg>
+                    <span id="cart-badge" class="absolute top-1 right-1 bg-[#8EB69B] text-[#051F20] text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+            `;
+        }
+
+        if (brandLogo) {
+            brandLogo.classList.remove('drop-shadow-[0_0_18px_rgba(142,182,155,0.9)]', 'text-[#DAF1DE]');
+            brandLogo.style.textShadow = 'none';
+        }
+
         navAuth.innerHTML = ``;
     }
 }
 
 function switchView(viewName) {
+    window.currentView = viewName;
     if (viewName === 'storefront') renderStorefront();
     else if (viewName === 'dashboard') renderDashboard();
+    updateNavigation();
 }
 
 function openImageModal(url) {
