@@ -263,7 +263,9 @@ function addToCart(productId) {
     }
     localStorage.setItem('dabia_cart', JSON.stringify(cart));
     updateBadges();
-    alert(`Added to your shopping bag (Size: ${selectedSize})!`);
+    
+    // ✨ Luxury toast notification replacing the old alert
+    showToast(`Added to your shopping bag (Size: ${selectedSize}) ✓`);
 }
 
 function updateCartQty(productId, size, delta) {
