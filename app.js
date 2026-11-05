@@ -76,7 +76,30 @@ function handleBrandLogoClick() {
         switchView('storefront');
     }, 400);
 }
+function showToast(message) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
 
+    const toast = document.createElement('div');
+    toast.className = "bg-[#051F20] text-[#DAF1DE] border border-[#8EB69B]/40 px-5 py-3 rounded-xl shadow-2xl text-xs tracking-wider uppercase font-sans flex items-center space-x-2 transition-all duration-300 transform translate-y-4 opacity-0 pointer-events-auto";
+    toast.innerHTML = `
+        <svg class="w-4 h-4 text-[#8EB69B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg>
+        <span>${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    // Fade in
+    setTimeout(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+    }, 10);
+
+    // Fade out and remove after 2.5 seconds
+    setTimeout(() => {
+        toast.classList.add('translate-y-4', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
+}
 function updateNavigation() {
     const navAuth = document.getElementById('nav-auth');
     const customerTools = document.getElementById('customer-nav-tools');
