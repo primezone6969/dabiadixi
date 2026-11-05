@@ -407,8 +407,26 @@ function openReceiptModal(saleName, qty, price, total, date) {
 function closeReceiptModal() {
     document.getElementById('receipt-modal').classList.add('hidden');
 }
+function renderStorefrontSkeletons() {
+    const grid = document.getElementById('product-grid');
+    if (!grid) return;
 
+    // Render 4 pulsing skeleton cards (2 columns on mobile, 4 on desktop)
+    let skeletonHTML = '';
+    for (let i = 0; i < 4; i++) {
+        skeletonHTML += `
+            <div class="bg-[#0b2b26]/40 rounded-2xl p-3 border border-[#163832] animate-pulse flex flex-col space-y-3">
+                <div class="w-full aspect-[3/4] bg-[#163832]/60 rounded-xl"></div>
+                <div class="h-4 bg-[#163832]/60 rounded-md w-3/4"></div>
+                <div class="h-3 bg-[#163832]/40 rounded-md w-1/2"></div>
+                <div class="h-8 bg-[#163832]/50 rounded-lg w-full mt-2"></div>
+            </div>
+        `;
+    }
+    grid.innerHTML = skeletonHTML;
+}
 async function renderStorefront() {
+    renderStorefrontSkeletons();
     const content = document.getElementById('app-content');
     content.innerHTML = `
         <!-- Full-Width Editorial Hero Banner -->
