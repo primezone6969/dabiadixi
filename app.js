@@ -844,16 +844,19 @@ async function renderDashboardContent() {
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Daily Financial Breakdown</h4>
-                        <div class="space-y-3 max-h-80 overflow-y-auto">
-                            ${sortedDates.length === 0 ? '<p class="text-xs text-stone-400">No records found.</p>' : sortedDates.map(date => `
-                                <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
-                                    <div>
-                                        <p class="font-bold text-stone-800">${date}</p>
-                                        <span class="text-[10px] text-emerald-700">Income: $${dailyMap[date].income.toFixed(2)}</span> \vert{} <span class="text-[10px] text-red-600">Spending: $${dailyMap[date].spending.toFixed(2)}</span>
-                                    </div>
-                                    <span class="font-bold ${dailyMap[date].income - dailyMap[date].spending >= 0 ? 'text-[#051F20]' : 'text-red-600'}">Net: $${(dailyMap[date].income - dailyMap[date].spending).toFixed(2)}</span>
-                                </div>
+    <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Daily Financial Breakdown</h4>
+    <div class="space-y-3 max-h-80 overflow-y-auto">
+        ${sortedDates.length === 0 ? '<p class="text-xs text-stone-400">No records found.</p>' : sortedDates.map(date => `
+            <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
+                <div>
+                    <p class="font-bold text-stone-800">${date}</p>
+                    <span class="text-[10px] text-emerald-700">Income: $${dailyMap[date].income.toFixed(2)}</span> | <span class="text-[10px] text-red-600">Spending: $${dailyMap[date].spending.toFixed(2)}</span>
+                </div>
+                <span class="font-bold ${dailyMap[date].income - dailyMap[date].spending >= 0 ? 'text-[#051F20]' : 'text-red-600'}">Net: $${(dailyMap[date].income - dailyMap[date].spending).toFixed(2)}</span>
+            </div>
+        `).join('')}
+    </div>
+</div>
                             `).join('')}
                         </div>
                     </div>
