@@ -857,9 +857,7 @@ async function renderDashboardContent() {
         `).join('')}
     </div>
 </div>
-                            `).join('')}
-                        </div>
-                    </div>
+                            
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
                         <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Expenses by Category</h4>
                         <div class="space-y-3 max-h-80 overflow-y-auto">
