@@ -174,11 +174,11 @@ function openImageModal(url) {
     const lightbox = document.getElementById('image-lightbox');
     const img = document.getElementById('lightbox-img');
     img.src = url;
-    lightbox.classList.remove('hidden');
+    openModal('image-lightbox');
 }
 
 function closeImageModal() {
-    document.getElementById('image-lightbox').classList.add('hidden');
+    closeModal('image-lightbox');
 }
 
 function switchCardImage(cardId, url, thumbElement) {
@@ -313,20 +313,20 @@ function updateBadges() {
 
 function openWishlistModal() {
     renderWishlistModalContent();
-    document.getElementById('wishlist-modal').classList.remove('hidden');
+    openModal('wishlist-modal');
 }
 
 function closeWishlistModal() {
-    document.getElementById('wishlist-modal').classList.add('hidden');
+    closeModal('wishlist-modal');
 }
 
 function openCartModal() {
     renderCartModalContent();
-    document.getElementById('cart-modal').classList.remove('hidden');
+    openModal('cart-modal');
 }
 
 function closeCartModal() {
-    document.getElementById('cart-modal').classList.add('hidden');
+    closeModal('cart-modal');
 }
 
 function renderWishlistModalContent() {
@@ -335,13 +335,15 @@ function renderWishlistModalContent() {
 
     if (savedProducts.length === 0) {
         container.innerHTML = `
-            <div class="py-16 px-6 text-center flex flex-col items-center justify-center space-y-4">
-                <svg class="w-10 h-10 text-[#8EB69B]/60 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"></path></svg>
-                <div class="space-y-1">
-                    <h3 class="font-serif text-lg text-white font-medium tracking-wide">Your wishlist is empty</h3>
-                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider">Save pieces you love as you browse the collection.</p>
+            <div class="py-12 px-6 text-center flex flex-col items-center justify-center space-y-4">
+                <div class="w-16 h-16 rounded-full bg-[#0B2B26] border border-[#163832] flex items-center justify-center text-[#8EB69B] shadow-inner">
+                    <svg class="w-8 h-8 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"></path></svg>
                 </div>
-                <button onclick="closeWishlistModal(); switchView('storefront');" class="mt-2 bg-[#8EB69B] text-[#051F20] px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition">
+                <div class="space-y-1">
+                    <h3 class="font-serif text-lg text-white font-medium tracking-wide">Your Wishlist is Empty</h3>
+                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider max-w-xs mx-auto">Save your most coveted pieces here as you curate your personal editorial wardrobe.</p>
+                </div>
+                <button onclick="closeWishlistModal(); switchView('storefront');" class="mt-3 bg-[#8EB69B] text-[#051F20] px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition shadow-sm">
                     Discover Pieces
                 </button>
             </div>
@@ -350,17 +352,17 @@ function renderWishlistModalContent() {
     }
 
     container.innerHTML = savedProducts.map(p => `
-        <div class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs">
+        <div class="flex items-center justify-between p-3 bg-[#0B2B26]/60 rounded-xl border border-[#163832] text-xs">
             <div class="flex items-center gap-3">
-                <img src="${p.image_url || ''}" class="w-12 h-12 object-cover rounded-lg bg-stone-200">
+                <img src="${p.image_url || ''}" class="w-12 h-12 object-cover rounded-lg bg-stone-800 border border-[#163832]">
                 <div>
-                    <h4 class="font-serif font-bold text-stone-900">${p.name}</h4>
-                    <p class="text-[#051F20] font-bold mt-0.5">$${Number(p.price).toFixed(2)}</p>
+                    <h4 class="font-serif font-medium text-white">${p.name}</h4>
+                    <p class="text-[#8EB69B] font-semibold mt-0.5">$${Number(p.price).toFixed(2)}</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="addToCart('${p.id}'); closeWishlistModal(); openCartModal();" class="px-3 py-1.5 bg-[#051F20] text-white rounded-lg text-[10px] font-medium hover:bg-[#0B2B26]">Add to Bag</button>
-                <button onclick="toggleWishlist('${p.id}'); renderWishlistModalContent();" class="text-rose-500 hover:text-rose-700 px-2 py-1 text-sm">&times;</button>
+                <button onclick="addToCart('${p.id}'); closeWishlistModal(); openCartModal();" class="px-3 py-1.5 bg-[#8EB69B] text-[#051F20] rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-white transition">Add Bag</button>
+                <button onclick="toggleWishlist('${p.id}'); renderWishlistModalContent();" class="text-rose-400 hover:text-rose-300 px-2 py-1 text-base">&times;</button>
             </div>
         </div>
     `).join('');
@@ -372,13 +374,15 @@ function renderCartModalContent() {
 
     if (cart.length === 0) {
         container.innerHTML = `
-            <div class="py-16 px-6 text-center flex flex-col items-center justify-center space-y-4">
-                <svg class="w-10 h-10 text-[#8EB69B]/60 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path></svg>
-                <div class="space-y-1">
-                    <h3 class="font-serif text-lg text-white font-medium tracking-wide">Your bag is currently vacant</h3>
-                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider">Explore our latest editorial releases to curate your wardrobe.</p>
+            <div class="py-12 px-6 text-center flex flex-col items-center justify-center space-y-4">
+                <div class="w-16 h-16 rounded-full bg-[#0B2B26] border border-[#163832] flex items-center justify-center text-[#8EB69B] shadow-inner">
+                    <svg class="w-8 h-8 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path></svg>
                 </div>
-                <button onclick="closeCartModal(); switchView('storefront');" class="mt-2 bg-[#8EB69B] text-[#051F20] px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition">
+                <div class="space-y-1">
+                    <h3 class="font-serif text-lg text-white font-medium tracking-wide">Your Shopping Bag is Vacant</h3>
+                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider max-w-xs mx-auto">Explore our capsule releases to select your next wardrobe essential.</p>
+                </div>
+                <button onclick="closeCartModal(); switchView('storefront');" class="mt-3 bg-[#8EB69B] text-[#051F20] px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition shadow-sm">
                     Explore Collection
                 </button>
             </div>
@@ -392,22 +396,22 @@ function renderCartModalContent() {
         const itemTotal = item.price * item.qty;
         grandTotal += itemTotal;
         return `
-            <div class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs">
+            <div class="flex items-center justify-between p-3 bg-[#0B2B26]/60 rounded-xl border border-[#163832] text-xs">
                 <div class="flex items-center gap-3">
-                    <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg bg-stone-200">
+                    <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg bg-stone-800 border border-[#163832]">
                     <div>
-                        <h4 class="font-serif font-bold text-stone-900">${item.name}</h4>
-                        <p class="text-stone-500 text-[10px]">Size: <span class="font-bold text-stone-700">${item.size}</span> | $${Number(item.price).toFixed(2)} each</p>
+                        <h4 class="font-serif font-medium text-white">${item.name}</h4>
+                        <p class="text-[#DAF1DE]/70 text-[10px]">Size: <span class="font-bold text-[#8EB69B]">${item.size}</span> | $${Number(item.price).toFixed(2)}</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <div class="flex items-center border border-stone-300 rounded bg-white">
-                        <button onclick="updateCartQty('${item.id}', '${item.size}', -1)" class="px-2 py-0.5 text-stone-600 hover:bg-stone-100">-</button>
+                    <div class="flex items-center border border-[#163832] rounded bg-[#051F20] text-white">
+                        <button onclick="updateCartQty('${item.id}', '${item.size}', -1)" class="px-2 py-0.5 text-[#DAF1DE]/70 hover:bg-white/10">-</button>
                         <span class="px-2 font-bold text-xs">${item.qty}</span>
-                        <button onclick="updateCartQty('${item.id}', '${item.size}', 1)" class="px-2 py-0.5 text-stone-600 hover:bg-stone-100">+</button>
+                        <button onclick="updateCartQty('${item.id}', '${item.size}', 1)" class="px-2 py-0.5 text-[#DAF1DE]/70 hover:bg-white/10">+</button>
                     </div>
-                    <span class="font-bold text-[#051F20] min-w-[50px] text-right">$${itemTotal.toFixed(2)}</span>
-                    <button onclick="removeFromCart('${item.id}', '${item.size}')" class="text-stone-400 hover:text-red-600 text-sm">&times;</button>
+                    <span class="font-bold text-[#8EB69B] min-w-[50px] text-right">$${itemTotal.toFixed(2)}</span>
+                    <button onclick="removeFromCart('${item.id}', '${item.size}')" class="text-rose-400 hover:text-rose-300 text-base">&times;</button>
                 </div>
             </div>
         `;
@@ -450,11 +454,11 @@ function openReceiptModal(saleName, qty, price, total, date) {
         <div class="text-[10px] text-stone-500">Unit Price: $${Number(price).toFixed(2)}</div>
     `;
     document.getElementById('receipt-total').textContent = `$${Number(total).toFixed(2)}`;
-    document.getElementById('receipt-modal').classList.remove('hidden');
+    openModal('receipt-modal');
 }
 
 function closeReceiptModal() {
-    document.getElementById('receipt-modal').classList.add('hidden');
+    closeModal('receipt-modal');
 }
 
 function renderStorefrontSkeletons() {
@@ -570,7 +574,21 @@ function displayProducts(products) {
     const availableProducts = products.filter(p => Number(p.stock_quantity) > 0);
 
     if (availableProducts.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center py-16 bg-white rounded-xl border border-dashed border-stone-300 text-stone-400">No items available in this collection.</div>`;
+        // ✨ Editorial Empty State for Empty Product Catalog / Filter
+        grid.innerHTML = `
+            <div class="col-span-full py-20 px-6 bg-[#051F20] rounded-3xl border border-[#163832] text-center flex flex-col items-center justify-center space-y-4">
+                <div class="w-16 h-16 rounded-full bg-[#0B2B26] border border-[#163832] flex items-center justify-center text-[#8EB69B]">
+                    <svg class="w-8 h-8 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"></path></svg>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="font-serif text-xl text-white font-medium tracking-wide">No Pieces Found in This Edit</h3>
+                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider max-w-sm mx-auto">We are currently curating new arrivals for this selection. Check back soon or explore our other collections.</p>
+                </div>
+                <button onclick="setCollectionFilter('All'); filterByCategory('all'); filterProductsByCondition('all');" class="mt-2 bg-[#8EB69B] text-[#051F20] px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition shadow-sm">
+                    View Entire Store
+                </button>
+            </div>
+        `;
         return;
     }
 
@@ -653,7 +671,7 @@ ${productLink}`;
 
                 <div class="p-4 pt-0 border-t border-[#163832]/60 mt-2 font-sans">
                     <div class="flex items-center gap-2 pt-3">
-                        <a id="inquire-btn-${p.id}" href="${whatsappUrl}" target="_blank" data-selected-size="${defaultSize}" data-product-name="${p.name.replace(/'/g, "\'")}" data-product-price="${p.price}" class="flex-1 py-2 px-3 rounded-xl bg-white/10 text-white text-[10px] font-medium uppercase tracking-wider hover:bg-white/25 transition text-center flex items-center justify-center">
+                        <a id="inquire-btn-${p.id}" href="${whatsappUrl}" target="_blank" data-selected-size="${defaultSize}" data-product-name="${p.name.replace(/'/g, "'")}" data-product-price="${p.price}" class="flex-1 py-2 px-3 rounded-xl bg-white/10 text-white text-[10px] font-medium uppercase tracking-wider hover:bg-white/25 transition text-center flex items-center justify-center">
                             Inquire
                         </a>
                         <button id="add-btn-${p.id}" data-selected-size="${defaultSize}" onclick="addToCart('${p.id}')" class="flex-1 py-2 px-3 rounded-xl bg-[#8EB69B] text-[#051F20] text-[10px] font-bold uppercase tracking-wider hover:bg-white transition text-center flex items-center justify-center shadow-xs">
@@ -825,7 +843,7 @@ async function renderDashboardContent() {
                                     <div>
                                         <p class="font-medium text-stone-800">${s.product_name} (x${s.quantity_sold})</p>
                                         <span class="text-[10px] text-stone-400">${s.created_at ? s.created_at.split('T')[0] : ''}</span> </div> <div class="flex items-center gap-3"> <span class="font-bold text-emerald-700">+$${Number(s.total_revenue).toFixed(2)}</span>
-                                        <button onclick="openReceiptModal('${s.product_name.replace(/'/g, "\'")}', ${s.quantity_sold},${s.selling_price || (s.total_revenue/s.quantity_sold)}, ${s.total_revenue}, '${s.created_at}')" class="px-2.5 py-1 bg-[#051F20] text-white rounded text-[10px] font-medium hover:bg-[#0B2B26] transition">Receipt</button>
+                                        <button onclick="openReceiptModal('${s.product_name.replace(/'/g, "'")}', ${s.quantity_sold},${s.selling_price || (s.total_revenue/s.quantity_sold)}, ${s.total_revenue}, '${s.created_at}')" class="px-2.5 py-1 bg-[#051F20] text-white rounded text-[10px] font-medium hover:bg-[#0B2B26] transition">Receipt</button>
                                     </div>
                                 </div>
                             `).join('')}
@@ -936,13 +954,13 @@ async function renderDashboardContent() {
                                 </div>
                                 <h4 class="font-serif font-bold text-stone-900 text-xs truncate">${p.name}</h4> <p class="text-xs font-bold text-[#051F20] mt-0.5">$${Number(p.price).toFixed(2)} (Stock:${p.stock_quantity})</p>
                             </div>
-                            <button onclick="openPOSModal('${p.id}', '${p.name.replace(/'/g, "\'")}', ${p.price},${p.stock_quantity})" class="mt-3 w-full bg-[#051F20] text-white py-1.5 rounded-lg text-xs font-medium hover:bg-[#0B2B26] transition">Sell Item</button>
+                            <button onclick="openPOSModal('${p.id}', '${p.name.replace(/'/g, "'")}', ${p.price},${p.stock_quantity})" class="mt-3 w-full bg-[#051F20] text-white py-1.5 rounded-lg text-xs font-medium hover:bg-[#0B2B26] transition">Sell Item</button>
                         </div>
                     `).join('')}
                 </div>
             </div>
-            <div id="pos-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4 font-sans">
-                <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl relative border border-stone-100">
+            <div id="pos-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300 ease-out justify-center items-center z-50 p-4 font-sans">
+                <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl relative border border-stone-100 transform scale-95 opacity-0 transition-all duration-300 ease-out">
                     <h3 class="text-base font-serif font-bold mb-3 text-[#051F20]" id="pos-modal-title">Complete Sale</h3>
                     <form onsubmit="handleVisualPOSSale(event)" class="space-y-3">
                         <input type="hidden" id="pos-modal-id">
@@ -1080,11 +1098,11 @@ function openPOSModal(id, name, price, stock) {
     document.getElementById('pos-modal-qty').value = 1;
     document.getElementById('pos-modal-name').value = name;
     document.getElementById('pos-modal-title').textContent = `Sell: ${name}`;
-    document.getElementById('pos-modal').classList.remove('hidden');
+    openModal('pos-modal');
 }
 
 function closePOSModal() {
-    document.getElementById('pos-modal').classList.add('hidden');
+    closeModal('pos-modal');
 }
 
 async function handleVisualPOSSale(e) {
@@ -1252,8 +1270,8 @@ async function handleCreateProduct(e) {
     btn.disabled = false;
 }
 
-function openLoginModal() { document.getElementById('login-modal').classList.remove('hidden'); }
-function closeLoginModal() { document.getElementById('login-modal').classList.add('hidden'); }
+function openLoginModal() { openModal('login-modal'); }
+function closeLoginModal() { closeModal('login-modal'); }
 
 async function handleLogin(e) {
     e.preventDefault();
@@ -1280,3 +1298,33 @@ async function handleLogout() {
 }
 
 initApp();
+
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+        modal.classList.add('opacity-100');
+        const box = modal.querySelector('div > div') || modal.querySelector('div');
+        if (box) {
+            box.classList.remove('scale-95', 'opacity-0');
+            box.classList.add('scale-100', 'opacity-100');
+        }
+    }, 10);
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    modal.classList.remove('opacity-100');
+    const box = modal.querySelector('div > div') || modal.querySelector('div');
+    if (box) {
+        box.classList.remove('scale-100', 'opacity-100');
+        box.classList.add('scale-95', 'opacity-0');
+    }
+    setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }, 300);
+}
