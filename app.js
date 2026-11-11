@@ -195,12 +195,10 @@ function selectCardSize(cardId, size, btnElement) {
     const container = document.getElementById(`card-size-container-${cardId}`);
     if (container) {
         container.querySelectorAll('button').forEach(b => {
-            b.classList.remove('bg-[#051F20]', 'text-white', 'border-[#051F20]');
-            b.classList.add('bg-white', 'text-stone-700', 'border-stone-200');
+            b.className = 'px-2.5 py-1 text-[10px] rounded-lg border font-medium transition bg-[#163832] text-[#DAF1DE] border-[#8EB69B]/20 hover:border-[#8EB69B]';
         });
     }
-    btnElement.classList.remove('bg-white', 'text-stone-700', 'border-stone-200');
-    btnElement.classList.add('bg-[#051F20]', 'text-white', 'border-[#051F20]');
+    btnElement.className = 'px-2.5 py-1 text-[10px] rounded-lg border font-bold transition bg-[#8EB69B] text-[#051F20] border-[#8EB69B]';
     
     const addBtn = document.getElementById(`add-btn-${cardId}`);
     const inquireBtn = document.getElementById(`inquire-btn-${cardId}`);
@@ -335,15 +333,13 @@ function renderWishlistModalContent() {
 
     if (savedProducts.length === 0) {
         container.innerHTML = `
-            <div class="py-12 px-6 text-center flex flex-col items-center justify-center space-y-4">
-                <div class="w-16 h-16 rounded-full bg-[#0B2B26] border border-[#163832] flex items-center justify-center text-[#8EB69B] shadow-inner">
-                    <svg class="w-8 h-8 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"></path></svg>
-                </div>
+            <div class="py-16 px-6 text-center flex flex-col items-center justify-center space-y-4">
+                <svg class="w-10 h-10 text-[#8EB69B]/60 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"></path></svg>
                 <div class="space-y-1">
-                    <h3 class="font-serif text-lg text-white font-medium tracking-wide">Your Wishlist is Empty</h3>
-                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider max-w-xs mx-auto">Save your most coveted pieces here as you curate your personal editorial wardrobe.</p>
+                    <h3 class="font-serif text-lg text-white font-medium tracking-wide">Your wishlist is empty</h3>
+                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider">Save pieces you love as you browse the collection.</p>
                 </div>
-                <button onclick="closeWishlistModal(); switchView('storefront');" class="mt-3 bg-[#8EB69B] text-[#051F20] px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition shadow-sm">
+                <button onclick="closeWishlistModal(); switchView('storefront');" class="mt-2 bg-[#8EB69B] text-[#051F20] px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition">
                     Discover Pieces
                 </button>
             </div>
@@ -352,17 +348,17 @@ function renderWishlistModalContent() {
     }
 
     container.innerHTML = savedProducts.map(p => `
-        <div class="flex items-center justify-between p-3 bg-[#0B2B26]/60 rounded-xl border border-[#163832] text-xs">
+        <div class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs">
             <div class="flex items-center gap-3">
-                <img src="${p.image_url || ''}" class="w-12 h-12 object-cover rounded-lg bg-stone-800 border border-[#163832]">
+                <img src="${p.image_url || ''}" class="w-12 h-12 object-cover rounded-lg bg-stone-200">
                 <div>
-                    <h4 class="font-serif font-medium text-white">${p.name}</h4>
-                    <p class="text-[#8EB69B] font-semibold mt-0.5">$${Number(p.price).toFixed(2)}</p>
+                    <h4 class="font-serif font-bold text-stone-900">${p.name}</h4>
+                    <p class="text-[#051F20] font-bold mt-0.5">$${Number(p.price).toFixed(2)}</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="addToCart('${p.id}'); closeWishlistModal(); openCartModal();" class="px-3 py-1.5 bg-[#8EB69B] text-[#051F20] rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-white transition">Add Bag</button>
-                <button onclick="toggleWishlist('${p.id}'); renderWishlistModalContent();" class="text-rose-400 hover:text-rose-300 px-2 py-1 text-base">&times;</button>
+                <button onclick="addToCart('${p.id}'); closeWishlistModal(); openCartModal();" class="px-3 py-1.5 bg-[#051F20] text-white rounded-lg text-[10px] font-medium hover:bg-[#0B2B26]">Add to Bag</button>
+                <button onclick="toggleWishlist('${p.id}'); renderWishlistModalContent();" class="text-rose-500 hover:text-rose-700 px-2 py-1 text-sm">&times;</button>
             </div>
         </div>
     `).join('');
@@ -374,15 +370,13 @@ function renderCartModalContent() {
 
     if (cart.length === 0) {
         container.innerHTML = `
-            <div class="py-12 px-6 text-center flex flex-col items-center justify-center space-y-4">
-                <div class="w-16 h-16 rounded-full bg-[#0B2B26] border border-[#163832] flex items-center justify-center text-[#8EB69B] shadow-inner">
-                    <svg class="w-8 h-8 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path></svg>
-                </div>
+            <div class="py-16 px-6 text-center flex flex-col items-center justify-center space-y-4">
+                <svg class="w-10 h-10 text-[#8EB69B]/60 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path></svg>
                 <div class="space-y-1">
-                    <h3 class="font-serif text-lg text-white font-medium tracking-wide">Your Shopping Bag is Vacant</h3>
-                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider max-w-xs mx-auto">Explore our capsule releases to select your next wardrobe essential.</p>
+                    <h3 class="font-serif text-lg text-white font-medium tracking-wide">Your bag is currently vacant</h3>
+                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider">Explore our latest editorial releases to curate your wardrobe.</p>
                 </div>
-                <button onclick="closeCartModal(); switchView('storefront');" class="mt-3 bg-[#8EB69B] text-[#051F20] px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition shadow-sm">
+                <button onclick="closeCartModal(); switchView('storefront');" class="mt-2 bg-[#8EB69B] text-[#051F20] px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition">
                     Explore Collection
                 </button>
             </div>
@@ -396,22 +390,22 @@ function renderCartModalContent() {
         const itemTotal = item.price * item.qty;
         grandTotal += itemTotal;
         return `
-            <div class="flex items-center justify-between p-3 bg-[#0B2B26]/60 rounded-xl border border-[#163832] text-xs">
+            <div class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs">
                 <div class="flex items-center gap-3">
-                    <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg bg-stone-800 border border-[#163832]">
+                    <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg bg-stone-200">
                     <div>
-                        <h4 class="font-serif font-medium text-white">${item.name}</h4>
-                        <p class="text-[#DAF1DE]/70 text-[10px]">Size: <span class="font-bold text-[#8EB69B]">${item.size}</span> | $${Number(item.price).toFixed(2)}</p>
+                        <h4 class="font-serif font-bold text-stone-900">${item.name}</h4>
+                        <p class="text-stone-500 text-[10px]">Size: <span class="font-bold text-stone-700">${item.size}</span> | $${Number(item.price).toFixed(2)} each</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <div class="flex items-center border border-[#163832] rounded bg-[#051F20] text-white">
-                        <button onclick="updateCartQty('${item.id}', '${item.size}', -1)" class="px-2 py-0.5 text-[#DAF1DE]/70 hover:bg-white/10">-</button>
+                    <div class="flex items-center border border-stone-300 rounded bg-white">
+                        <button onclick="updateCartQty('${item.id}', '${item.size}', -1)" class="px-2 py-0.5 text-stone-600 hover:bg-stone-100">-</button>
                         <span class="px-2 font-bold text-xs">${item.qty}</span>
-                        <button onclick="updateCartQty('${item.id}', '${item.size}', 1)" class="px-2 py-0.5 text-[#DAF1DE]/70 hover:bg-white/10">+</button>
+                        <button onclick="updateCartQty('${item.id}', '${item.size}', 1)" class="px-2 py-0.5 text-stone-600 hover:bg-stone-100">+</button>
                     </div>
-                    <span class="font-bold text-[#8EB69B] min-w-[50px] text-right">$${itemTotal.toFixed(2)}</span>
-                    <button onclick="removeFromCart('${item.id}', '${item.size}')" class="text-rose-400 hover:text-rose-300 text-base">&times;</button>
+                    <span class="font-bold text-[#051F20] min-w-[50px] text-right">$${itemTotal.toFixed(2)}</span>
+                    <button onclick="removeFromCart('${item.id}', '${item.size}')" class="text-stone-400 hover:text-red-600 text-sm">&times;</button>
                 </div>
             </div>
         `;
@@ -574,21 +568,7 @@ function displayProducts(products) {
     const availableProducts = products.filter(p => Number(p.stock_quantity) > 0);
 
     if (availableProducts.length === 0) {
-        // ✨ Editorial Empty State for Empty Product Catalog / Filter
-        grid.innerHTML = `
-            <div class="col-span-full py-20 px-6 bg-[#051F20] rounded-3xl border border-[#163832] text-center flex flex-col items-center justify-center space-y-4">
-                <div class="w-16 h-16 rounded-full bg-[#0B2B26] border border-[#163832] flex items-center justify-center text-[#8EB69B]">
-                    <svg class="w-8 h-8 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"></path></svg>
-                </div>
-                <div class="space-y-1">
-                    <h3 class="font-serif text-xl text-white font-medium tracking-wide">No Pieces Found in This Edit</h3>
-                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider max-w-sm mx-auto">We are currently curating new arrivals for this selection. Check back soon or explore our other collections.</p>
-                </div>
-                <button onclick="setCollectionFilter('All'); filterByCategory('all'); filterProductsByCondition('all');" class="mt-2 bg-[#8EB69B] text-[#051F20] px-8 py-3 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition shadow-sm">
-                    View Entire Store
-                </button>
-            </div>
-        `;
+        grid.innerHTML = `<div class="col-span-full text-center py-16 bg-white rounded-xl border border-dashed border-stone-300 text-stone-400">No items available in this collection.</div>`;
         return;
     }
 
@@ -656,9 +636,6 @@ ${productLink}`;
 
                         <div class="flex items-center justify-between text-xs">
                             <span class="text-sm font-semibold text-[#8EB69B] tracking-wider">$${Number(p.price).toFixed(2)}</span>
-                            <span class="text-[10px] uppercase tracking-widest text-[#DAF1DE]/60 bg-[#163832] px-2 py-0.5 rounded">
-                                ${p.size || 'OS'}
-                            </span>
                         </div>
 
                         <div id="card-size-container-${p.id}" class="flex flex-wrap gap-1 font-sans pt-1">
