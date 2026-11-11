@@ -4,13 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dabia Dixi - Preloved & New Fashion</title>
+    
+    <!-- External Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts: Editorial Serif + Clean Modern Sans + Calligraphy -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind Font Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        script: ['Great Vibes', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        body { background-color: #FAF8F5; color: #051F20; font-family: 'Playfair Display', serif; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background-color: #FAF8F5; 
+            color: #051F20; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
         .bg-brand-dark { background-color: #051F20; }
         .bg-brand-forest { background-color: #0B2B26; }
         .text-brand-dark { color: #051F20; }
@@ -45,7 +71,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-[#FAF8F5]">
+    <body class="min-h-screen flex flex-col bg-[#FAF8F5]">
 
     <!-- Top Announcement Bar -->
     <div class="bg-[#051F20] text-[#DAF1DE] text-[11px] py-2 px-4 text-center font-sans tracking-widest uppercase">
