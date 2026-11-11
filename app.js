@@ -608,16 +608,21 @@ function displayProducts(products) {
         const isWishlisted = wishlist.includes(p.id);
 
         return `
-            <div id="item-${p.id}" class="luxury-product-card flex flex-col group bg-white rounded-2xl overflow-hidden border border-stone-100 shadow-xs transition-all duration-300 hover:shadow-md">
-                <div class="h-64 sm:h-72 bg-stone-100 relative overflow-hidden flex items-center justify-center cursor-pointer">
-                    ${primaryImg ? `<img id="main-img-${p.id}" src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onclick="openImageModal(this.src)" title="Click to view full image">` : `<span class="text-stone-400 text-xs">No Image</span>`}
-                    <span class="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-sans font-medium uppercase tracking-widest rounded-full bg-white/90 backdrop-blur-md text-stone-800 shadow-xs">
-                        ${p.condition === 'brand_new' ? 'New' : 'Preloved'}
-                    </span>
-                    <button onclick="toggleWishlist('${p.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-xs shadow-xs transition hover:bg-white" title="Save to Wishlist">
-                        ${isWishlisted ? '♥' : '♡'}
-                    </button>
-                </div>
+            <div id="item-${p.id}" class="group relative bg-[#051F20] rounded-2xl overflow-hidden border border-[#163832] shadow-sm transition-all duration-500 hover:border-[#8EB69B]/40 flex flex-col">
+    <!-- Image Container with Editorial Aspect Ratio -->
+    <div class="w-full aspect-[4/5] bg-[#163832] relative overflow-hidden flex items-center justify-center cursor-pointer">
+        ${primaryImg ? `<img id="main-img-${p.id}" src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" onclick="openImageModal(this.src)" title="Click to view full image">` : `<span class="text-[#DAF1DE]/40 text-xs">No Image</span>`}
+        
+        <!-- Condition Badge -->
+        <span class="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-sans font-medium uppercase tracking-widest rounded-full bg-black/40 backdrop-blur-md text-[#DAF1DE] shadow-xs">
+            ${p.condition === 'brand_new' ? 'New' : 'Preloved'}
+        </span>
+        
+        <!-- Wishlist Button -->
+        <button onclick="toggleWishlist('${p.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-xs text-white shadow-xs transition hover:bg-black/60" title="Save to Wishlist">
+            ${isWishlisted ? '♥' : '♡'}
+        </button>
+    </div>
 
                 ${images.length > 1 ? `
                     <div id="card-thumb-container-${p.id}" class="flex gap-1.5 p-2 bg-[#FAF8F5] overflow-x-auto border-b border-stone-100">
