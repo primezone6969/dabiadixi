@@ -71,7 +71,7 @@
         }
     </style>
 </head>
-    <body class="min-h-screen flex flex-col bg-[#FAF8F5]">
+<body class="min-h-screen flex flex-col bg-[#FAF8F5]">
 
     <!-- Top Announcement Bar -->
     <div class="bg-[#051F20] text-[#DAF1DE] text-[11px] py-2 px-4 text-center font-sans tracking-widest uppercase">
@@ -102,64 +102,64 @@
     </main>
 
     <!-- Wishlist Modal -->
-    <div id="wishlist-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative border border-stone-100 max-h-[80vh] flex flex-col">
-            <div class="flex justify-between items-center mb-4 pb-2 border-b border-stone-100">
-                <h3 class="text-lg font-serif font-bold text-[#051F20]">Your Saved Wishlist</h3>
-                <button onclick="closeWishlistModal()" class="text-stone-400 hover:text-stone-700 text-xl">&times;</button>
+    <div id="wishlist-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300 ease-out justify-center items-center z-50 p-4">
+        <div class="bg-[#051F20] text-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative border border-[#163832] max-h-[80vh] flex flex-col font-sans transform scale-95 opacity-0 transition-all duration-300 ease-out">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-[#163832]">
+                <h3 class="text-lg font-serif font-medium text-white tracking-wide">Your Saved Wishlist</h3>
+                <button onclick="closeWishlistModal()" class="text-[#DAF1DE]/60 hover:text-white text-xl transition">&times;</button>
             </div>
             <div id="wishlist-items-container" class="overflow-y-auto space-y-3 flex-grow pr-1"></div>
-            <div class="pt-4 border-t border-stone-100 flex justify-end">
-                <button onclick="closeWishlistModal()" class="px-4 py-2 bg-stone-100 text-stone-700 rounded-lg text-xs font-medium">Close</button>
+            <div class="pt-4 border-t border-[#163832] flex justify-end">
+                <button onclick="closeWishlistModal()" class="px-5 py-2.5 bg-white/10 text-white hover:bg-white/20 transition rounded-xl text-xs uppercase tracking-widest font-medium">Close</button>
             </div>
         </div>
     </div>
 
     <!-- Shopping Bag Modal -->
-    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl relative border border-stone-100 max-h-[85vh] flex flex-col">
-            <div class="flex justify-between items-center mb-4 pb-2 border-b border-stone-100">
-                <h3 class="text-lg font-serif font-bold text-[#051F20]">Your Shopping Bag</h3>
-                <button onclick="closeCartModal()" class="text-stone-400 hover:text-stone-700 text-xl">&times;</button>
+    <div id="cart-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300 ease-out justify-center items-center z-50 p-4">
+        <div class="bg-[#051F20] text-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative border border-[#163832] max-h-[85vh] flex flex-col font-sans transform scale-95 opacity-0 transition-all duration-300 ease-out">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-[#163832]">
+                <h3 class="text-lg font-serif font-medium text-white tracking-wide">Your Shopping Bag</h3>
+                <button onclick="closeCartModal()" class="text-[#DAF1DE]/60 hover:text-white text-xl transition">&times;</button>
             </div>
             <div id="cart-items-container" class="overflow-y-auto space-y-3 flex-grow pr-1"></div>
-            <div class="pt-4 border-t border-stone-200 mt-2 space-y-3">
-                <div class="flex justify-between items-center font-bold text-base text-[#051F20]">
-                    <span>Total Grand:</span>
-                    <span id="cart-grand-total">$0.00</span>
+            <div class="pt-4 border-t border-[#163832] mt-2 space-y-4">
+                <div class="flex justify-between items-center text-sm tracking-wider">
+                    <span class="text-[#DAF1DE]/70 uppercase text-xs font-sans">Grand Total:</span>
+                    <span id="cart-grand-total" class="font-serif text-lg font-semibold text-[#8EB69B]">$0.00</span>
                 </div>
-                <div class="flex justify-end space-x-2">
-                    <button onclick="closeCartModal()" class="px-4 py-2 bg-stone-100 text-stone-700 rounded-lg text-xs font-medium">Continue Shopping</button>
-                    <button onclick="sendWhatsAppCartOrder()" class="px-5 py-2 bg-[#051F20] text-white rounded-lg text-xs font-medium hover:bg-[#0B2B26] transition flex items-center gap-1.5">Send Order via WhatsApp</button>
+                <div class="flex justify-end gap-3">
+                    <button onclick="closeCartModal()" class="px-4 py-2.5 bg-white/10 text-white hover:bg-white/20 transition rounded-xl text-xs uppercase tracking-widest font-medium">Continue Shopping</button>
+                    <button onclick="sendWhatsAppCartOrder()" class="px-6 py-2.5 bg-[#8EB69B] text-[#051F20] hover:bg-white transition rounded-xl text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 shadow-xs">Send Order via WhatsApp</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Login Modal -->
-    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50 p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl relative border border-stone-100">
-            <h3 class="text-lg font-bold mb-4 text-[#051F20]">Staff & Owner Portal Login</h3>
+    <div id="login-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300 ease-out justify-center items-center z-50 p-4">
+        <div class="bg-[#051F20] text-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative border border-[#163832] font-sans transform scale-95 opacity-0 transition-all duration-300 ease-out">
+            <h3 class="text-lg font-serif font-medium text-white mb-4 tracking-wide">Staff & Owner Portal Login</h3>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Email Address</label>
-                    <input type="email" id="login-email" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#051F20] outline-none">
+                    <label class="block text-xs font-semibold uppercase text-[#DAF1DE]/70 mb-1 tracking-wider">Email Address</label>
+                    <input type="email" id="login-email" required class="w-full bg-[#0B2B26] border border-[#163832] text-white rounded-xl p-2.5 text-sm focus:border-[#8EB69B] outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Password</label>
-                    <input type="password" id="login-password" required class="w-full border border-stone-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#051F20] outline-none">
+                    <label class="block text-xs font-semibold uppercase text-[#DAF1DE]/70 mb-1 tracking-wider">Password</label>
+                    <input type="password" id="login-password" required class="w-full bg-[#0B2B26] border border-[#163832] text-white rounded-xl p-2.5 text-sm focus:border-[#8EB69B] outline-none">
                 </div>
                 <div class="flex justify-end space-x-2 pt-2">
-                    <button type="button" onclick="closeLoginModal()" class="px-4 py-2 text-sm text-stone-600 hover:bg-stone-100 rounded-lg">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm bg-[#051F20] text-white rounded-lg font-medium hover:bg-[#0B2B26]">Login</button>
+                    <button type="button" onclick="closeLoginModal()" class="px-4 py-2 text-xs uppercase tracking-widest text-[#DAF1DE]/70 hover:text-white transition rounded-xl">Cancel</button>
+                    <button type="submit" class="px-5 py-2 text-xs uppercase tracking-widest font-bold bg-[#8EB69B] text-[#051F20] rounded-xl hover:bg-white transition">Login</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Printable Receipt Modal -->
-    <div id="receipt-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex justify-center items-center z-50 p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl relative border border-stone-200">
+    <div id="receipt-modal" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300 ease-out justify-center items-center z-50 p-4">
+        <div class="bg-white text-stone-800 rounded-2xl max-w-sm w-full p-6 shadow-2xl relative border border-stone-200 font-sans transform scale-95 opacity-0 transition-all duration-300 ease-out">
             <div id="receipt-print-area" class="text-stone-800 font-mono text-xs space-y-3">
                 <div class="text-center pb-3 border-b border-dashed border-stone-300">
                     <h2 class="text-3xl calligraphy-brand text-[#051F20] mb-1">Dabia Dixi</h2>
@@ -196,7 +196,7 @@
     </div>
 
     <!-- Full-Screen Image Lightbox Modal -->
-    <div id="image-lightbox" class="fixed inset-0 bg-black bg-opacity-90 hidden flex justify-center items-center z-50 p-4 cursor-pointer" onclick="closeImageModal()">
+    <div id="image-lightbox" class="fixed inset-0 bg-black/90 hidden opacity-0 transition-opacity duration-300 ease-out justify-center items-center z-50 p-4 cursor-pointer" onclick="closeImageModal()">
         <div class="relative max-w-4xl max-h-full flex items-center justify-center">
             <button onclick="closeImageModal()" class="absolute -top-12 right-0 text-white text-3xl font-light hover:text-stone-300 transition">&times;</button>
             <img id="lightbox-img" src="" class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl">
@@ -233,7 +233,8 @@
             &copy; 2026 Dabia Dixi Preloved Fashion. All rights reserved.
         </div>
     </footer>
-<!-- Sticky Mobile Bottom Action Bar (SHEIN-style app feel) -->
+
+    <!-- Sticky Mobile Bottom Action Bar -->
     <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#051F20]/95 backdrop-blur-md border-t border-[#163832] px-6 py-3 flex justify-around items-center text-[#DAF1DE]">
         <button onclick="switchView('storefront')" class="flex flex-col items-center gap-1 text-[10px] uppercase tracking-widest hover:text-white transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path></svg>
@@ -254,7 +255,9 @@
             WhatsApp
         </a>
     </nav>
+    
     <script src="app.js"></script>
+    
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 flex flex-col items-center space-y-2 pointer-events-none"></div>
 </body>
