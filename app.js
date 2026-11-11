@@ -339,7 +339,19 @@ function renderWishlistModalContent() {
     const savedProducts = allProducts.filter(p => wishlist.includes(p.id));
 
     if (savedProducts.length === 0) {
-        container.innerHTML = `<p class="text-xs text-stone-400 text-center py-8">Your wishlist is empty. Click heart to save items!</p>`;
+        // ✨ High-end editorial empty state
+        container.innerHTML = `
+            <div class="py-16 px-6 text-center flex flex-col items-center justify-center space-y-4">
+                <svg class="w-10 h-10 text-[#8EB69B]/60 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"></path></svg>
+                <div class="space-y-1">
+                    <h3 class="font-serif text-lg text-white font-medium tracking-wide">Your wishlist is empty</h3>
+                    <p class="text-xs text-[#DAF1DE]/60 tracking-wider">Save pieces you love as you browse the collection.</p>
+                </div>
+                <button onclick="closeWishlistModal(); switchView('storefront');" class="mt-2 bg-[#8EB69B] text-[#051F20] px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest font-bold hover:bg-white transition">
+                    Discover Pieces
+                </button>
+            </div>
+        `;
         return;
     }
 
@@ -359,7 +371,6 @@ function renderWishlistModalContent() {
         </div>
     `).join('');
 }
-
 function renderCartModalContent() {
     const container = document.getElementById('cart-items-container');
     const grandTotalEl = document.getElementById('cart-grand-total');
