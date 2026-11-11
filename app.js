@@ -58,7 +58,6 @@ function setupSecretLogoClick() {
     });
 }
 
-// Variable to track triple-click/tap for owner login
 let brandLogoClickCount = 0;
 let brandLogoClickTimer = null;
 
@@ -76,6 +75,7 @@ function handleBrandLogoClick() {
         switchView('storefront');
     }, 400);
 }
+
 function showToast(message) {
     const container = document.getElementById('toast-container');
     if (!container) return;
@@ -89,17 +89,16 @@ function showToast(message) {
 
     container.appendChild(toast);
 
-    // Fade in
     setTimeout(() => {
         toast.classList.remove('translate-y-4', 'opacity-0');
     }, 10);
 
-    // Fade out and remove after 2.5 seconds
     setTimeout(() => {
         toast.classList.add('translate-y-4', 'opacity-0');
         setTimeout(() => toast.remove(), 300);
     }, 2500);
 }
+
 function updateNavigation() {
     const navAuth = document.getElementById('nav-auth');
     const customerTools = document.getElementById('customer-nav-tools');
@@ -108,7 +107,6 @@ function updateNavigation() {
 
     const isDashboard = window.currentView === 'dashboard';
 
-    // Dynamically style header based on current view
     if (headerEl) {
         if (isDashboard) {
             headerEl.className = "bg-[#051F20] border-b border-[#163832] sticky top-0 z-50 py-4 shadow-md";
@@ -117,27 +115,22 @@ function updateNavigation() {
         }
     }
 
-    // Attach click handler for triple-tap login to brand logo
     if (brandLogo) {
         brandLogo.className = "text-4xl md:text-5xl calligraphy-brand text-white cursor-pointer select-none tracking-wide transition";
         brandLogo.onclick = handleBrandLogoClick;
     }
 
-    // Determine visibility based on whether user is logged in as owner/staff
     const isOwnerOrStaff = currentUser && userRole !== 'customer';
 
     if (isOwnerOrStaff) {
-        // Hide Wishlist & Bag buttons completely when in owner mode
         if (customerTools) customerTools.style.display = 'none';
 
-        // Owner logged in: Luminous sage green glow effect on brand logo
         if (brandLogo) {
             brandLogo.classList.add('drop-shadow-[0_0_18px_rgba(142,182,155,0.9)]', 'text-[#DAF1DE]');
             brandLogo.style.textShadow = '0 0 10px #8EB69B, 0 0 20px #8EB69B';
             brandLogo.title = "Owner Mode Active";
         }
 
-        // Dashboard and Logout icon buttons
         navAuth.innerHTML = `
             <button onclick="switchView('dashboard')" class="p-3 text-white hover:text-[#8EB69B] transition rounded-xl hover:bg-white/10 flex items-center justify-center" title="Dashboard">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"></path></svg>
@@ -147,7 +140,6 @@ function updateNavigation() {
             </button>
         `;
     } else {
-        // Show Wishlist & Bag buttons for customers
         if (customerTools) {
             customerTools.style.display = 'flex';
             customerTools.innerHTML = `
@@ -219,7 +211,11 @@ function selectCardSize(cardId, size, btnElement) {
         const productName = inquireBtn.dataset.productName;
         const productPrice = inquireBtn.dataset.productPrice;
         const productLink = `${siteBaseUrl}#item-${cardId}`;
-        const messageText = `Hi Dabia Dixi, I'm interested in ordering:\n*${productName}* (Size: ${size}, Price: $${productPrice})\n\nView item here:\n${productLink}`;
+        const messageText = `Hi Dabia Dixi, I'm interested in ordering:
+*${productName}* (Size: ${size}, Price: $${productPrice})
+
+View item here:
+${productLink}`;
         inquireBtn.href = `https://wa.me/67078571996?text=${encodeURIComponent(messageText)}`;
     }
 }
@@ -263,8 +259,6 @@ function addToCart(productId) {
     }
     localStorage.setItem('dabia_cart', JSON.stringify(cart));
     updateBadges();
-    
-    // ✨ Luxury toast notification replacing the old alert
     showToast(`Added to your shopping bag (Size: ${selectedSize}) ✓`);
 }
 
@@ -316,6 +310,7 @@ function updateBadges() {
         if (mcBadge) mcBadge.classList.add('hidden');
     }
 }
+
 function openWishlistModal() {
     renderWishlistModalContent();
     document.getElementById('wishlist-modal').classList.remove('hidden');
@@ -339,7 +334,6 @@ function renderWishlistModalContent() {
     const savedProducts = allProducts.filter(p => wishlist.includes(p.id));
 
     if (savedProducts.length === 0) {
-        // ✨ High-end editorial empty state
         container.innerHTML = `
             <div class="py-16 px-6 text-center flex flex-col items-center justify-center space-y-4">
                 <svg class="w-10 h-10 text-[#8EB69B]/60 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"></path></svg>
@@ -371,12 +365,12 @@ function renderWishlistModalContent() {
         </div>
     `).join('');
 }
+
 function renderCartModalContent() {
     const container = document.getElementById('cart-items-container');
     const grandTotalEl = document.getElementById('cart-grand-total');
 
     if (cart.length === 0) {
-        // ✨ High-end editorial empty state
         container.innerHTML = `
             <div class="py-16 px-6 text-center flex flex-col items-center justify-center space-y-4">
                 <svg class="w-10 h-10 text-[#8EB69B]/60 stroke-[1.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"></path></svg>
@@ -424,16 +418,23 @@ function renderCartModalContent() {
 
 function sendWhatsAppCartOrder() {
     if (cart.length === 0) return;
-    let messageText = `Hi Dabia Dixi, I would like to place an order for the following items:\n\n`;
+    let messageText = `Hi Dabia Dixi, I would like to place an order for the following items:
+
+`;
     let grandTotal = 0;
 
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.qty;
         grandTotal += itemTotal;
-        messageText += `${index + 1}. *${item.name}*\n   Size: ${item.size} | Qty: ${item.qty} | Price: $${itemTotal.toFixed(2)}\n`;
+        messageText += `${index + 1}. *${item.name}*
+   Size: ${item.size} | Qty: ${item.qty} | Price: $${itemTotal.toFixed(2)}
+`;
     });
 
-    messageText += `\n*Grand Total: $${grandTotal.toFixed(2)}*\n\nPlease let me know availability and payment details. Thank you!`;
+    messageText += `
+*Grand Total: $${grandTotal.toFixed(2)}*
+
+Please let me know availability and payment details. Thank you!`;
     const encodedMsg = encodeURIComponent(messageText);
     const whatsappUrl = `https://wa.me/67078571996?text=${encodedMsg}`;
     window.open(whatsappUrl, '_blank');
@@ -455,11 +456,11 @@ function openReceiptModal(saleName, qty, price, total, date) {
 function closeReceiptModal() {
     document.getElementById('receipt-modal').classList.add('hidden');
 }
+
 function renderStorefrontSkeletons() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
 
-    // Render 4 pulsing skeleton cards (2 columns on mobile, 4 on desktop)
     let skeletonHTML = '';
     for (let i = 0; i < 4; i++) {
         skeletonHTML += `
@@ -473,16 +474,15 @@ function renderStorefrontSkeletons() {
     }
     grid.innerHTML = skeletonHTML;
 }
+
 async function renderStorefront() {
     renderStorefrontSkeletons();
     const content = document.getElementById('app-content');
     content.innerHTML = `
-        <!-- Full-Width Editorial Hero Banner -->
         <div class="relative w-full overflow-hidden mb-10 shadow-lg min-h-[580px] flex flex-col justify-end bg-[#051F20] text-white">
             <div class="absolute inset-0 bg-black/30 z-10"></div>
             <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1600&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover object-center brightness-90">
 
-            <!-- Hero Banner Content -->
             <div class="relative z-20 px-8 md:px-16 pb-16 max-w-7xl mx-auto w-full space-y-4">
                 <span class="text-[10px] uppercase tracking-[0.3em] font-sans text-[#DAF1DE]">Capsule Wardrobe</span>
                 <h2 class="text-4xl md:text-6xl font-serif font-normal tracking-tight">Autumn Essentials</h2>
@@ -493,7 +493,6 @@ async function renderStorefront() {
             </div>
         </div>
 
-        <!-- Circular Category Photo Bubbles Bar -->
         <div class="mb-12 px-6 max-w-7xl mx-auto">
             <div class="flex items-center gap-6 overflow-x-auto pb-4 pt-2 scrollbar-none justify-start md:justify-center">
                 <div onclick="filterByCategory('all')" class="flex flex-col items-center gap-2 cursor-pointer group flex-shrink-0">
@@ -535,7 +534,6 @@ async function renderStorefront() {
             </div>
         </div>
 
-        <!-- Collection Switcher & Condition Bar -->
         <div class="mb-8 mx-6 max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-2xl shadow-xs border border-stone-100 gap-4">
             <div class="flex flex-wrap justify-center gap-2">
                 <button onclick="setCollectionFilter('All')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'All' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-All">All Collections</button>
@@ -581,12 +579,12 @@ function displayProducts(products) {
     grid.innerHTML = availableProducts.map(p => {
         const defaultSize = (p.sizes && p.sizes.length > 0) ? p.sizes[0] : (p.size || 'Free Size');
         const productLink = `${siteBaseUrl}#item-${p.id}`;
-        const initialMessageText = `Hi Dabia Dixi, I'm interested in ordering:\n*${p.name}* (Size: ${defaultSize}, Price: $${Number(p.price).toFixed(2)})\n\nView item here:\n${productLink}`;
-        const whatsappUrl = `https://wa.me/67078571996?text=${encodeURIComponent(initialMessageText)}`;
+        const initialMessageText = `Hi Dabia Dixi, I'm interested in ordering:
+*${p.name}* (Size: ${defaultSize}, Price: $${Number(p.price).toFixed(2)})
 
-        const stockBadge = Number(p.stock_quantity) <= 2 
-            ? `<span class="text-[10px] text-amber-800 font-sans font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Only ${p.stock_quantity} left!</span>`
-            : `<span class="text-[10px] text-stone-500 font-sans font-medium bg-stone-100 px-2 py-0.5 rounded">Stock: ${p.stock_quantity}</span>`;
+View item here:
+${productLink}`;
+        const whatsappUrl = `https://wa.me/67078571996?text=${encodeURIComponent(initialMessageText)}`;
 
         let images = [];
         if (p.image_urls && Array.isArray(p.image_urls) && p.image_urls.length > 0) {
@@ -608,54 +606,57 @@ function displayProducts(products) {
         const isWishlisted = wishlist.includes(p.id);
 
         return `
-            <div id="item-${p.id}" class="group relative bg-[#051F20] rounded-2xl overflow-hidden border border-[#163832] shadow-sm transition-all duration-500 hover:border-[#8EB69B]/40 flex flex-col">
-    <!-- Image Container with Editorial Aspect Ratio -->
-    <div class="w-full aspect-[4/5] bg-[#163832] relative overflow-hidden flex items-center justify-center cursor-pointer">
-        ${primaryImg ? `<img id="main-img-${p.id}" src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" onclick="openImageModal(this.src)" title="Click to view full image">` : `<span class="text-[#DAF1DE]/40 text-xs">No Image</span>`}
-        
-        <!-- Condition Badge -->
-        <span class="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-sans font-medium uppercase tracking-widest rounded-full bg-black/40 backdrop-blur-md text-[#DAF1DE] shadow-xs">
-            ${p.condition === 'brand_new' ? 'New' : 'Preloved'}
-        </span>
-        
-        <!-- Wishlist Button -->
-        <button onclick="toggleWishlist('${p.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-xs text-white shadow-xs transition hover:bg-black/60" title="Save to Wishlist">
-            ${isWishlisted ? '♥' : '♡'}
-        </button>
-    </div>
-
-                ${images.length > 1 ? `
-                    <div id="card-thumb-container-${p.id}" class="flex gap-1.5 p-2 bg-[#FAF8F5] overflow-x-auto border-b border-stone-100">
-                        ${images.map((imgUrl, idx) => `
-                            <img src="${imgUrl}" class="w-8 h-8 object-cover rounded-md cursor-pointer hover:opacity-80 transition ${idx === 0 ? 'ring-1 ring-[#051F20]' : ''}" onclick="switchCardImage('${p.id}', '${imgUrl}', this)">
-                        `).join('')}
-                    </div>
-                ` : ''}
-
-                <div class="p-4 flex flex-col flex-grow justify-between">
-                    <div>
-                        <div class="flex justify-between items-start gap-2 mb-1">
-                            <h4 class="font-serif font-medium text-stone-900 text-sm tracking-tight truncate">${p.name}</h4>
-                            ${stockBadge}
-                        </div>
-                        <p class="text-xs font-sans font-semibold text-[#051F20] mb-3">$${Number(p.price).toFixed(2)}</p>
-
-                        <!-- Size Selector Pills -->
-                        <div class="mb-4">
-                            <div id="card-size-container-${p.id}" class="flex flex-wrap gap-1 font-sans">
-                                ${productSizes.map((sz, idx) => `
-                                    <button onclick="selectCardSize('${p.id}', '${sz}', this)" class="px-2 py-0.5 text-[10px] rounded border font-medium transition ${idx === 0 ? 'bg-[#051F20] text-white border-[#051F20]' : 'bg-white text-stone-600 border-stone-200 hover:border-stone-400'}">${sz}</button>
-                                `).join('')}
-                            </div>
-                        </div>
+            <div id="item-${p.id}" class="group relative bg-[#051F20] rounded-2xl overflow-hidden border border-[#163832] shadow-sm transition-all duration-500 hover:border-[#8EB69B]/40 flex flex-col justify-between">
+                <div>
+                    <div class="w-full aspect-[4/5] bg-[#163832] relative overflow-hidden flex items-center justify-center cursor-pointer">
+                        ${primaryImg ? `<img id="main-img-${p.id}" src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" onclick="openImageModal(this.src)" title="Click to view full image">` : `<span class="text-[#DAF1DE]/40 text-xs">No Image</span>`}
+                        
+                        <span class="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-sans font-medium uppercase tracking-widest rounded-full bg-black/40 backdrop-blur-md text-[#DAF1DE] shadow-xs">
+                            ${p.condition === 'brand_new' ? 'New' : 'Preloved'}
+                        </span>
+                        
+                        <button onclick="toggleWishlist('${p.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-xs text-white shadow-xs transition hover:bg-black/60" title="Save to Wishlist">
+                            ${isWishlisted ? '♥' : '♡'}
+                        </button>
                     </div>
 
-                    <!-- Monochrome Action Buttons -->
-                    <div class="grid grid-cols-2 gap-2 pt-3 border-t border-stone-100 mt-auto font-sans">
-                        <a id="inquire-btn-${p.id}" href="${whatsappUrl}" target="_blank" data-selected-size="${defaultSize}" data-product-name="${p.name.replace(/'/g, "\\'")}" data-product-price="${p.price}" class="w-full bg-white text-stone-800 border border-stone-300 text-center py-2 rounded-xl text-[11px] font-medium hover:bg-stone-50 transition flex items-center justify-center gap-1">
+                    ${images.length > 1 ? `
+                        <div id="card-thumb-container-${p.id}" class="flex items-center gap-1.5 p-2 bg-[#0B2B26]/50 border-b border-[#163832] overflow-x-auto">
+                            ${images.map((imgUrl, idx) => `
+                                <img src="${imgUrl}" class="w-8 h-8 object-cover rounded-md cursor-pointer border border-transparent hover:border-[#8EB69B] transition ${idx === 0 ? 'ring-1 ring-[#8EB69B]' : ''}" onclick="switchCardImage('${p.id}', '${imgUrl}', this)">
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    <div class="p-4 space-y-3">
+                        <div class="flex items-start justify-between gap-2">
+                            <h3 class="font-serif text-sm font-medium text-white tracking-wide leading-snug line-clamp-2">${p.name}</h3>
+                            <span class="px-2 py-0.5 text-[9px] font-sans text-[#DAF1DE]/70 bg-[#163832] rounded border border-[#8EB69B]/20 whitespace-nowrap">
+                                Stock: ${p.stock_quantity ?? 1}
+                            </span>
+                        </div>
+
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-sm font-semibold text-[#8EB69B] tracking-wider">$${Number(p.price).toFixed(2)}</span>
+                            <span class="text-[10px] uppercase tracking-widest text-[#DAF1DE]/60 bg-[#163832] px-2 py-0.5 rounded">
+                                ${p.size || 'OS'}
+                            </span>
+                        </div>
+
+                        <div id="card-size-container-${p.id}" class="flex flex-wrap gap-1 font-sans pt-1">
+                            ${productSizes.map((sz, idx) => `
+                                <button onclick="selectCardSize('${p.id}', '${sz}', this)" class="px-2.5 py-1 text-[10px] rounded-lg border font-medium transition ${idx === 0 ? 'bg-[#8EB69B] text-[#051F20] border-[#8EB69B] font-bold' : 'bg-[#163832] text-[#DAF1DE] border-[#8EB69B]/20 hover:border-[#8EB69B]'}">${sz}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 pt-0 border-t border-[#163832]/60 mt-2 font-sans">
+                    <div class="flex items-center gap-2 pt-3">
+                        <a id="inquire-btn-${p.id}" href="${whatsappUrl}" target="_blank" data-selected-size="${defaultSize}" data-product-name="${p.name.replace(/'/g, "\'")}" data-product-price="${p.price}" class="flex-1 py-2 px-3 rounded-xl bg-white/10 text-white text-[10px] font-medium uppercase tracking-wider hover:bg-white/25 transition text-center flex items-center justify-center">
                             Inquire
                         </a>
-                        <button id="add-btn-${p.id}" data-selected-size="${defaultSize}" onclick="addToCart('${p.id}')" class="w-full bg-[#051F20] text-white text-center py-2 rounded-xl text-[11px] font-medium hover:bg-[#0B2B26] transition flex items-center justify-center gap-1 shadow-xs">
+                        <button id="add-btn-${p.id}" data-selected-size="${defaultSize}" onclick="addToCart('${p.id}')" class="flex-1 py-2 px-3 rounded-xl bg-[#8EB69B] text-[#051F20] text-[10px] font-bold uppercase tracking-wider hover:bg-white transition text-center flex items-center justify-center shadow-xs">
                             Add Bag
                         </button>
                     </div>
@@ -824,7 +825,7 @@ async function renderDashboardContent() {
                                     <div>
                                         <p class="font-medium text-stone-800">${s.product_name} (x${s.quantity_sold})</p>
                                         <span class="text-[10px] text-stone-400">${s.created_at ? s.created_at.split('T')[0] : ''}</span> </div> <div class="flex items-center gap-3"> <span class="font-bold text-emerald-700">+$${Number(s.total_revenue).toFixed(2)}</span>
-                                        <button onclick="openReceiptModal('${s.product_name.replace(/'/g, "\\'")}', ${s.quantity_sold},${s.selling_price || (s.total_revenue/s.quantity_sold)}, ${s.total_revenue}, '${s.created_at}')" class="px-2.5 py-1 bg-[#051F20] text-white rounded text-[10px] font-medium hover:bg-[#0B2B26] transition">Receipt</button>
+                                        <button onclick="openReceiptModal('${s.product_name.replace(/'/g, "\'")}', ${s.quantity_sold},${s.selling_price || (s.total_revenue/s.quantity_sold)}, ${s.total_revenue}, '${s.created_at}')" class="px-2.5 py-1 bg-[#051F20] text-white rounded text-[10px] font-medium hover:bg-[#0B2B26] transition">Receipt</button>
                                     </div>
                                 </div>
                             `).join('')}
@@ -872,19 +873,19 @@ async function renderDashboardContent() {
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
-    <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Daily Financial Breakdown</h4>
-    <div class="space-y-3 max-h-80 overflow-y-auto">
-        ${sortedDates.length === 0 ? '<p class="text-xs text-stone-400">No records found.</p>' : sortedDates.map(date => `
-            <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
-                <div>
-                    <p class="font-bold text-stone-800">${date}</p>
-                    <span class="text-[10px] text-emerald-700">Income: $${dailyMap[date].income.toFixed(2)}</span> | <span class="text-[10px] text-red-600">Spending: $${dailyMap[date].spending.toFixed(2)}</span>
-                </div>
-                <span class="font-bold ${dailyMap[date].income - dailyMap[date].spending >= 0 ? 'text-[#051F20]' : 'text-red-600'}">Net: $${(dailyMap[date].income - dailyMap[date].spending).toFixed(2)}</span>
-            </div>
-        `).join('')}
-    </div>
-</div>
+                        <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Daily Financial Breakdown</h4>
+                        <div class="space-y-3 max-h-80 overflow-y-auto">
+                            ${sortedDates.length === 0 ? '<p class="text-xs text-stone-400">No records found.</p>' : sortedDates.map(date => `
+                                <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
+                                    <div>
+                                        <p class="font-bold text-stone-800">${date}</p>
+                                        <span class="text-[10px] text-emerald-700">Income: $${dailyMap[date].income.toFixed(2)}</span> | <span class="text-[10px] text-red-600">Spending: $${dailyMap[date].spending.toFixed(2)}</span>
+                                    </div>
+                                    <span class="font-bold ${dailyMap[date].income - dailyMap[date].spending >= 0 ? 'text-[#051F20]' : 'text-red-600'}">Net: $${(dailyMap[date].income - dailyMap[date].spending).toFixed(2)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
                             
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
                         <h4 class="font-serif font-bold text-stone-900 mb-3 text-sm">Expenses by Category</h4>
@@ -935,7 +936,7 @@ async function renderDashboardContent() {
                                 </div>
                                 <h4 class="font-serif font-bold text-stone-900 text-xs truncate">${p.name}</h4> <p class="text-xs font-bold text-[#051F20] mt-0.5">$${Number(p.price).toFixed(2)} (Stock:${p.stock_quantity})</p>
                             </div>
-                            <button onclick="openPOSModal('${p.id}', '${p.name.replace(/'/g, "\\'")}', ${p.price},${p.stock_quantity})" class="mt-3 w-full bg-[#051F20] text-white py-1.5 rounded-lg text-xs font-medium hover:bg-[#0B2B26] transition">Sell Item</button>
+                            <button onclick="openPOSModal('${p.id}', '${p.name.replace(/'/g, "\'")}', ${p.price},${p.stock_quantity})" class="mt-3 w-full bg-[#051F20] text-white py-1.5 rounded-lg text-xs font-medium hover:bg-[#0B2B26] transition">Sell Item</button>
                         </div>
                     `).join('')}
                 </div>
