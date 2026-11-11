@@ -173,7 +173,7 @@ function switchView(viewName) {
 function openImageModal(url) {
     const lightbox = document.getElementById('image-lightbox');
     const img = document.getElementById('lightbox-img');
-    img.src = url;
+    if (img) img.src = url;
     openModal('image-lightbox');
 }
 
@@ -186,9 +186,9 @@ function switchCardImage(cardId, url, thumbElement) {
     if (mainImg) mainImg.src = url;
     const cardContainer = document.getElementById(`card-thumb-container-${cardId}`);
     if (cardContainer) {
-        cardContainer.querySelectorAll('img').forEach(t => t.classList.remove('ring-1', 'ring-[#051F20]'));
+        cardContainer.querySelectorAll('img').forEach(t => t.classList.remove('ring-1', 'ring-[#8EB69B]'));
     }
-    if (thumbElement) thumbElement.classList.add('ring-1', 'ring-[#051F20]');
+    if (thumbElement) thumbElement.classList.add('ring-1', 'ring-[#8EB69B]');
 }
 
 function selectCardSize(cardId, size, btnElement) {
@@ -198,7 +198,9 @@ function selectCardSize(cardId, size, btnElement) {
             b.className = 'px-2.5 py-1 text-[10px] rounded-lg border font-medium transition bg-[#163832] text-[#DAF1DE] border-[#8EB69B]/20 hover:border-[#8EB69B]';
         });
     }
-    btnElement.className = 'px-2.5 py-1 text-[10px] rounded-lg border font-bold transition bg-[#8EB69B] text-[#051F20] border-[#8EB69B]';
+    if (btnElement) {
+        btnElement.className = 'px-2.5 py-1 text-[10px] rounded-lg border font-bold transition bg-[#8EB69B] text-[#051F20] border-[#8EB69B]';
+    }
     
     const addBtn = document.getElementById(`add-btn-${cardId}`);
     const inquireBtn = document.getElementById(`inquire-btn-${cardId}`);
@@ -218,6 +220,145 @@ ${productLink}`;
     }
 }
 
+function openProductDetailModal(productId) {
+    const p = allProducts.find(item => item.id === productId);
+    if (!p) return;
+
+    let modal = document.getElementById('product-detail-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'product-detail-modal';
+        modal.className = 'fixed inset-0 bg-black/75 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 ease-out justify-center items-center z-50 p-4 font-sans overflow-y-auto';
+        document.body.appendChild(modal);
+    }
+
+    let images = [];
+    if (p.image_urls && Array.isArray(p.image_urls) && p.image_urls.length > 0) {
+        images = p.image_urls;
+    } else if (p.image_url) {
+        images = [p.image_url];
+    }
+    const primaryImg = images.length > 0 ? images[0] : '';
+
+    let productSizes = [];
+    if (p.sizes && Array.isArray(p.sizes) && p.sizes.length > 0) {
+        productSizes = p.sizes;
+    } else if (p.size) {
+        productSizes = [p.size];
+    } else {
+        productSizes = ['Free Size'];
+    }
+
+    const defaultSize = productSizes[0];
+    const siteBaseUrl = window.location.origin + window.location.pathname;
+    const productLink = `${siteBaseUrl}#item-${p.id}`;
+    const initialMsg = `Hi Dabia Dixi, I'm interested in ordering:
+*${p.name}* (Size: ${defaultSize}, Price: $${Number(p.price).toFixed(2)})
+
+View item here:
+${productLink}`;
+    const whatsappUrl = `https://wa.me/67078571996?text=${encodeURIComponent(initialMsg)}`;
+    const isWishlisted = wishlist.includes(p.id);
+
+    modal.innerHTML = `
+        <div class="bg-[#051F20] border border-[#163832] rounded-3xl max-w-2xl w-full p-6 pr-14 md:pr-6 text-white shadow-2xl relative transform scale-95 opacity-0 transition-all duration-300 ease-out my-8">
+            <button onclick="closeProductDetailModal()" class="absolute top-4 right-4 text-white/60 hover:text-white w-9 h-9 rounded-full bg-black/40 flex items-center justify-center text-lg z-10">&times;</button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <div class="w-full aspect-[4/5] bg-[#163832] rounded-2xl overflow-hidden relative">
+                        ${primaryImg ? `<img id="detail-modal-main-img" src="${primaryImg}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-[#DAF1DE]/40 text-xs">No Image</div>`}
+                        <span class="absolute top-3 left-3 px-2.5 py-1 text-[9px] uppercase tracking-widest rounded-full bg-black/50 backdrop-blur-md text-[#DAF1DE]">
+                            ${p.condition === 'brand_new' ? 'Brand New' : 'Preloved'}
+                        </span>
+                    </div>
+                    ${images.length > 1 ? `
+                        <div class="flex items-center gap-2 mt-3 overflow-x-auto pb-1">
+                            ${images.map((img, idx) => `
+                                <img src="${img}" onclick="document.getElementById('detail-modal-main-img').src='${img}'" class="w-12 h-12 object-cover rounded-lg border cursor-pointer border-[#163832] hover:border-[#8EB69B] transition ${idx === 0 ? 'ring-1 ring-[#8EB69B]' : ''}">
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+
+                <div class="flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 flex-wrap pr-6 md:pr-0">
+                            <span class="text-[10px] uppercase tracking-widest text-[#8EB69B] font-semibold">${p.collection || 'Women'} Collection</span>
+                            <button onclick="toggleWishlist('${p.id}'); openProductDetailModal('${p.id}');" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition flex items-center gap-1">
+                                ${isWishlisted ? '♥ Saved' : '♡ Save'}
+                            </button>
+                        </div>
+                        <h2 class="font-serif text-2xl font-normal tracking-wide leading-snug">${p.name}</h2>
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-2xl font-bold text-[#8EB69B]">$${Number(p.price).toFixed(2)}</span>
+                            <span class="text-xs text-[#DAF1DE]/60">In Stock: ${p.stock_quantity ?? 1}</span>
+                        </div>
+
+                        <div class="border-t border-[#163832] pt-3">
+                            <h4 class="text-[10px] uppercase tracking-wider text-[#DAF1DE]/60 mb-1">Details & Description</h4>
+                            <p class="text-xs text-stone-300 leading-relaxed font-light">${p.description ? p.description.replace(/\n/g, '<br>') : 'Exquisitely crafted capsule wardrobe essential curated exclusively for Dabia Dixi.'}</p>
+                        </div>
+
+                        <div class="pt-2">
+                            <h4 class="text-[10px] uppercase tracking-wider text-[#DAF1DE]/60 mb-2">Available Sizes</h4>
+                            <div id="detail-modal-sizes" class="flex flex-wrap gap-1.5">
+                                ${productSizes.map((sz, idx) => `
+                                    <button onclick="selectDetailModalSize('${p.id}', '${sz}', this)" class="px-3 py-1.5 text-xs rounded-xl border transition ${idx === 0 ? 'bg-[#8EB69B] text-[#051F20] font-bold border-[#8EB69B]' : 'bg-[#163832] text-[#DAF1DE] border-[#8EB69B]/20 hover:border-[#8EB69B]'}">${sz}</button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 pt-4 border-t border-[#163832]">
+                        <a id="detail-modal-inquire-btn" href="${whatsappUrl}" target="_blank" data-selected-size="${defaultSize}" data-product-name="${p.name.replace(/'/g, "'")}" data-product-price="${p.price}" class="flex-1 py-3 px-4 rounded-xl bg-white/10 text-white text-xs font-semibold uppercase tracking-wider hover:bg-white/25 transition text-center">
+                            Inquire WhatsApp
+                        </a>
+                        <button id="detail-modal-add-btn" data-selected-size="${defaultSize}" onclick="addToCart('${p.id}'); closeProductDetailModal();" class="flex-1 py-3 px-4 rounded-xl bg-[#8EB69B] text-[#051F20] text-xs font-bold uppercase tracking-wider hover:bg-white transition text-center shadow-lg">
+                            Add to Bag
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    openModal('product-detail-modal');
+}
+
+function selectDetailModalSize(productId, size, btnElement) {
+    const container = document.getElementById('detail-modal-sizes');
+    if (container) {
+        container.querySelectorAll('button').forEach(b => {
+            b.className = 'px-3 py-1.5 text-xs rounded-xl border transition bg-[#163832] text-[#DAF1DE] border-[#8EB69B]/20 hover:border-[#8EB69B]';
+        });
+    }
+    if (btnElement) {
+        btnElement.className = 'px-3 py-1.5 text-xs rounded-xl border font-bold transition bg-[#8EB69B] text-[#051F20] border-[#8EB69B]';
+    }
+
+    const addBtn = document.getElementById('detail-modal-add-btn');
+    const inquireBtn = document.getElementById('detail-modal-inquire-btn');
+    if (addBtn) addBtn.dataset.selectedSize = size;
+    if (inquireBtn) {
+        inquireBtn.dataset.selectedSize = size;
+        const siteBaseUrl = window.location.origin + window.location.pathname;
+        const productName = inquireBtn.dataset.productName;
+        const productPrice = inquireBtn.dataset.productPrice;
+        const productLink = `${siteBaseUrl}#item-${productId}`;
+        const messageText = `Hi Dabia Dixi, I'm interested in ordering:
+*${productName}* (Size: ${size}, Price: $${productPrice})
+
+View item here:
+${productLink}`;
+        inquireBtn.href = `https://wa.me/67078571996?text=${encodeURIComponent(messageText)}`;
+    }
+}
+
+function closeProductDetailModal() {
+    closeModal('product-detail-modal');
+}
+
 function toggleWishlist(productId) {
     const index = wishlist.indexOf(productId);
     if (index > -1) {
@@ -234,7 +375,7 @@ function addToCart(productId) {
     const product = allProducts.find(p => p.id === productId);
     if (!product) return;
 
-    const addBtn = document.getElementById(`add-btn-${productId}`);
+    const addBtn = document.getElementById(`add-btn-${productId}`) || document.getElementById('detail-modal-add-btn');
     const selectedSize = addBtn && addBtn.dataset.selectedSize ? addBtn.dataset.selectedSize : (product.sizes && product.sizes.length > 0 ? product.sizes[0] : (product.size || 'Free Size'));
 
     const existingItem = cart.find(item => item.id === productId && item.size === selectedSize);
@@ -349,7 +490,7 @@ function renderWishlistModalContent() {
 
     container.innerHTML = savedProducts.map(p => `
         <div class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="closeWishlistModal(); openProductDetailModal('${p.id}');">
                 <img src="${p.image_url || ''}" class="w-12 h-12 object-cover rounded-lg bg-stone-200">
                 <div>
                     <h4 class="font-serif font-bold text-stone-900">${p.name}</h4>
@@ -416,23 +557,16 @@ function renderCartModalContent() {
 
 function sendWhatsAppCartOrder() {
     if (cart.length === 0) return;
-    let messageText = `Hi Dabia Dixi, I would like to place an order for the following items:
-
-`;
+    let messageText = `Hi Dabia Dixi, I would like to place an order for the following items:\n\n`;
     let grandTotal = 0;
 
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.qty;
         grandTotal += itemTotal;
-        messageText += `${index + 1}. *${item.name}*
-   Size: ${item.size} | Qty: ${item.qty} | Price: $${itemTotal.toFixed(2)}
-`;
+        messageText += `${index + 1}. *${item.name}*\n   Size: ${item.size} | Qty: ${item.qty} | Price: $${itemTotal.toFixed(2)}\n`;
     });
 
-    messageText += `
-*Grand Total: $${grandTotal.toFixed(2)}*
-
-Please let me know availability and payment details. Thank you!`;
+    messageText += `\n*Grand Total: $${grandTotal.toFixed(2)}*\n\nPlease let me know availability and payment details. Thank you!`;
     const encodedMsg = encodeURIComponent(messageText);
     const whatsappUrl = `https://wa.me/67078571996?text=${encodedMsg}`;
     window.open(whatsappUrl, '_blank');
@@ -604,22 +738,22 @@ ${productLink}`;
         const isWishlisted = wishlist.includes(p.id);
 
         return `
-            <div id="item-${p.id}" class="group relative bg-[#051F20] rounded-2xl overflow-hidden border border-[#163832] shadow-sm transition-all duration-500 hover:border-[#8EB69B]/40 flex flex-col justify-between">
+            <div id="item-${p.id}" class="group relative bg-[#051F20] rounded-2xl overflow-hidden border border-[#163832] shadow-sm transition-all duration-500 hover:border-[#8EB69B]/40 flex flex-col justify-between cursor-pointer" onclick="openProductDetailModal('${p.id}')">
                 <div>
                     <div class="w-full aspect-[4/5] bg-[#163832] relative overflow-hidden flex items-center justify-center cursor-pointer">
-                        ${primaryImg ? `<img id="main-img-${p.id}" src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" onclick="openImageModal(this.src)" title="Click to view full image">` : `<span class="text-[#DAF1DE]/40 text-xs">No Image</span>`}
+                        ${primaryImg ? `<img id="main-img-${p.id}" src="${primaryImg}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" onclick="event.stopPropagation(); openImageModal(this.src)" title="Click to view full image">` : `<span class="text-[#DAF1DE]/40 text-xs">No Image</span>`}
                         
                         <span class="absolute top-3 left-3 px-2.5 py-1 text-[9px] font-sans font-medium uppercase tracking-widest rounded-full bg-black/40 backdrop-blur-md text-[#DAF1DE] shadow-xs">
                             ${p.condition === 'brand_new' ? 'New' : 'Preloved'}
                         </span>
                         
-                        <button onclick="toggleWishlist('${p.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-xs text-white shadow-xs transition hover:bg-black/60" title="Save to Wishlist">
+                        <button onclick="event.stopPropagation(); toggleWishlist('${p.id}')" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-xs text-white shadow-xs transition hover:bg-black/60" title="Save to Wishlist">
                             ${isWishlisted ? '♥' : '♡'}
                         </button>
                     </div>
 
                     ${images.length > 1 ? `
-                        <div id="card-thumb-container-${p.id}" class="flex items-center gap-1.5 p-2 bg-[#0B2B26]/50 border-b border-[#163832] overflow-x-auto">
+                        <div id="card-thumb-container-${p.id}" class="flex items-center gap-1.5 p-2 bg-[#0B2B26]/50 border-b border-[#163832] overflow-x-auto" onclick="event.stopPropagation()">
                             ${images.map((imgUrl, idx) => `
                                 <img src="${imgUrl}" class="w-8 h-8 object-cover rounded-md cursor-pointer border border-transparent hover:border-[#8EB69B] transition ${idx === 0 ? 'ring-1 ring-[#8EB69B]' : ''}" onclick="switchCardImage('${p.id}', '${imgUrl}', this)">
                             `).join('')}
@@ -638,7 +772,7 @@ ${productLink}`;
                             <span class="text-sm font-semibold text-[#8EB69B] tracking-wider">$${Number(p.price).toFixed(2)}</span>
                         </div>
 
-                        <div id="card-size-container-${p.id}" class="flex flex-wrap gap-1 font-sans pt-1">
+                        <div id="card-size-container-${p.id}" class="flex flex-wrap gap-1 font-sans pt-1" onclick="event.stopPropagation()">
                             ${productSizes.map((sz, idx) => `
                                 <button onclick="selectCardSize('${p.id}', '${sz}', this)" class="px-2.5 py-1 text-[10px] rounded-lg border font-medium transition ${idx === 0 ? 'bg-[#8EB69B] text-[#051F20] border-[#8EB69B] font-bold' : 'bg-[#163832] text-[#DAF1DE] border-[#8EB69B]/20 hover:border-[#8EB69B]'}">${sz}</button>
                             `).join('')}
@@ -646,7 +780,7 @@ ${productLink}`;
                     </div>
                 </div>
 
-                <div class="p-4 pt-0 border-t border-[#163832]/60 mt-2 font-sans">
+                <div class="p-4 pt-0 border-t border-[#163832]/60 mt-2 font-sans" onclick="event.stopPropagation()">
                     <div class="flex items-center gap-2 pt-3">
                         <a id="inquire-btn-${p.id}" href="${whatsappUrl}" target="_blank" data-selected-size="${defaultSize}" data-product-name="${p.name.replace(/'/g, "'")}" data-product-price="${p.price}" class="flex-1 py-2 px-3 rounded-xl bg-white/10 text-white text-[10px] font-medium uppercase tracking-wider hover:bg-white/25 transition text-center flex items-center justify-center">
                             Inquire
@@ -819,7 +953,10 @@ async function renderDashboardContent() {
                                 <div class="flex justify-between items-center p-2.5 bg-stone-50 rounded-lg text-xs border border-stone-100">
                                     <div>
                                         <p class="font-medium text-stone-800">${s.product_name} (x${s.quantity_sold})</p>
-                                        <span class="text-[10px] text-stone-400">${s.created_at ? s.created_at.split('T')[0] : ''}</span> </div> <div class="flex items-center gap-3"> <span class="font-bold text-emerald-700">+$${Number(s.total_revenue).toFixed(2)}</span>
+                                        <span class="text-[10px] text-stone-400">${s.created_at ? s.created_at.split('T')[0] : ''}</span>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="font-bold text-emerald-700">+$${Number(s.total_revenue).toFixed(2)}</span>
                                         <button onclick="openReceiptModal('${s.product_name.replace(/'/g, "'")}', ${s.quantity_sold},${s.selling_price || (s.total_revenue/s.quantity_sold)}, ${s.total_revenue}, '${s.created_at}')" class="px-2.5 py-1 bg-[#051F20] text-white rounded text-[10px] font-medium hover:bg-[#0B2B26] transition">Receipt</button>
                                     </div>
                                 </div>
@@ -889,7 +1026,10 @@ async function renderDashboardContent() {
                                 <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
                                     <div>
                                         <p class="font-medium text-stone-800">${e.title}</p>
-                                        <span class="text-[10px] text-stone-400 uppercase font-semibold bg-stone-200 px-1.5 py-0.5 rounded">${e.category}</span> </div> <div class="flex items-center gap-2"> <span class="font-bold text-red-700">-$${Number(e.amount).toFixed(2)}</span>${e.receipt_url ? `<button onclick="openImageModal('${e.receipt_url}')" class="px-2 py-1 bg-stone-200 text-stone-700 rounded text-[10px] hover:bg-stone-300">Receipt</button>` : ''}
+                                        <span class="text-[10px] text-stone-400 uppercase font-semibold bg-stone-200 px-1.5 py-0.5 rounded">${e.category}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold text-red-700">-$${Number(e.amount).toFixed(2)}</span>${e.receipt_url ? `<button onclick="openImageModal('${e.receipt_url}')" class="px-2 py-1 bg-stone-200 text-stone-700 rounded text-[10px] hover:bg-stone-300">Receipt</button>` : ''}
                                     </div>
                                 </div>
                             `).join('')}
@@ -929,7 +1069,8 @@ async function renderDashboardContent() {
                                 <div class="h-32 bg-stone-200 rounded-lg overflow-hidden mb-2 relative flex items-center justify-center">
                                     ${p.image_url ? `<img src="${p.image_url}" class="w-full h-full object-cover">` : '<span class="text-[10px] text-stone-400">No Image</span>'}
                                 </div>
-                                <h4 class="font-serif font-bold text-stone-900 text-xs truncate">${p.name}</h4> <p class="text-xs font-bold text-[#051F20] mt-0.5">$${Number(p.price).toFixed(2)} (Stock:${p.stock_quantity})</p>
+                                <h4 class="font-serif font-bold text-stone-900 text-xs truncate">${p.name}</h4>
+                                <p class="text-xs font-bold text-[#051F20] mt-0.5">$${Number(p.price).toFixed(2)} (Stock:${p.stock_quantity})</p>
                             </div>
                             <button onclick="openPOSModal('${p.id}', '${p.name.replace(/'/g, "'")}', ${p.price},${p.stock_quantity})" class="mt-3 w-full bg-[#051F20] text-white py-1.5 rounded-lg text-xs font-medium hover:bg-[#0B2B26] transition">Sell Item</button>
                         </div>
@@ -985,6 +1126,10 @@ async function renderDashboardContent() {
                             <option value="brand_new">Brand New</option>
                             <option value="preloved">Preloved</option>
                         </select>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold uppercase text-stone-500 mb-1">Product Description (Optional)</label>
+                        <textarea id="prod-description" rows="3" placeholder="Enter fabric details, fit guidelines, or styling notes..." class="w-full border border-stone-300 rounded-lg p-2.5 text-sm outline-none"></textarea>
                     </div>
                     <div class="md:col-span-2">
                         <label class="block text-xs font-semibold uppercase text-stone-500 mb-2">Inventory Stock Per Size</label>
@@ -1202,6 +1347,7 @@ async function handleCreateProduct(e) {
     const collection = document.getElementById('prod-collection').value;
     const category = document.getElementById('prod-category').value;
     const condition = document.getElementById('prod-condition').value;
+    const description = document.getElementById('prod-description').value;
     const price = parseFloat(document.getElementById('prod-price').value);
     const cost_price = parseFloat(document.getElementById('prod-cost').value);
     const imageFiles = document.getElementById('prod-images').files;
@@ -1231,7 +1377,7 @@ async function handleCreateProduct(e) {
     }
 
     await supabaseClient.from('products').insert([{
-        name, collection, category, condition, 
+        name, collection, category, condition, description,
         size: primarySize, 
         sizes: activeSizes, 
         size_stock: sizeStock,
@@ -1304,4 +1450,4 @@ function closeModal(modalId) {
         modal.classList.remove('flex');
         modal.classList.add('hidden');
     }, 300);
-}
+} 
