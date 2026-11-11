@@ -228,7 +228,7 @@ function openProductDetailModal(productId) {
     if (!modal) {
         modal = document.createElement('div');
         modal.id = 'product-detail-modal';
-        modal.className = 'fixed inset-0 bg-black/75 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 ease-out justify-center items-center z-50 p-4 font-sans overflow-y-auto';
+        modal.className = 'fixed inset-0 bg-black/75 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300 ease-out flex justify-center items-center z-50 p-2 sm:p-4 font-sans overflow-y-auto';
         document.body.appendChild(modal);
     }
 
@@ -261,7 +261,7 @@ ${productLink}`;
     const isWishlisted = wishlist.includes(p.id);
 
     modal.innerHTML = `
-        <div class="bg-[#051F20] border border-[#163832] rounded-3xl max-w-2xl w-full p-6 pr-14 md:pr-6 text-white shadow-2xl relative transform scale-95 opacity-0 transition-all duration-300 ease-out my-8">
+        <div class="bg-[#051F20] border border-[#163832] rounded-2xl sm:rounded-3xl max-w-2xl w-full p-4 sm:p-6 pr-12 text-white shadow-2xl relative transform scale-95 opacity-0 transition-all duration-300 ease-out my-auto max-h-[90vh] overflow-y-auto">
             <button onclick="closeProductDetailModal()" class="absolute top-4 right-4 text-white/60 hover:text-white w-9 h-9 rounded-full bg-black/40 flex items-center justify-center text-lg z-10">&times;</button>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -283,9 +283,9 @@ ${productLink}`;
 
                 <div class="flex flex-col justify-between space-y-4">
                     <div class="space-y-3">
-                        <div class="flex items-center gap-3 flex-wrap pr-6 md:pr-0">
+                        <div class="flex items-center gap-3">
                             <span class="text-[10px] uppercase tracking-widest text-[#8EB69B] font-semibold">${p.collection || 'Women'} Collection</span>
-                            <button onclick="toggleWishlist('${p.id}'); openProductDetailModal('${p.id}');" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition flex items-center gap-1">
+                            <button onclick="toggleWishlist('${p.id}'); openProductDetailModal('${p.id}');" class="text-xs px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition">
                                 ${isWishlisted ? '♥ Saved' : '♡ Save'}
                             </button>
                         </div>
@@ -1450,4 +1450,4 @@ function closeModal(modalId) {
         modal.classList.remove('flex');
         modal.classList.add('hidden');
     }, 300);
-} 
+}
