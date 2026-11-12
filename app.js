@@ -625,6 +625,20 @@ async function renderStorefront() {
             </div>
         </div>
 
+        <!-- Delivery Policy Banner -->
+        <div class="mb-10 px-6 max-w-7xl mx-auto">
+            <div class="bg-[#051F20] border border-[#8EB69B]/40 rounded-2xl p-4 md:p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🚚</span>
+                    <div>
+                        <h4 class="font-serif text-sm md:text-base font-semibold text-[#DAF1DE]">Delivery Policy</h4>
+                        <p class="text-xs text-stone-300">Deliveries are available exclusively on <strong class="text-white">Saturdays and Sundays</strong> when purchasing <strong class="text-[#8EB69B]">3 items or more</strong>.</p>
+                    </div>
+                </div>
+                <button onclick="openCartModal()" class="px-5 py-2.5 bg-[#8EB69B] text-[#051F20] rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-white transition whitespace-nowrap">View Bag & Order</button>
+            </div>
+        </div>
+
         <div class="mb-12 px-6 max-w-7xl mx-auto">
             <div class="flex items-center gap-6 overflow-x-auto pb-4 pt-2 scrollbar-none justify-start md:justify-center">
                 <div onclick="filterByCategory('all')" class="flex flex-col items-center gap-2 cursor-pointer group flex-shrink-0">
@@ -670,7 +684,7 @@ async function renderStorefront() {
             <div class="flex flex-wrap justify-center gap-2">
                 <button onclick="setCollectionFilter('All')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'All' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-All">All Collections</button>
                 <button onclick="setCollectionFilter('Women')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'Women' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-Women">Women</button>
-                <button onclick="setCollectionFilter('Men')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'Men' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-Men">Men</button>
+                <button onclick="setCollectionFitting('Men')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'Men' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-Men">Men</button>
                 <button onclick="setCollectionFilter('Unisex')" class="px-4 py-1.5 rounded-full text-xs font-sans uppercase tracking-wider transition collection-btn ${currentCollectionFilter === 'Unisex' ? 'bg-[#051F20] text-white shadow-xs' : 'bg-stone-50 text-stone-700 border border-stone-200'}" id="col-Unisex">Unisex</button>
             </div>
             <div class="flex gap-2">
@@ -682,6 +696,35 @@ async function renderStorefront() {
 
         <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 px-6 max-w-7xl mx-auto mb-16">
             <div class="col-span-full text-center py-12 text-stone-400">Loading collection...</div>
+        </div>
+
+        <!-- Boutique Location & TikTok Video Section -->
+        <div class="mb-16 px-6 max-w-7xl mx-auto">
+            <div class="bg-white rounded-3xl p-6 md:p-10 border border-stone-200 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4">
+                    <span class="text-[10px] uppercase tracking-[0.25em] font-sans text-stone-500">Visit Our Boutique</span>
+                    <h3 class="text-2xl md:text-3xl font-serif text-[#051F20] font-normal">Find Us in Person</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed font-sans">
+                        Experience our curated collections firsthand. Watch our exact location guide on TikTok to easily find our boutique, or reach out to us via WhatsApp for precise directions.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <a href="https://vt.tiktok.com/ZSp989j17/" target="_blank" class="px-5 py-2.5 bg-[#051F20] text-white rounded-xl text-xs font-medium uppercase tracking-wider hover:bg-[#0B2B26] transition flex items-center gap-2">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                            View TikTok Location Video
+                        </a>
+                    </div>
+                </div>
+                <div class="w-full aspect-[9/16] max-h-[400px] bg-stone-900 rounded-2xl overflow-hidden shadow-md flex items-center justify-center relative">
+                    <div class="absolute inset-0 bg-cover bg-center opacity-75" style="background-image: url('https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?q=80&w=800&auto=format&fit=crop')"></div>
+                    <div class="absolute inset-0 bg-black/40"></div>
+                    <div class="relative z-10 text-center p-6 space-y-3">
+                        <svg class="w-12 h-12 text-white mx-auto opacity-90 animate-bounce" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1115 0z"/></svg>
+                        <h4 class="font-serif text-white text-lg font-medium">Boutique Location Tour</h4>
+                        <p class="text-xs text-stone-200 font-light">Watch our step-by-step video guide on TikTok for easy navigation to our store.</p>
+                        <a href="https://www.tiktok.com/@dabiadixi" target="_blank" class="inline-block mt-2 px-6 py-2.5 bg-white text-[#051F20] rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#DAF1DE] transition shadow">Watch on TikTok</a>
+                    </div>
+                </div>
+            </div>
         </div>
     `;
     await fetchProducts();
