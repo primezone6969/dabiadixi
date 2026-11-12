@@ -540,10 +540,10 @@ function renderCartModalContent() {
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <div class="flex items-center border border-stone-300 rounded bg-white">
-                        <button onclick="updateCartQty('${item.id}', '${item.size}', -1)" class="px-2 py-0.5 text-stone-600 hover:bg-stone-100">-</button>
-                        <span class="px-2 font-bold text-xs">${item.qty}</span>
-                        <button onclick="updateCartQty('${item.id}', '${item.size}', 1)" class="px-2 py-0.5 text-stone-600 hover:bg-stone-100">+</button>
+                    <div class="flex items-center border border-stone-300 rounded bg-white text-[#051F20]">
+                        <button onclick="updateCartQty('${item.id}', '${item.size}', -1)" class="px-2.5 py-1 text-stone-700 hover:bg-stone-100 font-bold">-</button>
+                        <span class="px-2.5 font-bold text-xs text-[#051F20] select-none" style="color: #051F20 !important;">${item.qty}</span>
+                        <button onclick="updateCartQty('${item.id}', '${item.size}', 1)" class="px-2.5 py-1 text-stone-700 hover:bg-stone-100 font-bold">+</button>
                     </div>
                     <span class="font-bold text-[#051F20] min-w-[50px] text-right">$${itemTotal.toFixed(2)}</span>
                     <button onclick="removeFromCart('${item.id}', '${item.size}')" class="text-stone-400 hover:text-red-600 text-sm">&times;</button>
