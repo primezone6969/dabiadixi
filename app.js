@@ -509,6 +509,23 @@ function renderCartModalContent() {
     const container = document.getElementById('cart-items-container');
     const grandTotalEl = document.getElementById('cart-grand-total');
 
+    // Dynamically update or add the header container with the Empty Bag button next to the title
+    let modalHeader = document.getElementById('cart-modal-header');
+    if (!modalHeader && container) {
+        modalHeader = document.createElement('div');
+        modalHeader.id = 'cart-modal-header';
+        container.parentNode.insertBefore(modalHeader, container);
+    }
+    
+    if (modalHeader) {
+        modalHeader.innerHTML = `
+            <div class="flex items-center justify-between w-full mb-4 px-1">
+                <h3 class="font-serif text-lg font-bold text-white">Your Shopping Bag</h3>
+                ${cart.length > 0 ? `<button onclick="clearEntireCart()" class="text-xs text-rose-400 hover:text-rose-300 font-medium tracking-wider uppercase underline transition">Empty Bag</button>` : ''}
+            </div>
+        `;
+    }
+
     if (cart.length === 0) {
         container.innerHTML = `
             <div class="py-16 px-6 text-center flex flex-col items-center justify-center space-y-4">
@@ -531,7 +548,7 @@ function renderCartModalContent() {
         const itemTotal = item.price * item.qty;
         grandTotal += itemTotal;
         return `
-            <div class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs">
+            <div class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs mb-2">
                 <div class="flex items-center gap-3">
                     <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg bg-stone-200">
                     <div>
@@ -553,6 +570,16 @@ function renderCartModalContent() {
     }).join('');
 
     grandTotalEl.textContent = `$${grandTotal.toFixed(2)}`;
+}
+
+function clearEntireCart() {
+    if (confirm('Are you sure you want to remove all items from your shopping bag?')) {
+        cart = [];
+        localStorage.setItem('dabia_cart', JSON.stringify(cart));
+        updateBadges();
+        renderCartModalContent();
+        showToast('Shopping bag cleared');
+    }
 }
 
 function sendWhatsAppCartOrder() {
