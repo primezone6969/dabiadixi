@@ -721,7 +721,7 @@ async function renderStorefront() {
                         <svg class="w-12 h-12 text-white mx-auto opacity-90 animate-bounce" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25s-7.5-4.108-7.5-11.25a7.5 7.5 0 1115 0z"/></svg>
                         <h4 class="font-serif text-white text-lg font-medium">Boutique Location Tour</h4>
                         <p class="text-xs text-stone-200 font-light">Watch our step-by-step video guide on TikTok for easy navigation to our store.</p>
-                        <a href="https://www.tiktok.com/@dabiadixi" target="_blank" class="inline-block mt-2 px-6 py-2.5 bg-white text-[#051F20] rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#DAF1DE] transition shadow">Watch on TikTok</a>
+                        <a href="https://vt.tiktok.com/ZSp989j17/" target="_blank" class="inline-block mt-2 px-6 py-2.5 bg-white text-[#051F20] rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#DAF1DE] transition shadow">Watch on TikTok</a>
                     </div>
                 </div>
             </div>
